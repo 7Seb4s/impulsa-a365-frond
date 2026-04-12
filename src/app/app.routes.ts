@@ -19,6 +19,11 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'recuperar',
+    loadComponent: () =>
+      import('./pages/recuperar/recuperar.component').then(m => m.RecuperarComponent)
+  },
+  {
     path: '**',
     redirectTo: 'login'
   }

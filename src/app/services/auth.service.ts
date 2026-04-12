@@ -1,60 +1,57 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, tap, of } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
-export interface LoginRequest {
+export interface Usuario {
+  id: number;
   codigo: string;
-  contrasena: string;
+  nombre: string;
+  rol: string;
 }
 
-export interface LoginResponse {
-  token: string;
-  usuario: {
-    id: number;
-    nombre: string;
-    rol: string;
-  };
-}
+// ── Usuarios de prueba (reemplazar cuando haya backend) ──────
+const USUARIOS_PRUEBA: (Usuario & { password: string })[] = [
+  { id: 1, codigo: 'admin',      password: '1234', nombre: 'Administrador', rol: 'ADMIN'      },
+  { id: 2, codigo: 'supervisor', password: '1234', nombre: 'Supervisor',    rol: 'SUPERVISOR' },
+  { id: 3, codigo: 'agente',     password: '1234', nombre: 'Agente',        rol: 'AGENTE'     }
+];
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private readonly TOKEN_KEY = 'a365_token';
-  private readonly USER_KEY  = 'a365_user';
+  private readonly USUARIO_KEY = 'a365_usuario';
 
-  constructor(private http: HttpClient) {}
+  constructor(private router: Router) {}
 
-  /**
-   * Llama al endpoint de login y guarda el token.
-   * TODO: reemplazar la URL con el endpoint real del backend.
-   */
-  login(payload: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${environment.apiUrl}/auth/login`, payload).pipe(
-      tap(res => {
-        localStorage.setItem(this.TOKEN_KEY, res.token);
-        localStorage.setItem(this.USER_KEY, JSON.stringify(res.usuario));
-      })
+  // ── LOGIN (simulado) ─────────────────────────────────────────
+  login(codigo: string, password: string): boolean {
+    const usuario = USUARIOS_PRUEBA.find(
+      u => u.codigo === codigo && u.password === password
     );
+    if (usuario) {
+      const { password: _, ...datos } = usuario;
+      localStorage.setItem(this.USUARIO_KEY, JSON.stringify(datos));
+      return true;
+    }
+    return false;
   }
 
+  // ── LOGOUT ───────────────────────────────────────────────────
   logout(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
-    localStorage.removeItem(this.USER_KEY);
+    localStorage.removeItem(this.USUARIO_KEY);
+    this.router.navigate(['/login']);
   }
 
-  getToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
-  }
-
-  getUsuario(): LoginResponse['usuario'] | null {
-    const raw = localStorage.getItem(this.USER_KEY);
-    return raw ? JSON.parse(raw) : null;
-  }
-
+  // ── HELPERS ──────────────────────────────────────────────────
   isLoggedIn(): boolean {
-    return !!this.getToken();
+    return !!localStorage.getItem(this.USUARIO_KEY);
+  }
+
+  getUsuario(): Usuario | null {
+    const data = localStorage.getItem(this.USUARIO_KEY);
+    return data ? JSON.parse(data) : null;
+  }
+
+  getRol(): string | null {
+    return this.getUsuario()?.rol ?? null;
   }
 }

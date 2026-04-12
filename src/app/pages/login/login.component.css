@@ -1,233 +1,139 @@
 /* ============================================
-   login.component.css — Impulsa A365
+   login.component.css — Impulsa A365 (nuevo diseño)
    ============================================ */
 
-/* ---- Página completa ---- */
-.page-wrapper {
+.login-wrapper {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: #ffffff;
+}
+
+/* ── HEADER ───────────────────────────────── */
+.login-header {
+  background: #ffffff;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.logo-img {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* ── MAIN ─────────────────────────────────── */
+.login-main {
+  flex: 1;
+  display: flex;
   align-items: center;
-  background-color: #eef0f6;
+  justify-content: center;
+  padding: 2rem;
+  background-color: #f5f7fa;
+}
+
+/* ── CARD ─────────────────────────────────── */
+.login-card {
+  background: #ffffff;
+  border: 2.5px solid #1a2b5e;
+  border-radius: 8px;
+  padding: 2.5rem 3rem;
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+  width: 100%;
+  max-width: 900px;
+}
+
+/* ── IMAGEN IZQUIERDA ─────────────────────── */
+.login-image {
+  flex: 1;
+  max-width: 320px;
+}
+
+.login-image img {
+  width: 100%;
+  border-radius: 4px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── FORMULARIO ───────────────────────────── */
+.login-form-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a2b5e;
+  letter-spacing: 0.05em;
+  margin: 0 0 4px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* ============================================
-   HEADER — LOGO
-   ============================================ */
-.site-header {
-  padding: 32px 0 18px;
-  text-align: center;
+.login-subtitle {
+  font-size: 0.78rem;
+  color: #888;
+  margin: 0 0 1.2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.logo-block {
-  display: inline-flex;
-  align-items: baseline;
-  line-height: 1;
-}
-
-.logo-a {
-  font-size: 46px;
-  font-weight: 800;
-  color: #1a2e5a;
-}
-
-.logo-365 {
-  font-size: 46px;
-  font-weight: 800;
-  color: #d32f2f;
-}
-
-.logo-reg {
-  font-size: 14px;
-  color: #6b7a99;
-  align-self: flex-start;
-  margin-top: 8px;
-  margin-left: 2px;
-}
-
-.logo-sub {
-  font-size: 11px;
-  letter-spacing: 1.8px;
-  color: #6b7a99;
-  margin-top: 6px;
-  text-transform: uppercase;
-}
-
-/* ============================================
-   TARJETA PRINCIPAL
-   ============================================ */
-.card-container {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 0 16px 32px;
-}
-
-.login-card {
-  display: flex;
-  width: 100%;
-  max-width: 860px;
-  min-height: 430px;
-  background: #ffffff;
-  border: 2px solid #1a2e5a;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 6px 32px rgba(26, 46, 90, 0.12);
-  animation: fadeUp 0.4s ease both;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ============================================
-   PANEL IZQUIERDO
-   ============================================ */
-.left-panel {
-  width: 42%;
-  background: #1a2e5a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 28px;
-}
-
-.left-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 22px;
-  width: 100%;
-}
-
-.icon-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 58px);
-  gap: 14px;
-  justify-content: center;
-}
-
-.icon-bubble {
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.07);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s, border-color 0.2s;
-  cursor: default;
-}
-
-.icon-bubble:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.45);
-}
-
-.left-brand {
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 2.5px;
-  text-align: center;
-}
-
-.left-tagline {
-  color: rgba(255, 255, 255, 0.50);
-  font-size: 12px;
-  letter-spacing: 0.4px;
-  text-align: center;
-  margin-top: -10px;
-}
-
-/* ============================================
-   PANEL DERECHO — FORMULARIO
-   ============================================ */
-.right-panel {
-  flex: 1;
-  padding: 50px 44px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.form-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #1a2e5a;
-  letter-spacing: 2px;
-  text-align: center;
-  margin-bottom: 6px;
-}
-
-.form-subtitle {
-  font-size: 13px;
-  color: #6b7a99;
-  text-align: center;
-  margin-bottom: 28px;
-}
-
-/* ---- Banner de error ---- */
+/* ── ERROR BANNER ─────────────────────────── */
 .error-banner {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: #fce8e8;
-  color: #b71c1c;
-  border: 1px solid #f5c0c0;
-  border-radius: 6px;
-  padding: 10px 14px;
-  font-size: 13px;
-  margin-bottom: 16px;
+  gap: 6px;
+  background: #fff0f0;
+  border: 1px solid #f5c6c6;
+  color: #c0392b;
+  font-size: 0.8rem;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-bottom: 1rem;
 }
 
-/* ---- Grupos de campo ---- */
+/* ── FORM GROUP ───────────────────────────── */
 .form-group {
-  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
 }
 
 .form-group label {
-  display: block;
-  font-size: 13px;
+  font-size: 0.82rem;
   font-weight: 600;
-  color: #1a2e5a;
-  margin-bottom: 6px;
+  color: #1a2b5e;
+  margin-bottom: 5px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.form-group input[type="text"],
-.form-group input[type="password"] {
-  width: 100%;
-  height: 44px;
-  border: 1.5px solid #c8d0e0;
-  border-radius: 6px;
-  padding: 0 14px;
-  font-size: 14px;
-  color: #1a2e5a;
-  background: #fafbfd;
-  transition: border-color 0.2s, box-shadow 0.2s;
+.form-group input {
+  border: 1.5px solid #d0d5e8;
+  border-radius: 4px;
+  padding: 9px 12px;
+  font-size: 0.88rem;
+  color: #333;
   outline: none;
-}
-
-.form-group input::placeholder {
-  color: #b0bac8;
+  transition: border-color 0.2s;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-group input:focus {
-  border-color: #1a2e5a;
-  box-shadow: 0 0 0 3px rgba(26, 46, 90, 0.10);
-  background: #ffffff;
+  border-color: #1a2b5e;
 }
 
 .form-group input.is-error {
-  border-color: #d32f2f;
+  border-color: #e53935;
 }
 
-/* ---- Input contraseña ---- */
+/* ── PASSWORD WRAP ────────────────────────── */
 .password-wrap {
   position: relative;
   display: flex;
@@ -235,91 +141,79 @@
 }
 
 .password-wrap input {
-  padding-right: 44px;
+  padding-right: 40px;
 }
 
 .toggle-eye {
   position: absolute;
-  right: 12px;
+  right: 10px;
   background: none;
   border: none;
   cursor: pointer;
-  color: #6b7a99;
+  color: #888;
+  padding: 0;
   display: flex;
   align-items: center;
-  padding: 0;
-  transition: color 0.2s;
 }
 
 .toggle-eye:hover {
-  color: #1a2e5a;
+  color: #1a2b5e;
 }
 
-/* ---- Opciones ---- */
+/* ── OPCIONES ─────────────────────────────── */
 .form-options {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
+  align-items: center;
+  margin: 0.25rem 0 1rem;
 }
 
 .check-label {
   display: flex;
   align-items: center;
-  gap: 7px;
-  font-size: 13px;
-  color: #1a2e5a;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #555;
   cursor: pointer;
-  user-select: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.check-label input[type="checkbox"] {
-  width: 15px;
-  height: 15px;
-  accent-color: #1a2e5a;
-  cursor: pointer;
-}
-
-.link-btn {
+.forgot-link {
+  font-size: 0.75rem;
+  color: #1a2b5e;
+  text-decoration: underline;
   background: none;
   border: none;
-  color: #d32f2f;
-  font-size: 13px;
   cursor: pointer;
-  padding: 0;
-  transition: color 0.2s;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.link-btn:hover {
-  color: #b71c1c;
-  text-decoration: underline;
+.forgot-link:hover {
+  color: #c0392b;
 }
 
-/* ---- Botón Ingresar ---- */
+/* ── BOTÓN INGRESAR ───────────────────────── */
 .btn-ingresar {
   width: 100%;
-  height: 46px;
-  background: #1a2e5a;
+  background-color: #1a2b5e;
   color: #ffffff;
-  border: none;
-  border-radius: 6px;
-  font-size: 15px;
+  font-size: 0.9rem;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  height: 42px;
+  border: none;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  transition: background 0.2s, transform 0.1s;
+  gap: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: background-color 0.2s;
 }
 
 .btn-ingresar:hover:not(:disabled) {
-  background: #2a4480;
-}
-
-.btn-ingresar:active:not(:disabled) {
-  transform: scale(0.98);
+  background-color: #1a56db;
 }
 
 .btn-ingresar:disabled {
@@ -327,89 +221,74 @@
   cursor: not-allowed;
 }
 
-/* ---- Spinner ---- */
+/* ── SPINNER ──────────────────────────────── */
 .spinner {
-  width: 17px;
-  height: 17px;
-  border: 2px solid rgba(255, 255, 255, 0.35);
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
   border-top-color: #ffffff;
   border-radius: 50%;
-  animation: spin 0.7s linear infinite;
   display: inline-block;
+  animation: spin 0.7s linear infinite;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-/* ============================================
-   FOOTER
-   ============================================ */
-.site-footer {
-  width: 100%;
-  background: #1a2e5a;
-  color: rgba(255, 255, 255, 0.60);
-  font-size: 12px;
-  padding: 14px 32px;
+/* ── FOOTER ───────────────────────────────── */
+.login-footer {
+  background: #1a2b5e;
+  padding: 1rem 2rem;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 }
 
-.footer-socials {
+.login-footer span {
+  font-size: 0.72rem;
+  color: #8fa8d4;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.footer-social {
   display: flex;
   gap: 10px;
-  align-items: center;
 }
 
-.footer-socials a {
-  color: rgba(255, 255, 255, 0.65);
+.social-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #2e4a8e;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  transition: background 0.2s, color 0.2s;
   text-decoration: none;
+  transition: background-color 0.2s;
 }
 
-.footer-socials a:hover {
-  background: rgba(255, 255, 255, 0.14);
-  color: #ffffff;
+.social-icon:hover {
+  background: #4a6ab0;
 }
 
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-@media (max-width: 640px) {
+/* ── RESPONSIVE ───────────────────────────── */
+@media (max-width: 680px) {
   .login-card {
     flex-direction: column;
+    padding: 1.5rem;
   }
 
-  .left-panel {
-    width: 100%;
-    padding: 28px 20px;
+  .login-image {
+    max-width: 100%;
   }
 
-  .icon-grid {
-    grid-template-columns: repeat(6, 44px);
-  }
-
-  .icon-bubble {
-    width: 44px;
-    height: 44px;
-  }
-
-  .right-panel {
-    padding: 32px 24px;
-  }
-
-  .site-footer {
+  .login-footer {
     flex-direction: column;
     gap: 10px;
     text-align: center;
-    padding: 14px 16px;
   }
 }

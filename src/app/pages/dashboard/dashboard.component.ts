@@ -13,7 +13,6 @@ import { AuthService } from '../../services/auth.service';
 export class DashboardComponent implements OnInit {
   usuario: any = null;
 
-  // Datos de ejemplo — reemplazar con llamadas al servicio real
   stats = [
     { label: 'Total tickets',  valor: 48, badge: 'Este mes',    clase: 'badge-blue'  },
     { label: 'Pendientes',     valor: 12, badge: 'En espera',   clase: 'badge-amber' },
@@ -40,7 +39,6 @@ export class DashboardComponent implements OnInit {
 
   onLogout(): void {
     this.authService.logout();
-    this.router.navigate(['/login']);
   }
 
   getPrioridadClase(prioridad: string): string {

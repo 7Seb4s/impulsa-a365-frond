@@ -12,12 +12,12 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  codigo: string = '';
-  contrasena: string = '';
-  recuerdame: boolean = false;
-  mostrarContrasena: boolean = false;
-  cargando: boolean = false;
-  errorMsg: string = '';
+  codigo             = '';
+  contrasena         = '';
+  recuerdame         = false;
+  mostrarContrasena  = false;
+  cargando           = false;
+  errorMsg           = '';
 
   constructor(
     private authService: AuthService,
@@ -34,24 +34,17 @@ export class LoginComponent {
 
     this.cargando = true;
 
-    // Opción A: usando el AuthService con backend real
-    // this.authService.login({ codigo: this.codigo, contrasena: this.contrasena }).subscribe({
-    //   next: () => this.router.navigate(['/dashboard']),
-    //   error: () => {
-    //     this.cargando = false;
-    //     this.errorMsg = 'Código o contraseña incorrectos.';
-    //   }
-    // });
-
-    // Opción B: simulación para desarrollo (quitar cuando el backend esté listo)
+    // Simulación de delay (quitar cuando haya backend real)
     setTimeout(() => {
+      const ok = this.authService.login(this.codigo.trim(), this.contrasena);
       this.cargando = false;
-      if (this.codigo === 'admin' && this.contrasena === '1234') {
+
+      if (ok) {
         this.router.navigate(['/dashboard']);
       } else {
         this.errorMsg = 'Código o contraseña incorrectos.';
       }
-    }, 1500);
+    }, 1000);
   }
 
   toggleContrasena(): void {
@@ -59,7 +52,6 @@ export class LoginComponent {
   }
 
   onOlvidaste(): void {
-    // TODO: navegar a /recuperar-contrasena
-    alert('Módulo de recuperación en desarrollo.');
+    this.router.navigate(['/recuperar']);
   }
 }

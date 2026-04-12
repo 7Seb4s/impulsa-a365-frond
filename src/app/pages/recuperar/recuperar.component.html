@@ -1,0 +1,104 @@
+<div class="recover-wrapper">
+
+  <!-- HEADER -->
+  <header class="recover-header">
+    <img src="assets/logo-a365.jpg" alt="A365" class="logo-img" />
+  </header>
+
+  <!-- BARRA AZUL -->
+  <div class="blue-bar"></div>
+
+  <!-- CONTENIDO -->
+  <main class="recover-main">
+    <div class="recover-card">
+
+      <h1 class="recover-title">RESTABLECE TU CONTRASEÑA</h1>
+      <p class="recover-subtitle">Por favor ingresa tu correo electrónico para enviar el código.</p>
+
+      <!-- PASO 1: Ingresar correo -->
+      <div class="form-group">
+        <label for="correo">Correo electrónico</label>
+        <input
+          id="correo"
+          type="email"
+          name="correo"
+          [(ngModel)]="correo"
+          placeholder="Ingresa tu correo electrónico"
+          [class.is-error]="errorMsgCorreo"
+        />
+      </div>
+
+      <div class="error-banner" *ngIf="errorMsgCorreo">{{ errorMsgCorreo }}</div>
+      <div class="success-banner" *ngIf="successMsg">{{ successMsg }}</div>
+
+      <div class="btn-center">
+        <button class="btn-primary" (click)="enviarCodigo()" [disabled]="cargandoCorreo">
+          <span class="spinner" *ngIf="cargandoCorreo"></span>
+          <span *ngIf="!cargandoCorreo">Enviar código</span>
+        </button>
+      </div>
+
+      <!-- Texto de spam -->
+      <p class="info-text">
+        Por favor revisa la carpeta de spam dentro del correo electrónico en caso el código
+        no aparezca en la bandeja principal.
+      </p>
+
+      <!-- PASO 2: Ingresar código recibido -->
+      <div class="form-group">
+        <input
+          type="text"
+          name="codigoRecibido"
+          [(ngModel)]="codigoRecibido"
+          placeholder="Ingresa tu código aquí"
+          [class.is-error]="errorMsgCodigo"
+        />
+      </div>
+
+      <div class="error-banner" *ngIf="errorMsgCodigo">{{ errorMsgCodigo }}</div>
+
+      <div class="btn-row">
+        <button class="btn-primary" (click)="reenviarCodigo()" [disabled]="cargandoCodigo">
+          <span class="spinner" *ngIf="cargandoCodigo"></span>
+          <span *ngIf="!cargandoCodigo">Reenviar código</span>
+        </button>
+        <button class="btn-primary" (click)="continuar()" [disabled]="cargandoCodigo">
+          Continuar
+        </button>
+      </div>
+
+      <!-- Volver al login -->
+      <div class="back-login">
+        <span>¿Recuerdas tu contraseña? </span>
+        <a (click)="volverLogin()" class="link">Inicia sesión</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="recover-footer">
+    <span>© 2026 Impulsa A365 Todos los derechos reservados por Group16</span>
+    <div class="footer-social">
+      <a href="#" class="social-icon" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15">
+          <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
+          <circle cx="4" cy="4" r="2"/>
+        </svg>
+      </a>
+      <a href="#" class="social-icon" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15">
+          <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+        </svg>
+      </a>
+      <a href="#" class="social-icon" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
+
+</div>
