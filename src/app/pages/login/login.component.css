@@ -1,0 +1,415 @@
+/* ============================================
+   login.component.css — Impulsa A365
+   ============================================ */
+
+/* ---- Página completa ---- */
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #eef0f6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ============================================
+   HEADER — LOGO
+   ============================================ */
+.site-header {
+  padding: 32px 0 18px;
+  text-align: center;
+}
+
+.logo-block {
+  display: inline-flex;
+  align-items: baseline;
+  line-height: 1;
+}
+
+.logo-a {
+  font-size: 46px;
+  font-weight: 800;
+  color: #1a2e5a;
+}
+
+.logo-365 {
+  font-size: 46px;
+  font-weight: 800;
+  color: #d32f2f;
+}
+
+.logo-reg {
+  font-size: 14px;
+  color: #6b7a99;
+  align-self: flex-start;
+  margin-top: 8px;
+  margin-left: 2px;
+}
+
+.logo-sub {
+  font-size: 11px;
+  letter-spacing: 1.8px;
+  color: #6b7a99;
+  margin-top: 6px;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   TARJETA PRINCIPAL
+   ============================================ */
+.card-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0 16px 32px;
+}
+
+.login-card {
+  display: flex;
+  width: 100%;
+  max-width: 860px;
+  min-height: 430px;
+  background: #ffffff;
+  border: 2px solid #1a2e5a;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 32px rgba(26, 46, 90, 0.12);
+  animation: fadeUp 0.4s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   PANEL IZQUIERDO
+   ============================================ */
+.left-panel {
+  width: 42%;
+  background: #1a2e5a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 28px;
+}
+
+.left-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  width: 100%;
+}
+
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 58px);
+  gap: 14px;
+  justify-content: center;
+}
+
+.icon-bubble {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s;
+  cursor: default;
+}
+
+.icon-bubble:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.left-brand {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-align: center;
+}
+
+.left-tagline {
+  color: rgba(255, 255, 255, 0.50);
+  font-size: 12px;
+  letter-spacing: 0.4px;
+  text-align: center;
+  margin-top: -10px;
+}
+
+/* ============================================
+   PANEL DERECHO — FORMULARIO
+   ============================================ */
+.right-panel {
+  flex: 1;
+  padding: 50px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a2e5a;
+  letter-spacing: 2px;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.form-subtitle {
+  font-size: 13px;
+  color: #6b7a99;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+/* ---- Banner de error ---- */
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fce8e8;
+  color: #b71c1c;
+  border: 1px solid #f5c0c0;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+/* ---- Grupos de campo ---- */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a2e5a;
+  margin-bottom: 6px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+  width: 100%;
+  height: 44px;
+  border: 1.5px solid #c8d0e0;
+  border-radius: 6px;
+  padding: 0 14px;
+  font-size: 14px;
+  color: #1a2e5a;
+  background: #fafbfd;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.form-group input::placeholder {
+  color: #b0bac8;
+}
+
+.form-group input:focus {
+  border-color: #1a2e5a;
+  box-shadow: 0 0 0 3px rgba(26, 46, 90, 0.10);
+  background: #ffffff;
+}
+
+.form-group input.is-error {
+  border-color: #d32f2f;
+}
+
+/* ---- Input contraseña ---- */
+.password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrap input {
+  padding-right: 44px;
+}
+
+.toggle-eye {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b7a99;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.toggle-eye:hover {
+  color: #1a2e5a;
+}
+
+/* ---- Opciones ---- */
+.form-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.check-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: #1a2e5a;
+  cursor: pointer;
+  user-select: none;
+}
+
+.check-label input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: #1a2e5a;
+  cursor: pointer;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #d32f2f;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.link-btn:hover {
+  color: #b71c1c;
+  text-decoration: underline;
+}
+
+/* ---- Botón Ingresar ---- */
+.btn-ingresar {
+  width: 100%;
+  height: 46px;
+  background: #1a2e5a;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-ingresar:hover:not(:disabled) {
+  background: #2a4480;
+}
+
+.btn-ingresar:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn-ingresar:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ---- Spinner ---- */
+.spinner {
+  width: 17px;
+  height: 17px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.site-footer {
+  width: 100%;
+  background: #1a2e5a;
+  color: rgba(255, 255, 255, 0.60);
+  font-size: 12px;
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.footer-socials a {
+  color: rgba(255, 255, 255, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: background 0.2s, color 0.2s;
+  text-decoration: none;
+}
+
+.footer-socials a:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 640px) {
+  .login-card {
+    flex-direction: column;
+  }
+
+  .left-panel {
+    width: 100%;
+    padding: 28px 20px;
+  }
+
+  .icon-grid {
+    grid-template-columns: repeat(6, 44px);
+  }
+
+  .icon-bubble {
+    width: 44px;
+    height: 44px;
+  }
+
+  .right-panel {
+    padding: 32px 24px;
+  }
+
+  .site-footer {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    padding: 14px 16px;
+  }
+}

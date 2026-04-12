@@ -1,0 +1,353 @@
+/* ============================================
+   dashboard.component.css — Impulsa A365
+   ============================================ */
+
+/* ---- Layout general ---- */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #eef0f6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ============================================
+   SIDEBAR
+   ============================================ */
+.sidebar {
+  width: 230px;
+  min-height: 100vh;
+  background: #1a2e5a;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar-logo {
+  padding: 22px 20px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.logo-a   { font-size: 26px; font-weight: 800; color: #ffffff; }
+.logo-365 { font-size: 26px; font-weight: 800; color: #d32f2f; }
+.logo-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.40);
+  margin-left: 4px;
+  align-self: center;
+}
+
+/* Navegación */
+.sidebar-nav {
+  padding: 10px 0;
+  flex: 1;
+}
+
+.nav-section {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.30);
+  padding: 14px 20px 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 20px;
+  color: rgba(255,255,255,0.55);
+  font-size: 13.5px;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav-item:hover {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.85);
+}
+
+.nav-item.active {
+  background: rgba(255,255,255,0.09);
+  color: #ffffff;
+  border-left-color: #d32f2f;
+}
+
+/* Footer del sidebar */
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn-logout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.60);
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn-logout:hover {
+  background: rgba(211,47,47,0.18);
+  color: #ff8a8a;
+  border-color: rgba(211,47,47,0.4);
+}
+
+.sidebar-version {
+  font-size: 11px;
+  color: rgba(255,255,255,0.22);
+  text-align: center;
+}
+
+/* ============================================
+   ÁREA PRINCIPAL
+   ============================================ */
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Topbar */
+.topbar {
+  background: #ffffff;
+  border-bottom: 1px solid #dde2ee;
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.page-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a2e5a;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.btn-nuevo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #d32f2f;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-nuevo:hover { background: #b71c1c; }
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #1a2e5a;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #1a2e5a;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Contenido */
+.content {
+  flex: 1;
+  padding: 24px 28px;
+}
+
+/* ---- Estadísticas ---- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 26px;
+}
+
+.stat-card {
+  background: #ffffff;
+  border: 1px solid #dde2ee;
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #6b7a99;
+  margin-bottom: 4px;
+}
+
+.stat-valor {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a2e5a;
+  margin-bottom: 6px;
+  line-height: 1;
+}
+
+/* ---- Badges ---- */
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.badge-blue  { background: #e6f1fb; color: #185fa5; }
+.badge-amber { background: #faeeda; color: #854f0b; }
+.badge-green { background: #eaf3de; color: #3b6d11; }
+.badge-red   { background: #fce8e8; color: #a32d2d; }
+
+/* ---- Sección de tabla ---- */
+.table-section { }
+
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a2e5a;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: #d32f2f;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.btn-link:hover {
+  color: #b71c1c;
+  text-decoration: underline;
+}
+
+.table-wrap {
+  background: #ffffff;
+  border: 1px solid #dde2ee;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+thead tr {
+  background: #1a2e5a;
+}
+
+th {
+  padding: 11px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.3px;
+}
+
+td {
+  padding: 11px 16px;
+  border-bottom: 1px solid #eef0f6;
+  color: #2d3a58;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover td {
+  background: #f6f8fc;
+}
+
+.td-id {
+  font-weight: 700;
+  color: #1a2e5a;
+}
+
+.td-desc {
+  max-width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- Footer interior ---- */
+.inner-footer {
+  background: #1a2e5a;
+  color: rgba(255,255,255,0.45);
+  font-size: 12px;
+  text-align: center;
+  padding: 12px 28px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 900px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .sidebar {
+    display: none;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .topbar {
+    padding: 12px 16px;
+  }
+
+  .content {
+    padding: 16px;
+  }
+}
