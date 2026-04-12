@@ -24,17 +24,17 @@
           name="correo"
           [(ngModel)]="correo"
           placeholder="Ingresa tu correo electrónico"
-          [class.is-error]="errorMsgCorreo"
+          [class.is-error]="errorMsg && !codigoEnviado"
         />
       </div>
 
-      <div class="error-banner" *ngIf="errorMsgCorreo">{{ errorMsgCorreo }}</div>
+      <div class="error-banner" *ngIf="errorMsg && !codigoEnviado">{{ errorMsg }}</div>
       <div class="success-banner" *ngIf="successMsg">{{ successMsg }}</div>
 
       <div class="btn-center">
-        <button class="btn-primary" (click)="enviarCodigo()" [disabled]="cargandoCorreo">
-          <span class="spinner" *ngIf="cargandoCorreo"></span>
-          <span *ngIf="!cargandoCorreo">Enviar código</span>
+        <button class="btn-primary" (click)="enviarCodigo()" [disabled]="cargando">
+          <span class="spinner" *ngIf="cargando && !codigoEnviado"></span>
+          <span *ngIf="!cargando || codigoEnviado">Enviar código</span>
         </button>
       </div>
 
@@ -51,18 +51,18 @@
           name="codigoRecibido"
           [(ngModel)]="codigoRecibido"
           placeholder="Ingresa tu código aquí"
-          [class.is-error]="errorMsgCodigo"
+          [class.is-error]="errorMsg && codigoEnviado"
         />
       </div>
 
-      <div class="error-banner" *ngIf="errorMsgCodigo">{{ errorMsgCodigo }}</div>
+      <div class="error-banner" *ngIf="errorMsg && codigoEnviado">{{ errorMsg }}</div>
 
       <div class="btn-row">
-        <button class="btn-primary" (click)="reenviarCodigo()" [disabled]="cargandoCodigo">
-          <span class="spinner" *ngIf="cargandoCodigo"></span>
-          <span *ngIf="!cargandoCodigo">Reenviar código</span>
+        <button class="btn-primary" (click)="reenviarCodigo()" [disabled]="cargando">
+          <span class="spinner" *ngIf="cargando"></span>
+          <span *ngIf="!cargando">Reenviar código</span>
         </button>
-        <button class="btn-primary" (click)="continuar()" [disabled]="cargandoCodigo">
+        <button class="btn-primary" (click)="continuar()" [disabled]="cargando">
           Continuar
         </button>
       </div>

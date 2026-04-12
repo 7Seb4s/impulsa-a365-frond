@@ -129,6 +129,13 @@
   border-color: #1a2b5e;
 }
 
+.field-error {
+  color: #c0392b;
+  font-size: 0.76rem;
+  margin-top: 4px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .form-group input.is-error {
   border-color: #e53935;
 }
