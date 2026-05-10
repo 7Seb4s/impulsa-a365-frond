@@ -1,14 +1,13 @@
-// -------------------------------------------------------------
-// pagina-login.ts
-// Componente de la pantalla de inicio de sesión.
-// Envía las credenciales al backend y redirige según el rol.
-// -------------------------------------------------------------
-
-import { Component } from '@angular/core';
+// Login con codigo + contrasena y login con Google Sign-In
+import { Component, OnInit, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { ServicioAutenticacion } from '../../core/services/servicio-autenticacion';
+import { environment } from '../../../environments/configuracion-entorno';
+
+declare const google: any;
 
 @Component({
   selector: 'app-login',
@@ -17,76 +16,72 @@ import { ServicioAutenticacion } from '../../core/services/servicio-autenticacio
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+
+  private readonly GOOGLE_CLIENT_ID = '901867767212-g35510ieasb2uf411lgsinad0u8c36b7.apps.googleusercontent.com';
+  private readonly URL_API = environment.apiUrl;
 
   codigo            = '';
   contrasena        = '';
   recuerdame        = false;
   mostrarContrasena = false;
   cargando          = false;
+  cargandoGoogle    = false;
 
-  // Mensajes de error separados por campo
   errorCodigo     = '';
   errorContrasena = '';
   errorGeneral    = '';
 
   constructor(
     private servicioAuth: ServicioAutenticacion,
-    private router: Router
+    private router:       Router,
+    private ngZone:       NgZone,
+    private http:         HttpClient
   ) {}
 
-  // Se ejecuta cuando el usuario presiona "Ingresar".
-  // Limpia errores anteriores, valida campos y llama al backend.
+  ngOnInit(): void {
+    // Inicializa Google Sign-In cuando se carga la pagina
+    this.inicializarGoogle();
+  }
+
+  // Login normal: valida los campos, llama al backend y redirige al dashboard
   onLogin(): void {
     this.errorCodigo     = '';
     this.errorContrasena = '';
     this.errorGeneral    = '';
 
-    // Validar que el campo código no esté vacío
     if (!this.codigo.trim()) {
-      this.errorCodigo = 'Por favor ingresa tu código.';
+      this.errorCodigo = 'Por favor ingresa tu codigo.';
       return;
     }
-
-    // Validar que el campo contraseña no esté vacío
     if (!this.contrasena.trim()) {
-      this.errorContrasena = 'Por favor ingresa tu contraseña.';
+      this.errorContrasena = 'Por favor ingresa tu contrasena.';
       return;
     }
 
     this.cargando = true;
 
+    // Llama al servicio que conecta con POST /api/auth/login
     this.servicioAuth.login({
       codigo:   this.codigo.trim(),
       password: this.contrasena
     }).subscribe({
-
-      // Login exitoso: redirigir según el rol
       next: (respuesta) => {
         this.cargando = false;
-        const rol = respuesta.rol;
-        if (rol === 'ADMINISTRADOR' || rol === 'GERENTE') {
-          this.router.navigate(['/dashboard/admin']);
-        } else {
-          this.router.navigate(['/dashboard/agente']);
-        }
+        this.redirigirPorRol(respuesta.rol);
       },
-
       error: (err) => {
-        this.cargando    = false;
-        this.contrasena  = '';  // limpiar contraseña para que el usuario pueda escribir de nuevo
+        this.cargando   = false;
+        this.contrasena = '';
 
         if (err.status === 401 || err.status === 403 || err.status === 404) {
-          // Credenciales incorrectas (cualquier rechazo del backend)
-          this.errorGeneral = 'Código o contraseña incorrectos. Intenta de nuevo.';
+          this.errorGeneral = 'Codigo o contrasena incorrectos. Intenta de nuevo.';
         } else if (err.status === 0 || err.status === 503 || err.status === 504) {
-          // Sin conexión al servidor
-          this.errorGeneral = 'No se puede conectar con el servidor. Intenta más tarde.';
+          this.errorGeneral = 'No se puede conectar con el servidor. Intenta mas tarde.';
         } else {
-          this.errorGeneral = 'Ocurrió un error inesperado. Intenta de nuevo.';
+          this.errorGeneral = 'Ocurrio un error inesperado. Intenta de nuevo.';
         }
 
-        // Enfocar el campo contraseña automáticamente
         setTimeout(() => {
           const campo = document.getElementById('contrasena') as HTMLInputElement;
           if (campo) campo.focus();
@@ -95,12 +90,82 @@ export class LoginComponent {
     });
   }
 
-  // Alterna la visibilidad del campo de contraseña.
+  // Configura el boton de Google Sign-In en el div con id="google-login-btn"
+  private inicializarGoogle(): void {
+    const intervalo = setInterval(() => {
+      if (typeof google !== 'undefined' && google.accounts) {
+        clearInterval(intervalo);
+
+        // Configura el callback que se ejecuta cuando el usuario selecciona su cuenta
+        google.accounts.id.initialize({
+          client_id:            this.GOOGLE_CLIENT_ID,
+          use_fedcm_for_prompt: false,
+          callback: (response: any) => {
+            this.ngZone.run(() => this.manejarGoogle(response));
+          }
+        });
+
+        // Renderiza el boton de Google en el HTML
+        setTimeout(() => {
+          const btn = document.getElementById('google-login-btn');
+          if (btn) {
+            google.accounts.id.renderButton(btn, {
+              theme: 'outline',
+              size:  'large',
+              text:  'signin_with'
+            });
+          }
+        }, 300);
+      }
+    }, 100);
+  }
+
+  // Procesa la respuesta de Google: envia el credential al backend y guarda el token
+  private manejarGoogle(response: any): void {
+    if (!response.credential) return;
+
+    this.cargandoGoogle = true;
+    this.errorGeneral   = '';
+
+    // Envia el credential de Google al backend POST /api/auth/google
+    this.http.post<any>(`${this.URL_API}/auth/google`, { credential: response.credential }).subscribe({
+      next: (respuesta) => {
+        // Guarda el token y los datos del usuario en localStorage con las claves correctas
+        localStorage.setItem('a365_token', respuesta.token);
+        localStorage.setItem('a365_usuario', JSON.stringify({
+          id:     respuesta.id,
+          codigo: respuesta.codigo,
+          nombre: respuesta.nombre,
+          rol:    respuesta.rol
+        }));
+
+        this.cargandoGoogle = false;
+        this.redirigirPorRol(respuesta.rol);
+      },
+      error: (err) => {
+        this.cargandoGoogle = false;
+        if (err.status === 404) {
+          this.errorGeneral = 'Tu correo de Google no esta registrado en el sistema.';
+        } else if (err.status === 403) {
+          this.errorGeneral = 'Tu cuenta esta desactivada. Contacta al administrador.';
+        } else {
+          this.errorGeneral = 'Error al iniciar sesion con Google. Intenta de nuevo.';
+        }
+      }
+    });
+  }
+
+  // Redirige al dashboard segun el rol del usuario
+  private redirigirPorRol(rol: string): void {
+    this.router.navigate(['/dashboard']);
+  }
+
+  // Alterna la visibilidad de la contrasena
   toggleContrasena(): void {
     this.mostrarContrasena = !this.mostrarContrasena;
   }
 
-  // Navega a la pantalla de recuperación de contraseña.
+  // Navega a la pantalla de recuperar contrasena
   onOlvidaste(): void {
     this.router.navigate(['/recuperar']);
   }

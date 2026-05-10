@@ -1,10 +1,4 @@
-// -------------------------------------------------------------
-// pagina-dashboard.ts
-// Pantalla principal después del login.
-// Muestra los datos del usuario en sesión.
-// Los tickets y demás secciones se conectarán en una etapa posterior.
-// -------------------------------------------------------------
-
+// Dashboard: muestra los datos del usuario en sesion y permite cerrar sesion
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -24,13 +18,12 @@ export class DashboardComponent implements OnInit {
 
   constructor(private servicioAuth: ServicioAutenticacion) {}
 
-  // Se ejecuta al cargar el componente.
-  // Lee los datos del usuario desde localStorage (ya los guardó el login).
+  // Carga los datos del usuario desde localStorage cuando se abre el dashboard
   ngOnInit(): void {
     this.usuario = this.servicioAuth.obtenerUsuario();
   }
 
-  // Cierra la sesión: borra el token y redirige al login.
+  // Cierra la sesion: borra el token y redirige al login
   onLogout(): void {
     this.servicioAuth.logout();
   }

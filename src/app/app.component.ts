@@ -1,3 +1,4 @@
+// Componente raiz de la aplicacion Angular
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 

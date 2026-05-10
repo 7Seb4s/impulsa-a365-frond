@@ -1,32 +1,25 @@
-// ─────────────────────────────────────────────────────────────
-// app.config.ts
-// Configuración principal de la aplicación Angular.
-// Aquí se registran los proveedores globales: rutas, HTTP,
-// el interceptor JWT y las animaciones.
-// ─────────────────────────────────────────────────────────────
-
+// Configuracion principal de la aplicacion Angular
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
-// Archivo de rutas actualizado con los componentes nuevos
+// Archivo de rutas con los componentes de login, dashboard y recuperar
 import { routes } from './configuracion-rutas';
 
-// Interceptor que agrega el header Authorization: Bearer <token> a cada petición
+// Interceptor que agrega el token JWT a cada peticion HTTP
 import { interceptorAutenticacion } from './core/interceptors/interceptor-autenticacion';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    // Registrar las rutas de la aplicación
+    // Registra las rutas de la aplicacion
     provideRouter(routes),
 
-    // Registrar el cliente HTTP con el interceptor JWT activo.
-    // Sin withInterceptors, las peticiones al backend salen sin token
-    // y el backend responde 401 Unauthorized aunque el usuario esté logueado.
+    // Registra el cliente HTTP con el interceptor JWT
+    // Sin esto las peticiones salen sin el header Authorization
     provideHttpClient(withInterceptors([interceptorAutenticacion])),
 
-    // Habilitar animaciones de Angular Material y otros componentes
+    // Habilita animaciones de Angular Material
     provideAnimations()
   ]
 };

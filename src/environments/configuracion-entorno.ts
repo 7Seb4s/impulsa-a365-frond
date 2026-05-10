@@ -1,12 +1,7 @@
-// ─────────────────────────────────────────────────────────────
-// configuracion-entorno.ts
-// Define la URL base del backend Spring Boot.
-// En desarrollo apunta a localhost:8081 (o el puerto que uses).
-// ─────────────────────────────────────────────────────────────
-
+// URL base del backend Spring Boot
 export const environment = {
   production: false,
 
-  // URL base del backend — cambia el puerto si usas 8080 u otro
+  // Cambia el puerto si tu backend corre en otro puerto (8080, 8082, etc)
   apiUrl: 'http://localhost:8081/api'
 };
