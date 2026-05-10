@@ -1,25 +1,19 @@
-// ─────────────────────────────────────────────────────────────
-// configuracion-rutas.ts
-// Define todas las rutas de la aplicación Angular.
-// Las rutas del dashboard están protegidas por guardiaAutenticacion,
-// lo que significa que solo usuarios con sesión activa pueden acceder.
-// ─────────────────────────────────────────────────────────────
-
+// Define todas las rutas de la aplicacion Angular
 import { Routes } from '@angular/router';
 import { guardiaAutenticacion } from './core/guards/guardia-autenticacion';
 
 export const routes: Routes = [
 
-  // Ruta raíz: redirige automáticamente al login
+  // Redirige la ruta raiz al login
   {
     path: '',
     redirectTo: 'auth/login',
     pathMatch: 'full'
   },
 
-  // ── Rutas públicas (no requieren sesión) ─────────────────────
+  // Rutas publicas: no requieren sesion activa
 
-  // Pantalla de inicio de sesión
+  // Pantalla de login con codigo + contrasena y Google Sign-In
   {
     path: 'auth/login',
     loadComponent: () =>
@@ -27,7 +21,7 @@ export const routes: Routes = [
         .then(m => m.LoginComponent)
   },
 
-  // Pantalla de recuperación de contraseña
+  // Pantalla de recuperacion de contrasena por correo
   {
     path: 'recuperar',
     loadComponent: () =>
@@ -35,8 +29,7 @@ export const routes: Routes = [
         .then(m => m.RecuperarComponent)
   },
 
-  // ── Rutas privadas (requieren sesión activa) ──────────────────
-  // guardiaAutenticacion verifica el token JWT antes de permitir acceso
+  // Rutas privadas: requieren sesion activa (guardiaAutenticacion verifica el token)
   {
     path: 'dashboard',
     canActivate: [guardiaAutenticacion],
@@ -45,7 +38,7 @@ export const routes: Routes = [
       // Redirige /dashboard a /dashboard/agente por defecto
       { path: '', redirectTo: 'agente', pathMatch: 'full' },
 
-      // Vista del empleado / agente
+      // Vista del empleado
       {
         path: 'agente',
         loadComponent: () =>

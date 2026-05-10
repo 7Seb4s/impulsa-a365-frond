@@ -1,25 +1,20 @@
 <div class="login-wrapper">
 
-  <!-- HEADER -->
   <header class="login-header">
     <img src="assets/logo-a365.jpg" alt="A365" class="logo-img" />
   </header>
 
-  <!-- CONTENIDO -->
   <main class="login-main">
     <div class="login-card">
 
-      <!-- Imagen izquierda -->
       <div class="login-image">
         <img src="assets/login-bg.webp" alt="A365 tecnología" />
       </div>
 
-      <!-- Formulario -->
       <div class="login-form-section">
         <h1 class="login-title">BIENVENIDO</h1>
         <p class="login-subtitle">Por favor, ingresa tu código y contraseña</p>
 
-        <!-- Error general (red caída, error inesperado) -->
         <div class="error-banner" *ngIf="errorGeneral">
           <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
@@ -29,7 +24,6 @@
 
         <form (ngSubmit)="onLogin()" #loginForm="ngForm" novalidate>
 
-          <!-- Código -->
           <div class="form-group">
             <label for="codigo">Código</label>
             <input
@@ -41,11 +35,9 @@
               autocomplete="username"
               [class.is-error]="errorCodigo"
             />
-            <!-- Error específico del campo código -->
             <span class="field-error" *ngIf="errorCodigo">{{ errorCodigo }}</span>
           </div>
 
-          <!-- Contraseña -->
           <div class="form-group">
             <label for="contrasena">Contraseña</label>
             <div class="password-wrap">
@@ -69,11 +61,9 @@
                 </svg>
               </button>
             </div>
-            <!-- Error específico del campo contraseña -->
             <span class="field-error" *ngIf="errorContrasena">{{ errorContrasena }}</span>
           </div>
 
-          <!-- Opciones -->
           <div class="form-options">
             <label class="check-label">
               <input type="checkbox" name="recuerdame" [(ngModel)]="recuerdame" />
@@ -84,8 +74,7 @@
             </button>
           </div>
 
-          <!-- Botón -->
-          <button type="submit" class="btn-ingresar" [disabled]="cargando">
+          <button type="submit" class="btn-ingresar" [disabled]="cargando || cargandoGoogle">
             <ng-container *ngIf="!cargando">Ingresar</ng-container>
             <ng-container *ngIf="cargando">
               <span class="spinner"></span> Verificando...
@@ -93,12 +82,26 @@
           </button>
 
         </form>
-      </div>
 
+        <!-- DIVISOR -->
+        <div class="divider-google">
+          <span class="divider-linea"></span>
+          <span class="divider-texto">o continúa con</span>
+          <span class="divider-linea"></span>
+        </div>
+
+        <!-- BOTÓN GOOGLE -->
+        <div class="google-btn-wrap">
+          <div *ngIf="cargandoGoogle" class="google-cargando">
+            <span class="spinner"></span> Verificando con Google...
+          </div>
+          <div id="google-login-btn" [style.display]="cargandoGoogle ? 'none' : 'block'"></div>
+        </div>
+
+      </div>
     </div>
   </main>
 
-  <!-- FOOTER -->
   <footer class="login-footer">
     <span>© 2026 Impulsa A365 Todos los derechos reservados por Group16</span>
     <div class="footer-social">

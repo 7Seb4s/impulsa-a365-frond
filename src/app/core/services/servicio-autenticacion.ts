@@ -1,16 +1,9 @@
-// ─────────────────────────────────────────────────────────────
-// servicio-autenticacion.ts
-// Maneja el login, logout y estado de sesión del usuario.
-// Se comunica con el backend Spring Boot mediante HTTP + JWT.
-// ─────────────────────────────────────────────────────────────
-
+// Servicio de autenticacion: login, logout, verificacion de sesion y lectura de datos del usuario
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/configuracion-entorno';
-
-// ── Modelos de datos ─────────────────────────────────────────
 
 // Lo que enviamos al backend para hacer login
 export interface PeticionLogin {
@@ -39,10 +32,10 @@ export interface DatosUsuario {
 @Injectable({ providedIn: 'root' })
 export class ServicioAutenticacion {
 
-  // URL base tomada del archivo de entorno
+  // URL del backend tomada del archivo de entorno
   private readonly URL_API = environment.apiUrl;
 
-  // Claves usadas para guardar datos en el navegador
+  // Claves para guardar datos en localStorage del navegador
   private readonly CLAVE_TOKEN   = 'a365_token';
   private readonly CLAVE_USUARIO = 'a365_usuario';
 
@@ -51,18 +44,16 @@ export class ServicioAutenticacion {
     private router: Router
   ) {}
 
-  // ── LOGIN ────────────────────────────────────────────────────
-  // Envía el código y contraseña al endpoint POST /api/auth/login.
-  // Si es correcto, guarda el token y los datos del usuario.
+  // Login: envia codigo + contrasena al backend y guarda el token si es correcto
   login(peticion: PeticionLogin): Observable<RespuestaLogin> {
     return this.http
       .post<RespuestaLogin>(`${this.URL_API}/auth/login`, peticion)
       .pipe(
         tap(respuesta => {
-          // Guardar el token JWT para usarlo en futuras peticiones
+          // Guarda el token JWT para enviarlo en futuras peticiones
           localStorage.setItem(this.CLAVE_TOKEN, respuesta.token);
 
-          // Guardar los datos básicos del usuario para mostrarlos en pantalla
+          // Guarda los datos del usuario para mostrarlos en la interfaz
           const usuario: DatosUsuario = {
             id:     respuesta.id,
             codigo: respuesta.codigo,
@@ -74,51 +65,44 @@ export class ServicioAutenticacion {
       );
   }
 
-  // ── LOGOUT ───────────────────────────────────────────────────
-  // Elimina el token y los datos del usuario del navegador,
-  // luego redirige a la pantalla de login.
+  // Logout: borra el token y los datos del usuario, y redirige al login
   logout(): void {
     localStorage.removeItem(this.CLAVE_TOKEN);
     localStorage.removeItem(this.CLAVE_USUARIO);
     this.router.navigate(['/auth/login']);
   }
 
-  // ── OBTENER TOKEN ────────────────────────────────────────────
-  // Retorna el JWT guardado, o null si no hay sesión activa.
-  // Lo usa el interceptor para agregar el header Authorization.
+  // Devuelve el token JWT guardado, o null si no hay sesion
   obtenerToken(): string | null {
     return localStorage.getItem(this.CLAVE_TOKEN);
   }
 
-  // ── VERIFICAR SESIÓN ─────────────────────────────────────────
-  // Comprueba si hay un token válido y que no haya expirado.
-  // Lo usa el guard para proteger las rutas privadas.
+  // Verifica si el token es valido y no ha expirado
+  // Se usa en el guard para proteger las rutas privadas
   estaAutenticado(): boolean {
     const token = this.obtenerToken();
     if (!token) return false;
 
     try {
-      // Decodificar el payload del JWT (parte central en base64)
+      // Decodifica el payload del JWT (parte central en base64)
       const payload = JSON.parse(atob(token.split('.')[1]));
 
-      // Comparar la fecha de expiración (exp está en segundos, Date.now() en ms)
+      // Compara la fecha de expiracion con la fecha actual
+      // exp esta en segundos, Date.now() esta en milisegundos
       return payload.exp * 1000 > Date.now();
     } catch {
-      // Si el token está malformado, consideramos que no hay sesión
+      // Si el token esta malformado, consideramos que no hay sesion
       return false;
     }
   }
 
-  // ── OBTENER USUARIO ──────────────────────────────────────────
-  // Retorna los datos del usuario guardados en localStorage.
+  // Devuelve los datos del usuario guardados en localStorage
   obtenerUsuario(): DatosUsuario | null {
     const datos = localStorage.getItem(this.CLAVE_USUARIO);
     return datos ? JSON.parse(datos) : null;
   }
 
-  // ── OBTENER ROL ──────────────────────────────────────────────
-  // Retorna el rol del usuario (EMPLEADO, ADMINISTRADOR, GERENTE).
-  // Útil para mostrar u ocultar secciones según el rol.
+  // Devuelve el rol del usuario (EMPLEADO, ADMINISTRADOR, GERENTE)
   obtenerRol(): string | null {
     return this.obtenerUsuario()?.rol ?? null;
   }
