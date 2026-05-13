@@ -1,61 +1,61 @@
-// Define todas las rutas de la aplicacion Angular
+// configuracion-rutas.ts
+// Define todas las rutas de la aplicación Angular.
+// Las rutas privadas están protegidas por guardia-autenticacion.
 import { Routes } from '@angular/router';
 import { guardiaAutenticacion } from './core/guards/guardia-autenticacion';
 
 export const routes: Routes = [
 
-  // Redirige la ruta raiz al login
-  {
-    path: '',
-    redirectTo: 'auth/login',
-    pathMatch: 'full'
-  },
+  // Ruta raíz → redirige al login
+  { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
 
-  // Rutas publicas: no requieren sesion activa
-
-  // Pantalla de login con codigo + contrasena y Google Sign-In
+  // ── RUTAS PÚBLICAS ─────────────────────────────────────────
   {
     path: 'auth/login',
     loadComponent: () =>
-      import('./pages/login/pagina-login')
+      import('./pages/login/login.component')
         .then(m => m.LoginComponent)
   },
-
-  // Pantalla de recuperacion de contrasena por correo
   {
-    path: 'recuperar',
+    path: 'auth/recuperar',
     loadComponent: () =>
-      import('./pages/recuperar/pagina-recuperar')
+      import('./pages/recuperar/recuperar.component')
         .then(m => m.RecuperarComponent)
   },
 
-  // Rutas privadas: requieren sesion activa (guardiaAutenticacion verifica el token)
+  // ── RUTAS PRIVADAS (requieren token JWT válido) ─────────────
   {
     path: 'dashboard',
     canActivate: [guardiaAutenticacion],
     children: [
-
-      // Redirige /dashboard a /dashboard/agente por defecto
       { path: '', redirectTo: 'agente', pathMatch: 'full' },
 
-      // Vista del empleado
+      // Vista del empleado/agente
       {
         path: 'agente',
         loadComponent: () =>
-          import('./pages/dashboard/pagina-dashboard')
-            .then(m => m.DashboardComponent)
+          import('./pages/dashboard/agente/dashboard-agente.component')
+            .then(m => m.DashboardAgenteComponent)
       },
 
-      // Vista del administrador o gerente
+      // Vista del administrador/gerente (con gráficos)
       {
         path: 'admin',
         loadComponent: () =>
-          import('./pages/dashboard/pagina-dashboard')
-            .then(m => m.DashboardComponent)
+          import('./pages/dashboard/admin/dashboard-admin.component')
+            .then(m => m.DashboardAdminComponent)
+      },
+
+      // Formulario para crear un nuevo usuario (solo admin/gerente)
+      {
+        path: 'usuarios/crear',
+        loadComponent: () =>
+          import('./pages/usuarios/crear-usuario.component')
+            .then(m => m.CrearUsuarioComponent)
       }
     ]
   },
 
-  // Cualquier ruta desconocida redirige al login
+  // Cualquier ruta desconocida → login
   { path: '**', redirectTo: 'auth/login' }
 ];

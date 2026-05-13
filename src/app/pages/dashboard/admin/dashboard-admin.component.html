@@ -1,0 +1,236 @@
+<!-- pages/dashboard/admin/dashboard-admin.component.html -->
+<div class="app-layout">
+  <div class="app-body">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="assets/logo-a365.jpg" alt="A365" class="sidebar-logo" />
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item active">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+          </svg>
+          Inicio
+        </a>
+        <a class="nav-item">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+            <path fill-rule="evenodd" d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 2h10v7h-2l-1 2H8l-1-2H5V5z" clip-rule="evenodd"/>
+          </svg>
+          Tickets
+        </a>
+        <a class="nav-item">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          </svg>
+          Incidencias
+        </a>
+        <a class="nav-item">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+            <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v6a1 1 0 102 0V8z" clip-rule="evenodd"/>
+          </svg>
+          Reportes
+        </a>
+        <a class="nav-item">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+            <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"/>
+            <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z"/>
+          </svg>
+          Atención a usuarios
+        </a>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <nav class="sidebar-nav">
+        <a class="nav-item" (click)="irACrearUsuario()">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+            <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z"/>
+          </svg>
+          Agregar usuario
+        </a>
+        <a class="nav-item">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+            <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
+          </svg>
+          Administración
+        </a>
+      </nav>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL -->
+    <div class="main-area">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <h1 class="page-title">Inicio</h1>
+        <div class="topbar-right">
+          <button class="btn-notif" aria-label="Notificaciones">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+          </button>
+          <div class="user-chip">
+            <div class="user-text">
+              <span class="user-name">{{ usuario?.nombre || usuario?.codigo }}</span>
+              <span class="user-code">{{ usuario?.codigo }}</span>
+            </div>
+            <div class="user-avatar">
+              <svg viewBox="0 0 24 24" fill="#9aaac5" width="22" height="22">
+                <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+              </svg>
+            </div>
+          </div>
+          <button class="btn-logout" (click)="onLogout()">Cerrar sesión</button>
+        </div>
+      </header>
+
+      <!-- CONTENIDO -->
+      <div class="content">
+        <div class="content-inner">
+          <div class="dashboard-grid">
+
+            <!-- Panel: Reportes de Tickets -->
+            <div class="panel panel-ancho">
+              <div class="panel-header">
+                <span class="panel-title">Reporte de Tickets</span>
+                <div class="panel-meta">
+                  <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14" style="color:#6b7a99">
+                    <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/>
+                  </svg>
+                  <span class="meta-txt">Mes actual</span>
+                </div>
+              </div>
+
+              <!-- Tarjetas resumen -->
+              <div class="reporte-stats">
+                <div class="rstat">
+                  <span class="rstat-lbl">Total</span>
+                  <span class="rstat-val">{{ ticketStats.total }}</span>
+                </div>
+                <div class="rstat">
+                  <span class="rstat-lbl">Atendidos</span>
+                  <span class="rstat-val success">{{ ticketStats.atendidos }}</span>
+                </div>
+                <div class="rstat">
+                  <span class="rstat-lbl">Pendientes</span>
+                  <span class="rstat-val warning">{{ ticketStats.pendientes }}</span>
+                </div>
+                <div class="rstat">
+                  <span class="rstat-lbl">Cancelados</span>
+                  <span class="rstat-val danger">{{ ticketStats.cancelados }}</span>
+                </div>
+              </div>
+
+              <!-- Tabla de tickets -->
+              <div class="reporte-tabla-wrap">
+                <table class="reporte-tabla">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Asunto</th>
+                      <th>Solicitante</th>
+                      <th>Prioridad</th>
+                      <th>Estado</th>
+                      <th>Fecha</th>
+                      <th class="align-right">T. Respuesta</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let t of ticketsReporte; let i = index" [class.fila-alt]="i % 2 !== 0">
+                      <td class="txt-muted">{{ t.numero }}</td>
+                      <td class="txt-asunto">{{ t.asunto }}</td>
+                      <td class="txt-muted">{{ t.solicitante }}</td>
+                      <td>
+                        <span class="badge-prioridad" [ngClass]="'p-' + t.prioridad.toLowerCase()">{{ t.prioridad }}</span>
+                      </td>
+                      <td>
+                        <span class="badge-estado" [ngClass]="'e-' + t.estado.toLowerCase().replace(' ', '')">{{ t.estado }}</span>
+                      </td>
+                      <td class="txt-muted">{{ t.fecha }}</td>
+                      <td class="align-right txt-muted">{{ t.tiempo }}</td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="4" class="foot-txt">TOTALES</td>
+                      <td class="foot-txt">{{ ticketStats.total }} tickets</td>
+                      <td></td>
+                      <td class="align-right foot-txt">Prom: {{ ticketStats.promTiempo }}</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+
+              <!-- Leyenda -->
+              <div class="reporte-leyenda">
+                <span><span class="leg-dot" style="background:#1d9e75"></span>Atendido</span>
+                <span><span class="leg-dot" style="background:#ba7517"></span>Pendiente</span>
+                <span><span class="leg-dot" style="background:#e24b4a"></span>Cancelado</span>
+                <span><span class="leg-dot" style="background:#378add"></span>En revisión</span>
+              </div>
+            </div>
+
+            <!-- Panel: Incidencias -->
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">Incidencias</span>
+                <button class="btn-periodo">Esta semana</button>
+              </div>
+              <div class="chart-wrap">
+                <canvas id="graficoIncidencias"></canvas>
+              </div>
+              <div class="leyenda">
+                <div class="leg-item"><span class="leg-dot" style="background:#26a69a"></span>Atendidas</div>
+                <div class="leg-item"><span class="leg-dot" style="background:#5c6bc0"></span>Evaluando</div>
+                <div class="leg-item"><span class="leg-dot" style="background:#29b6f6"></span>En progreso</div>
+                <div class="leg-item"><span class="leg-dot" style="background:#ef5350"></span>Pendientes</div>
+              </div>
+            </div>
+
+            <!-- Panel: Gestión de Tickets -->
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">Gestión de Tickets</span>
+                <button class="btn-periodo">Esta semana</button>
+              </div>
+              <div class="chart-wrap donut">
+                <canvas id="graficoTickets"></canvas>
+              </div>
+              <div class="leyenda-bloque">
+                <p class="leyenda-titulo">Prioridad</p>
+                <div class="leyenda">
+                  <div class="leg-item"><span class="leg-dot" style="background:#ef5350"></span>Muy alta</div>
+                  <div class="leg-item"><span class="leg-dot" style="background:#ffa726"></span>Alto</div>
+                  <div class="leg-item"><span class="leg-dot" style="background:#66bb6a"></span>Medio</div>
+                  <div class="leg-item"><span class="leg-dot" style="background:#42a5f5"></span>Bajo</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel: Registro de actividad (ocupa toda la fila) -->
+            <div class="panel panel-ancho">
+              <div class="panel-header">
+                <span class="panel-title">Registro de actividad</span>
+                <button class="btn-periodo">Esta semana</button>
+              </div>
+              <div class="leyenda" style="justify-content:flex-end;margin-bottom:8px">
+                <div class="leg-item"><span class="leg-dot" style="background:#ef5350"></span>Archivados</div>
+                <div class="leg-item"><span class="leg-dot" style="background:#5c6bc0"></span>En observación</div>
+              </div>
+              <div class="chart-wrap linea">
+                <canvas id="graficoActividad"></canvas>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <span>© 2026 Impulsa A365. Todos los derechos reservados por Group16.</span>
+  </footer>
+</div>

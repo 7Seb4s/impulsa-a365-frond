@@ -1,4 +1,5 @@
-// Componente raiz de la aplicacion Angular
+// app.component.ts
+// Componente raíz: solo renderiza el router-outlet.
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
@@ -6,14 +7,6 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet],
-  template: `<router-outlet></router-outlet>`,
-  styles: [`
-    :host {
-      display: block;
-      height: 100%;
-    }
-  `]
+  template: '<router-outlet />'
 })
-export class AppComponent {
-  title = 'impulsa-a365';
-}
+export class AppComponent {}

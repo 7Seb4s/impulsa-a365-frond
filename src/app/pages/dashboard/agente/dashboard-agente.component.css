@@ -1,0 +1,502 @@
+/* ============================================
+   dashboard.component.css — Impulsa A365
+   Vista: Inicio (Panel Admin con Charts)
+   ============================================ */
+
+* { box-sizing: border-box; }
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f0f2f8;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.app-body {
+  display: flex;
+  flex: 1;
+}
+
+/* ── SIDEBAR ─────────────────────────────── */
+.sidebar {
+  width: 220px;
+  min-height: 100vh;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  border-right: 1px solid #e8eaf0;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  height: 64px;
+  border-bottom: 1px solid #e0e4ef;
+}
+
+.sidebar-logo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 0;
+}
+
+.sidebar-spacer { flex: 1; }
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  color: #4a5568;
+  font-size: 13.5px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: background 0.15s, color 0.15s;
+  border-radius: 0;
+  margin: 1px 8px;
+  border-radius: 6px;
+}
+
+.nav-item:hover {
+  background: #eef0f8;
+  color: #1a2b5e;
+}
+
+.nav-item.active {
+  background: #1a2b5e;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.nav-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.nav-item.active .nav-icon { opacity: 1; }
+
+/* ── MAIN AREA ────────────────────────────── */
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* ── TOPBAR ───────────────────────────────── */
+.topbar {
+  background: #ffffff;
+  border-bottom: 1px solid #e0e4ef;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.page-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a2b5e;
+  margin: 0;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.btn-notif {
+  position: relative;
+  background: #f0f2f8;
+  border: none;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #5a6a8a;
+  transition: background 0.15s;
+}
+
+.btn-notif:hover { background: #e0e4ef; }
+
+.notif-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: #ef5350;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+}
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.user-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.3;
+}
+
+.user-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1a2b5e;
+}
+
+.user-code {
+  font-size: 10px;
+  color: #8a9ab8;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #dde3f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── CONTENT ──────────────────────────────── */
+.content {
+  flex: 1;
+  padding: 0;
+  background: #eef0f6;
+  overflow-y: auto;
+}
+
+.content-inner {
+  padding: 20px;
+}
+
+/* ── DASHBOARD GRID ───────────────────────── */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 16px;
+}
+
+/* ── PANEL BASE ───────────────────────────── */
+.panel {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e0e4ef;
+  box-shadow: 0 2px 8px rgba(26,43,94,0.06);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.panel-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a2b5e;
+}
+
+.panel-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.panel-meta-text {
+  font-size: 12px;
+  color: #8a9ab8;
+}
+
+.btn-periodo {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.btn-periodo:hover { background: #c8e6c9; }
+
+/* ── PANEL REPORTES ───────────────────────── */
+.panel-reportes {
+  min-height: 280px;
+}
+
+.reporte-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 210px;
+}
+
+.reporte-doc {
+  width: 100%;
+  max-width: 380px;
+  border: 1px solid #e0e4ef;
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: #fafbff;
+}
+
+.doc-header-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.doc-logo-box {
+  width: 32px;
+  height: 18px;
+  background: #c62828;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.doc-title-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.doc-fecha { display: flex; align-items: center; }
+
+.doc-line {
+  height: 4px;
+  border-radius: 2px;
+  background: #d0d5e8;
+}
+.doc-line.long { width: 90%; }
+.doc-line.short { width: 50%; }
+.doc-line.medium { width: 70px; }
+
+.doc-table { margin-bottom: 6px; }
+
+.doc-table-header {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 2px;
+}
+
+.doc-table-row {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 2px;
+}
+
+.doc-cell {
+  flex: 1;
+  height: 8px;
+  background: #e8eaf0;
+  border-radius: 1px;
+}
+
+.doc-cell.head { background: #b0b8d0; height: 9px; }
+.doc-cell.last { flex: 0.7; }
+.doc-cell.total { background: #1a2b5e; opacity: 0.6; }
+
+.total-row { margin-top: 2px; }
+
+.doc-form-section {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.doc-form-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-label-line {
+  width: 60px;
+  height: 5px;
+  background: #c8cede;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.form-input-box {
+  flex: 1;
+  height: 10px;
+  background: #eef0f8;
+  border: 1px solid #d0d5e8;
+  border-radius: 2px;
+}
+
+/* ── PANEL INCIDENCIAS ────────────────────── */
+.panel-incidencias {
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-container-pie {
+  flex: 1;
+  position: relative;
+  height: 190px;
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: #4a5568;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── PANEL TICKETS ────────────────────────── */
+.panel-tickets {
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-container-donut {
+  flex: 1;
+  position: relative;
+  height: 180px;
+  display: flex;
+  justify-content: center;
+}
+
+.chart-legend-inline {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.legend-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #8a9ab8;
+  margin-bottom: 6px;
+}
+
+.legend-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  justify-content: center;
+}
+
+/* ── PANEL ACTIVIDAD ──────────────────────── */
+.panel-actividad {
+  grid-column: 1 / -1;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+}
+
+.legend-actividad {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.chart-container-line {
+  flex: 1;
+  position: relative;
+  height: 180px;
+}
+
+/* ── FOOTER ───────────────────────────────── */
+.inner-footer {
+  background: #1a2b5e;
+  padding: 10px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.inner-footer span { font-size: 11px; color: #8fa8d4; }
+
+.footer-social { display: flex; gap: 7px; }
+
+.social-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #2e4a8e;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.social-icon:hover { background: #4a6ab0; }
+
+/* ── RESPONSIVE ───────────────────────────── */
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  .panel-actividad {
+    grid-column: 1;
+  }
+}

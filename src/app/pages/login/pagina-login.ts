@@ -157,7 +157,11 @@ export class LoginComponent implements OnInit {
 
   // Redirige al dashboard segun el rol del usuario
   private redirigirPorRol(rol: string): void {
-    this.router.navigate(['/dashboard']);
+    if (rol === 'ADMINISTRADOR' || rol === 'GERENTE') {
+      this.router.navigate(['/dashboard/admin']);
+    } else {
+      this.router.navigate(['/dashboard/agente']);
+    }
   }
 
   // Alterna la visibilidad de la contrasena
