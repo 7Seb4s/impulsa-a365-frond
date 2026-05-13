@@ -1,6 +1,6 @@
 // pages/usuarios/crear-usuario.component.ts
 // Formulario para crear un nuevo usuario con código autoincremental.
-// Validaciones: nombre/apellido solo letras y espacios, DNI 7 dígitos, teléfono 9 dígitos.
+// Validaciones: nombre/apellido solo letras y espacios, DNI 8 dígitos, teléfono 9 dígitos.
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
