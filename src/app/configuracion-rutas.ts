@@ -56,6 +56,14 @@ export const routes: Routes = [
     ]
   },
 
+  // Pantalla para ingresar la nueva contraseña (paso 3 recuperación)
+  {
+    path: 'restablecer',
+    loadComponent: () =>
+      import('./pages/restablecer/restablecer.component')
+        .then(m => m.RestablecerComponent)
+  },
+
   // Cualquier ruta desconocida → login
   { path: '**', redirectTo: 'auth/login' }
 ];
