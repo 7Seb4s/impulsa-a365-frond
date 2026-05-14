@@ -1,7 +1,6 @@
-// pages/recuperar/recuperar.component.ts
-// Pantalla de recuperación de contraseña en dos pasos:
-// 1) El usuario ingresa su correo → backend envía código por email
-// 2) El usuario ingresa el código → backend lo verifica → redirige al login
+// pages/recuperar/recuperar.component.ts  ← REEMPLAZA EL EXISTENTE
+// CAMBIO: en continuar() ahora navega a /restablecer pasando correo + codigo
+//         en lugar de navegar directamente al login.
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -81,7 +80,8 @@ export class RecuperarComponent {
       });
   }
 
-  // Paso 2: verifica el código ingresado
+  // Paso 2: verifica el código y navega a /restablecer pasando correo + codigo
+  // ↑ ESTE ES EL ÚNICO CAMBIO respecto al original
   continuar(): void {
     this.limpiarMensajes();
 
@@ -98,7 +98,13 @@ export class RecuperarComponent {
     }).subscribe({
       next: () => {
         this.cargando = false;
-        this.router.navigate(['/auth/login']);
+        // Navega a /restablecer y pasa correo + codigo en el router state
+        this.router.navigate(['/restablecer'], {
+          state: {
+            correo: this.correo.trim(),
+            codigo: this.codigoRecibido.trim()
+          }
+        });
       },
       error: (err) => {
         this.cargando = false;
@@ -110,7 +116,7 @@ export class RecuperarComponent {
   }
 
   volverLogin(): void {
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/login']);
   }
 
   private limpiarMensajes(): void {

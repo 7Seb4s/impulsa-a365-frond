@@ -1,0 +1,269 @@
+/* ============================================
+   restablecer.component.css — Impulsa A365
+   Misma identidad visual que recuperar.component.css
+   ============================================ */
+
+.recover-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ── HEADER ───────────────────────────────── */
+.recover-header {
+  background: #ffffff;
+  padding: 0.6rem 2rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.logo-img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* ── BARRA AZUL ───────────────────────────── */
+.blue-bar {
+  height: 38px;
+  background-color: #1a2b5e;
+}
+
+/* ── MAIN ─────────────────────────────────── */
+.recover-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  background-color: #ffffff;
+}
+
+/* ── CARD ─────────────────────────────────── */
+.recover-card {
+  background: #ffffff;
+  border: 1.5px solid #d0d5e8;
+  border-radius: 6px;
+  padding: 2.8rem 4rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+/* ── TÍTULOS ──────────────────────────────── */
+.recover-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #1a2b5e;
+  letter-spacing: 0.04em;
+  text-align: center;
+  margin: 0 0 8px;
+}
+
+.recover-subtitle {
+  font-size: 0.82rem;
+  color: #777;
+  text-align: center;
+  margin: 0 0 1.8rem;
+}
+
+/* ── FORM GROUP ───────────────────────────── */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1a2b5e;
+  margin-bottom: 6px;
+}
+
+/* Wrapper para input + botón ojo */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper input {
+  border: 1.5px solid #d0d5e8;
+  border-radius: 4px;
+  padding: 11px 42px 11px 14px;
+  font-size: 0.9rem;
+  color: #333;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: border-color 0.2s;
+}
+
+.input-wrapper input:focus {
+  border-color: #1a2b5e;
+}
+
+.input-wrapper input.is-error {
+  border-color: #e53935;
+}
+
+/* Botón del ojo dentro del input */
+.toggle-eye {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #999;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.toggle-eye:hover {
+  color: #1a2b5e;
+}
+
+/* ── MENSAJES ─────────────────────────────── */
+.error-banner {
+  background: #fff0f0;
+  border: 1px solid #f5c6c6;
+  color: #c0392b;
+  font-size: 0.82rem;
+  padding: 9px 14px;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.success-banner {
+  background: #f0fff4;
+  border: 1px solid #b7ebc8;
+  color: #27ae60;
+  font-size: 0.82rem;
+  padding: 9px 14px;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* ── BOTONES ──────────────────────────────── */
+.btn-center {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.8rem;
+  margin-bottom: 0.2rem;
+}
+
+.btn-primary {
+  background-color: #1a2b5e;
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 10px 36px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #1a56db;
+}
+
+.btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ── SPINNER ──────────────────────────────── */
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── VOLVER AL LOGIN ──────────────────────── */
+.back-login {
+  text-align: center;
+  margin-top: 1.8rem;
+  font-size: 0.82rem;
+  color: #777;
+}
+
+.link {
+  color: #1a2b5e;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.link:hover {
+  color: #1a56db;
+}
+
+/* ── FOOTER ───────────────────────────────── */
+.recover-footer {
+  background: #1a2b5e;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.recover-footer span {
+  font-size: 0.72rem;
+  color: #8fa8d4;
+}
+
+.footer-social {
+  display: flex;
+  gap: 8px;
+}
+
+.social-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #2e4a8e;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.social-icon:hover {
+  background: #4a6ab0;
+}
+
+/* ── RESPONSIVE ───────────────────────────── */
+@media (max-width: 640px) {
+  .recover-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .recover-footer {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
