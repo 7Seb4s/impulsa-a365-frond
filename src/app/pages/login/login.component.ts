@@ -1,6 +1,3 @@
-// pages/login/login.component.ts
-// Pantalla de login: código + contraseña y Google Sign-In.
-// Redirige a /dashboard/admin o /dashboard/agente según el rol del usuario.
 import { Component, OnInit, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -45,7 +42,6 @@ export class LoginComponent implements OnInit {
     this.inicializarGoogle();
   }
 
-  // Login con código + contraseña
   onLogin(): void {
     this.limpiarErrores();
 
@@ -87,7 +83,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  // Login con Google Sign-In
+  // Inicializa el botón de Google en el div#google-login-btn
   private inicializarGoogle(): void {
     const intervalo = setInterval(() => {
       if (typeof google !== 'undefined' && google.accounts) {
@@ -140,7 +136,6 @@ export class LoginComponent implements OnInit {
       });
   }
 
-  // Redirige según el rol recibido del backend
   private redirigirPorRol(rol: string): void {
     if (rol === 'ADMINISTRADOR' || rol === 'GERENTE') {
       this.router.navigate(['/dashboard/admin']);

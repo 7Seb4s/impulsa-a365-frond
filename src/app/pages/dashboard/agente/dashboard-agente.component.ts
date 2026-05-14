@@ -1,7 +1,5 @@
 // pages/dashboard/agente/dashboard-agente.component.ts
-// Vista del empleado/agente: muestra resumen de tickets,
-// calendario del mes y el ticket activo con su actividad reciente.
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ServicioAutenticacion, DatosUsuario } from '../../../core/services/servicio-autenticacion';
 
@@ -10,7 +8,8 @@ import { ServicioAutenticacion, DatosUsuario } from '../../../core/services/serv
   standalone: true,
   imports: [CommonModule],
   templateUrl: './dashboard-agente.component.html',
-  styleUrls: ['./dashboard-agente.component.css']
+  styleUrls: ['./dashboard-agente.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DashboardAgenteComponent implements OnInit {
 

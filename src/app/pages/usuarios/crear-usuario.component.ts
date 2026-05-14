@@ -45,6 +45,7 @@ export class CrearUsuarioComponent {
   cargando          = false;
   exitoso           = false;
   codigoGenerado    = '';
+  contrasenaUsada   = '';
   mostrarContrasena = false;
   mostrarConfirmar  = false;
 
@@ -170,6 +171,7 @@ export class CrearUsuarioComponent {
     if (!this.validar()) return;
 
     this.cargando = true;
+    this.contrasenaUsada = this.form.contrasena;
 
     this.http.post<any>(`${this.URL_API}/usuarios/crear`, {
       nombreCompleto:   this.form.nombreCompleto.trim(),
@@ -181,8 +183,8 @@ export class CrearUsuarioComponent {
       contrasena:       this.form.contrasena
     }).subscribe({
       next: (res) => {
-        this.cargando      = false;
-        this.exitoso       = true;
+        this.cargando       = false;
+        this.exitoso        = true;
         this.codigoGenerado = res.codigo;
       },
       error: (err) => {

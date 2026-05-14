@@ -56,12 +56,12 @@
             <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
           </svg>
         </div>
-        <h2>¡Usuario creado con exito!</h2>
-        <p>El código designado es:</p>
+        <h2>¡Usuario creado exitosamente!</h2>
+        <p>El código asignado es:</p>
         <div class="codigo-badge">{{ codigoGenerado }}</div>
         <p class="contrasena-info">
           <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14" style="color:#854f0b"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
-          Contraseña inicial: <strong>Impulsa2026!</strong> — el usuario debe cambiarla al iniciar sesión.
+          Contraseña inicial: <strong>{{ contrasenaUsada }}</strong> — el usuario debe guardarla.
         </p>
         <div class="exito-acciones">
           <button class="btn-secundario" (click)="onNuevoUsuario()">Agregar otro usuario</button>
