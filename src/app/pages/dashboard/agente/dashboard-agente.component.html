@@ -8,27 +8,26 @@
         <img src="assets/logo-a365.jpg" alt="A365" class="sidebar-logo" loading="lazy" />
       </div>
       <nav class="sidebar-nav">
-        <a class="nav-item active">Inicio</a>
-        <a class="nav-item">Tickets</a>
-        <a class="nav-item">Incidencias</a>
-        <a class="nav-item">Reportes</a>
-        <a class="nav-item">Atenci&#243;n a usuarios</a>
+        <a class="nav-item active" routerLink="/dashboard/agente">Inicio</a>
+        <a class="nav-item" routerLink="/dashboard/tickets">Tickets</a>
+        <a class="nav-item" routerLink="/dashboard/incidencias">Incidencias</a>
+        <a class="nav-item" routerLink="/dashboard/reportes">Reportes</a>
       </nav>
       <div class="sidebar-spacer"></div>
       <nav class="sidebar-nav">
-        <a class="nav-item">Perfil</a>
-        <a class="nav-item">Administraci&#243;n</a>
+        <a class="nav-item" routerLink="/dashboard/perfil">Perfil</a>
+        <a class="nav-item" routerLink="/dashboard/configuracion">Configuración</a>
       </nav>
     </aside>
 
-    <!-- &#193;REA PRINCIPAL -->
+    <!-- ÁREA PRINCIPAL -->
     <div class="main-area">
 
       <header class="topbar">
         <div class="topbar-right">
           <div class="user-chip">
             <div class="user-text">
-              <span class="user-name">{{ usuario?.nombre || usuario?.codigo }}</span>
+              <span class="user-name">{{ nombreUsuario }}</span>
               <span class="user-code">{{ usuario?.codigo }}</span>
             </div>
             <div class="user-avatar">
@@ -37,14 +36,14 @@
               </svg>
             </div>
           </div>
-          <button class="btn-logout-top" (click)="onLogout()">Cerrar sesi&#243;n</button>
+          <button class="btn-logout-top" (click)="onLogout()">Cerrar sesión</button>
         </div>
       </header>
 
       <div class="content">
 
         <div class="welcome-bar">
-          <h2 class="welcome-title">Bienvenido, {{ usuario?.nombre || usuario?.codigo }}.</h2>
+          <h2 class="welcome-title">Bienvenido, {{ nombreUsuario }}.</h2>
         </div>
 
         <div class="content-inner">
@@ -52,44 +51,43 @@
           <div class="stats-grid">
             <div class="stat-card">
               <span class="stat-label">Tickets pendientes</span>
-              <span class="stat-valor">01</span>
+              <span class="stat-valor">{{ formatear(totalPendientes) }}</span>
             </div>
             <div class="stat-card">
               <span class="stat-label">Tickets atendidos</span>
-              <span class="stat-valor">01</span>
+              <span class="stat-valor">{{ formatear(totalAtendidos) }}</span>
             </div>
             <div class="stat-card">
               <span class="stat-label">Tickets cancelados</span>
-              <span class="stat-valor">01</span>
+              <span class="stat-valor">{{ formatear(totalCancelados) }}</span>
             </div>
           </div>
 
           <div class="bottom-row">
 
-            <!-- Calendario -->
+            <!-- Calendario funcional -->
             <div class="calendar-card">
               <div class="calendar-header">
-                <span class="calendar-month">Marzo 2026</span>
+                <span class="calendar-month">{{ meses[mesMostrado] }} {{ anioMostrado }}</span>
                 <div class="calendar-nav">
-                  <button class="cal-btn">&#8249;</button>
-                  <button class="cal-btn">&#8250;</button>
+                  <button class="cal-btn" (click)="mesAnterior()" type="button">&#8249;</button>
+                  <button class="cal-btn" (click)="mesSiguiente()" type="button">&#8250;</button>
                 </div>
               </div>
               <table class="calendar-table">
                 <thead>
-                  <tr><th>Lu</th><th>Ma</th><th>Mi</th><th>Ju</th><th>Vie</th><th>Sa</th><th>Do</th></tr>
+                  <tr>
+                    <th *ngFor="let d of diasSemana">{{ d }}</th>
+                  </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td class="other-month">29</td><td class="other-month">30</td><td class="other-month">31</td>
-                    <td>1</td><td>2</td><td>3</td><td>4</td>
-                  </tr>
-                  <tr><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td></tr>
-                  <tr><td>12</td><td>13</td><td>14</td><td class="today"><span>15</span></td><td>16</td><td>17</td><td>18</td></tr>
-                  <tr><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td></tr>
-                  <tr>
-                    <td>26</td><td>27</td><td>28</td><td>29</td><td>30</td>
-                    <td class="other-month">1</td><td class="other-month">2</td>
+                  <tr *ngFor="let semana of semanas">
+                    <td *ngFor="let dia of semana"
+                        [class.other-month]="!dia.delMesActual"
+                        [class.today]="dia.esHoy">
+                      <span *ngIf="dia.esHoy">{{ dia.numero }}</span>
+                      <ng-container *ngIf="!dia.esHoy">{{ dia.numero }}</ng-container>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -101,7 +99,9 @@
 
               <div class="ticket-activo-header">
                 <span class="ticket-activo-label">Ticket Activo</span>
-                <span class="ticket-activo-id">#000</span>
+                <span class="ticket-activo-id">
+                  #{{ ticketActivo ? formatear(ticketActivo.numero) : '000' }}
+                </span>
               </div>
 
               <div class="ticket-meta">
@@ -111,7 +111,7 @@
                     <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14" style="color:#e07b00">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                     </svg>
-                    <span>Actualizaci&#243;n</span>
+                    <span>Actualización</span>
                   </div>
                 </div>
                 <div class="ticket-meta-group">
@@ -123,41 +123,25 @@
                 <div class="ticket-meta-group">
                   <span class="ticket-meta-label">Asignado a</span>
                   <div class="ticket-asignado">
-                    <div class="asignado-avatar">GG</div>
-                    <span>TRABAJADOR 01</span>
+                    <div class="asignado-avatar">{{ iniciales }}</div>
+                    <span>{{ nombreUsuario }}</span>
                   </div>
                 </div>
               </div>
 
               <div class="ticket-timeline">
-                <div class="timeline-item">
-                  <span class="timeline-dot">+</span>
-                  <div>
-                    <p class="timeline-desc">Ticket de actualizaci&#243;n de los datos</p>
-                    <p class="timeline-time">13:08 (6 hours ago)</p>
+                <ng-container *ngIf="ticketsTimeline.length > 0; else sinTickets">
+                  <div class="timeline-item" *ngFor="let t of ticketsTimeline">
+                    <span class="timeline-dot">+</span>
+                    <div>
+                      <p class="timeline-desc">Ticket #{{ formatear(t.numero) }} — {{ t.estado }}</p>
+                      <p class="timeline-time">{{ t.locacion }}</p>
+                    </div>
                   </div>
-                </div>
-                <div class="timeline-item">
-                  <span class="timeline-dot">+</span>
-                  <div>
-                    <p class="timeline-desc">Ticket de eliminaci&#243;n de registros de usuario</p>
-                    <p class="timeline-time">14:34 (5 hours ago)</p>
-                  </div>
-                </div>
-                <div class="timeline-item">
-                  <span class="timeline-dot">+</span>
-                  <div>
-                    <p class="timeline-desc">Revisi&#243;n de solicitudes t&#233;cnicas</p>
-                    <p class="timeline-time">14:34 (5 hours ago)</p>
-                  </div>
-                </div>
-                <div class="timeline-item">
-                  <span class="timeline-dot">+</span>
-                  <div>
-                    <p class="timeline-desc">Solicitud de cambio de &#225;rea</p>
-                    <p class="timeline-time">14:34 (5 hours ago)</p>
-                  </div>
-                </div>
+                </ng-container>
+                <ng-template #sinTickets>
+                  <p class="sin-tickets">No tienes tickets pendientes por el momento.</p>
+                </ng-template>
               </div>
             </div>
 

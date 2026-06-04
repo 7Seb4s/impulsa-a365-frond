@@ -1,0 +1,261 @@
+<div class="app-layout">
+
+  <div class="app-body">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="assets/logo-a365.jpg" alt="A365" class="sidebar-logo" loading="lazy" />
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item" routerLink="/dashboard/agente">Inicio</a>
+        <a class="nav-item active">Tickets</a>
+        <a class="nav-item" routerLink="/dashboard/incidencias">Incidencias</a>
+        <a class="nav-item" routerLink="/dashboard/reportes">Reportes</a>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <nav class="sidebar-nav">
+        <a class="nav-item" routerLink="/dashboard/perfil">Perfil</a>
+        <a class="nav-item" routerLink="/dashboard/configuracion">Configuración</a>
+      </nav>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL -->
+    <div class="main-area">
+
+      <header class="topbar">
+        <div class="topbar-right">
+          <div class="user-chip">
+            <div class="user-text">
+              <span class="user-name">{{ usuario?.nombre || usuario?.codigo }}</span>
+              <span class="user-code">{{ usuario?.codigo }}</span>
+            </div>
+            <div class="user-avatar">
+              <svg viewBox="0 0 24 24" fill="#9aaac5" width="26" height="26">
+                <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+              </svg>
+            </div>
+          </div>
+          <button class="btn-logout-top" (click)="onLogout()">Cerrar sesión</button>
+        </div>
+      </header>
+
+      <div class="content">
+
+        <!-- Cabecera -->
+        <div class="page-header">
+          <div class="page-title-row">
+            <span class="page-icon">&#9733;</span>
+            <h2 class="page-title">Tickets</h2>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-bar">
+          <button class="tab-btn" [class.active]="tabActivo === 'pendientes'" (click)="cambiarTab('pendientes')">Pendientes</button>
+          <button class="tab-btn" [class.active]="tabActivo === 'completados'" (click)="cambiarTab('completados')">Pendientes completados</button>
+          <button class="tab-btn" [class.active]="tabActivo === 'cancelados'" (click)="cambiarTab('cancelados')">Pendientes cancelados</button>
+        </div>
+
+        <!-- Lista de tickets -->
+        <div class="tickets-list">
+
+          <ng-container *ngIf="tabActivo === 'pendientes'">
+            <div class="ticket-card" *ngFor="let ticket of ticketsPendientes" [class.resaltado]="ticket.resaltado">
+              <div class="ticket-info">
+                <p class="ticket-numero">Pendiente No. {{ ticket.numero }}</p>
+                <p class="ticket-estado">Estado : <strong>{{ ticket.estado }}</strong></p>
+                <p class="ticket-locacion">Locación: {{ ticket.locacion }}</p>
+              </div>
+              <button class="btn-mas-info" [class.naranja]="ticket.resaltado" (click)="verDetalle(ticket)">Más información</button>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="tabActivo === 'completados'">
+            <div class="ticket-card" *ngFor="let ticket of ticketsCompletados">
+              <div class="ticket-info">
+                <p class="ticket-numero">Pendiente No. {{ ticket.numero }}</p>
+                <p class="ticket-estado">Estado : <strong>{{ ticket.estado }}</strong></p>
+                <p class="ticket-locacion">Locación: {{ ticket.locacion }}</p>
+              </div>
+              <button class="btn-mas-info" (click)="verDetalle(ticket)">Más información</button>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="tabActivo === 'cancelados'">
+            <div class="ticket-card" *ngFor="let ticket of ticketsCancelados">
+              <div class="ticket-info">
+                <p class="ticket-numero">Pendiente No. {{ ticket.numero }}</p>
+                <p class="ticket-estado">Estado : <strong>{{ ticket.estado }}</strong></p>
+                <p class="ticket-locacion">Locación: {{ ticket.locacion }}</p>
+              </div>
+              <button class="btn-mas-info" (click)="verDetalle(ticket)">Más información</button>
+            </div>
+          </ng-container>
+
+        </div>
+
+        <!-- Botón Nuevo Ticket -->
+        <div class="nuevo-ticket-row">
+          <button class="btn-nuevo-ticket" (click)="abrirNuevoTicket()">Nuevo ticket</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="inner-footer">
+    <span>&#169; 2026 Impulsa A365 Todos los derechos reservados por Group16</span>
+    <div class="footer-icons">
+      <a href="#" class="footer-icon">in</a>
+      <a href="#" class="footer-icon">f</a>
+      <a href="#" class="footer-icon">&#9679;</a>
+    </div>
+  </footer>
+
+</div>
+
+<!-- MODAL NUEVO TICKET -->
+<div class="modal-overlay" *ngIf="mostrarNuevoTicket" (click)="cerrarNuevoTicket()">
+  <div class="modal modal-nuevo" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <span class="modal-titulo">Nuevo ticket</span>
+      <button class="modal-close" (click)="cerrarNuevoTicket()">&#10005;</button>
+    </div>
+
+    <div class="nuevo-ticket-form">
+      <div class="form-group">
+        <label>Asunto</label>
+        <input type="text" [(ngModel)]="nuevoTicket.asunto" placeholder="Ingrese el asunto" class="form-input" />
+      </div>
+      <div class="form-group">
+        <label>Locación</label>
+        <input type="text" [(ngModel)]="nuevoTicket.locacion" placeholder="Ingrese la locación" class="form-input" />
+      </div>
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea [(ngModel)]="nuevoTicket.descripcion" placeholder="Describa el problema..." class="form-textarea" rows="4"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Prioridad</label>
+        <select [(ngModel)]="nuevoTicket.prioridad" class="form-input">
+          <option value="">Seleccione prioridad</option>
+          <option value="baja">Baja</option>
+          <option value="media">Media</option>
+          <option value="alta">Alta</option>
+        </select>
+      </div>
+
+      <div *ngIf="errorNuevoTicket" class="error-msg">{{ errorNuevoTicket }}</div>
+      <div *ngIf="exitoNuevoTicket" class="exito-msg">¡Ticket creado correctamente!</div>
+
+      <div class="nuevo-ticket-actions">
+        <button class="btn-cancelar" (click)="cerrarNuevoTicket()">Cancelar</button>
+        <button class="btn-crear" (click)="crearTicket()" [disabled]="guardandoTicket">
+          {{ guardandoTicket ? 'Creando...' : 'Crear ticket' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ESTADO DEL TICKET -->
+<div class="modal-overlay" *ngIf="ticketSeleccionado" (click)="cerrarModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+
+    <!-- Cabecera modal -->
+    <div class="modal-header">
+      <span class="modal-titulo">Estado del ticket</span>
+      <button class="modal-btn-actualizar">Actualizar detalles</button>
+      <button class="modal-close" (click)="cerrarModal()">&#10005;</button>
+    </div>
+
+    <!-- Usuario -->
+    <div class="modal-usuario">
+      <div class="usuario-avatar">{{ ticketSeleccionado.usuarioNombre.charAt(0) }}</div>
+      <div class="usuario-info">
+        <span class="usuario-nombre">{{ ticketSeleccionado.usuarioNombre }}</span>
+        <span class="usuario-pais">{{ ticketSeleccionado.usuarioPais }}</span>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="modal-stats">
+      <div class="stat-item">
+        <span class="stat-val">{{ ticketSeleccionado.tickets.toString().padStart(2,'0') }}</span>
+        <span class="stat-lbl">Tickets</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-val">{{ ticketSeleccionado.ticketsPendientes.toString().padStart(2,'0') }}</span>
+        <span class="stat-lbl">Tickets pendientes</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-val">{{ ticketSeleccionado.tiempoRespuesta }}</span>
+        <span class="stat-lbl">Tiempo de respuesta</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-val">{{ ticketSeleccionado.tiempoTotal }}</span>
+        <span class="stat-lbl">Tiempo total</span>
+      </div>
+    </div>
+
+    <!-- Detalles del usuario -->
+    <div class="modal-section-titulo">Detalles del usuario</div>
+    <div class="modal-detalles">
+      <div class="detalle-fila">
+        <span class="detalle-label">Número de teléfono</span>
+        <span class="detalle-valor">{{ ticketSeleccionado.telefono }}</span>
+      </div>
+      <div class="detalle-fila">
+        <span class="detalle-label">Dirección de email</span>
+        <span class="detalle-valor">{{ ticketSeleccionado.email }}</span>
+      </div>
+      <div class="detalle-fila">
+        <span class="detalle-label">Locación</span>
+        <span class="detalle-valor">{{ ticketSeleccionado.pais }}</span>
+      </div>
+      <div class="detalle-fila">
+        <span class="detalle-label">Plataforma</span>
+        <span class="detalle-valor">{{ ticketSeleccionado.plataforma }}</span>
+      </div>
+      <div class="detalle-fila">
+        <span class="detalle-label">Tiempo de respuesta</span>
+        <span class="detalle-valor velocidad">
+          <span class="velocidad-barra"></span>
+          + {{ ticketSeleccionado.velocidadRespuesta }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Ticket Activo -->
+    <div class="modal-ticket-activo">
+      <span class="ticket-activo-label">Ticket Activo</span>
+      <span class="ticket-activo-id">{{ ticketSeleccionado.ticketActivoId }}</span>
+    </div>
+    <div class="modal-ticket-meta">
+      <div class="meta-item">
+        <span class="meta-label">Tipo de ticket</span>
+        <div class="meta-tipo">
+          <span class="tipo-icon">&#9733;</span>
+          <span>{{ ticketSeleccionado.tipoTicket }}</span>
+        </div>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Prioridad</span>
+        <div class="meta-prioridad">
+          <span class="prioridad-dot"></span>
+          {{ ticketSeleccionado.prioridad }}
+          <span class="prioridad-chevron">&#8249;</span>
+        </div>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Asignado a</span>
+        <div class="meta-asignado">
+          <div class="asignado-avatar">{{ ticketSeleccionado.asignadoA.charAt(0) }}</div>
+          <span>{{ ticketSeleccionado.asignadoA }}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

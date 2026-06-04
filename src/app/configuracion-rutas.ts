@@ -52,6 +52,46 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/usuarios/crear-usuario.component')
             .then(m => m.CrearUsuarioComponent)
+      },
+
+      // Vista de tickets
+      {
+        path: 'tickets',
+        loadComponent: () =>
+          import('./pages/tickets/tickets.component')
+            .then(m => m.TicketsComponent)
+      },
+
+      // Vista de incidencias
+      {
+        path: 'incidencias',
+        loadComponent: () =>
+          import('./pages/incidencias/incidencias.component')
+            .then(m => m.IncidenciasComponent)
+      },
+
+      // Vista de perfil
+      {
+        path: 'perfil',
+        loadComponent: () =>
+          import('./pages/perfil/perfil.component')
+            .then(m => m.PerfilComponent)
+      },
+
+      // Vista de configuración
+      {
+        path: 'configuracion',
+        loadComponent: () =>
+          import('./pages/configuracion/configuracion.component')
+            .then(m => m.ConfiguracionComponent)
+      },
+
+      // Vista de reportes
+      {
+        path: 'reportes',
+        loadComponent: () =>
+          import('./pages/reportes/reportes.component')
+            .then(m => m.ReportesComponent)
       }
     ]
   },

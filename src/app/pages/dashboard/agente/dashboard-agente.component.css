@@ -204,3 +204,13 @@
   .bottom-row { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: 1fr; }
 }
+
+/* Mensaje cuando no hay tickets en el timeline */
+.sin-tickets {
+  font-size: 13px;
+  color: #8a9ab8;
+  text-align: center;
+  padding: 18px 0;
+  margin: 0;
+  font-style: italic;
+}
