@@ -1,0 +1,198 @@
+<!-- pages/panel-usuarios/panel-usuarios.component.html -->
+<div class="app-layout">
+  <div class="app-body">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="assets/logo-a365.jpg" alt="A365" class="sidebar-logo" />
+      </div>
+      <nav class="sidebar-nav">
+
+        <!-- Inicio -->
+        <a class="nav-item" (click)="irAInicio()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
+            <path d="M9 21V12h6v9"/>
+          </svg>
+          Inicio
+        </a>
+
+        <!-- Gestión de tickets -->
+        <a class="nav-item" (click)="irAGestionTickets()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <rect x="2" y="5" width="20" height="14" rx="2"/>
+            <path d="M16 5V3M8 5V3M2 9h20"/>
+            <path d="M8 13h4M8 17h8"/>
+          </svg>
+          Gestión de tickets
+        </a>
+
+        <!-- Gestión de incidencias -->
+        <a class="nav-item" (click)="irAGestionIncidencias()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <circle cx="12" cy="16" r="0.5" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+          </svg>
+          Gestión de incidencias
+        </a>
+
+        <!-- Registro de usuarios -->
+        <a class="nav-item" (click)="irACrearUsuario()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <line x1="19" y1="8" x2="19" y2="14"/>
+            <line x1="16" y1="11" x2="22" y2="11"/>
+          </svg>
+          Registro de usuarios
+        </a>
+
+        <!-- Usuarios (activo) -->
+        <a class="nav-item active" (click)="irAUsuarios()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+          </svg>
+          Usuarios
+        </a>
+
+        <!-- Administración -->
+        <a class="nav-item" (click)="irAAdministracion()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83
+                     2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33
+                     1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09
+                     A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06
+                     a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0
+                     004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0
+                     012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0
+                     00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83
+                     0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3
+                     a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51
+                     1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0
+                     010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0
+                     001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65
+                     0 00-1.51 1z"/>
+          </svg>
+          Administración
+        </a>
+
+      </nav>
+      <div class="sidebar-spacer"></div>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL -->
+    <div class="main-area">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <h1 class="page-title">Panel de usuarios</h1>
+        <div class="topbar-right">
+          <button class="btn-notif" title="Notificaciones">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+              <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 01-3.46 0"/>
+            </svg>
+          </button>
+          <div class="user-chip">
+            <div class="user-text">
+              <span class="user-name">{{ usuario?.nombre ?? 'Usuario' }}</span>
+              <span class="user-code">{{ usuario?.codigo ?? '' }}</span>
+            </div>
+            <div class="user-avatar">
+              {{ (usuario?.nombre ?? 'U')[0].toUpperCase() }}
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENIDO -->
+      <div class="content-area">
+        <div class="panel-card">
+
+          <!-- TABS -->
+          <div class="tabs-row">
+            <button class="tab-btn" [class.tab-active]="tabActiva === 'activos'"
+                    (click)="cambiarTab('activos')">
+              Usuarios activos
+            </button>
+            <button class="tab-btn" [class.tab-active]="tabActiva === 'eliminados'"
+                    (click)="cambiarTab('eliminados')">
+              Historial de usuarios eliminados
+            </button>
+          </div>
+
+          <!-- BARRA DE BÚSQUEDA -->
+          <div class="search-row">
+            <div class="search-field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" width="14" height="14" class="search-icon">
+                <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+              </svg>
+              <input type="text" placeholder="Buscar usuario por nombre"
+                     [(ngModel)]="filtroPorNombre" (ngModelChange)="paginaActual=1" />
+            </div>
+            <div class="search-field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" width="14" height="14" class="search-icon">
+                <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+              </svg>
+              <input type="text" placeholder="Buscar usuario por DNI"
+                     [(ngModel)]="filtroPorDni" (ngModelChange)="paginaActual=1" />
+            </div>
+            <div class="search-field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" width="14" height="14" class="search-icon">
+                <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+              </svg>
+              <input type="text" placeholder="Buscar usuario por cargo"
+                     [(ngModel)]="filtroPorCargo" (ngModelChange)="paginaActual=1" />
+            </div>
+          </div>
+
+          <!-- LOADING -->
+          <div *ngIf="cargando" class="estado-mensaje">
+            <span>Cargando usuarios...</span>
+          </div>
+
+          <!-- SIN RESULTADOS -->
+          <div *ngIf="!cargando && usuariosFiltrados.length === 0" class="estado-mensaje">
+            <span>No se encontraron usuarios.</span>
+          </div>
+
+          <!-- GRID DE TARJETAS -->
+          <div *ngIf="!cargando && usuariosFiltrados.length > 0" class="usuarios-grid">
+            <div class="usuario-card" *ngFor="let u of usuariosPaginados">
+              <div class="card-info">
+                <div class="card-nombre">{{ u.nombre }}</div>
+                <div class="card-dni">DNI : <strong>{{ u.dni }}</strong></div>
+                <div class="card-cargo">Cargo: {{ u.cargo }}</div>
+              </div>
+              <button class="btn-revisar" (click)="revisarUsuario(u)">Revisar</button>
+            </div>
+          </div>
+
+          <!-- PAGINACIÓN -->
+          <div *ngIf="totalPaginas > 1" class="paginacion-row">
+            <button class="pag-btn" *ngFor="let p of paginasArray"
+                    [class.pag-activa]="p === paginaActual"
+                    (click)="irAPagina(p)">{{ p }}</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

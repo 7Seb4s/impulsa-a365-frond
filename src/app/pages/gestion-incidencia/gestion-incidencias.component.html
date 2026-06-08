@@ -1,0 +1,255 @@
+<!-- pages/gestion-incidencias/gestion-incidencias.component.html -->
+<div class="app-layout">
+  <div class="app-body">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="assets/logo-a365.jpg" alt="A365" class="sidebar-logo" />
+      </div>
+      <nav class="sidebar-nav">
+
+        <!-- Inicio -->
+        <a class="nav-item" (click)="irAInicio()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
+            <path d="M9 21V12h6v9"/>
+          </svg>
+          Inicio
+        </a>
+
+        <!-- Gestión de tickets -->
+        <a class="nav-item" (click)="irAGestionTickets()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <rect x="2" y="5" width="20" height="14" rx="2"/>
+            <path d="M16 5V3M8 5V3M2 9h20"/>
+            <path d="M8 13h4M8 17h8"/>
+          </svg>
+          Gestión de tickets
+        </a>
+
+        <!-- Gestión de incidencias — ACTIVO -->
+        <a class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <circle cx="12" cy="16" r="0.5" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+          </svg>
+          Gestión de incidencias
+        </a>
+
+        <!-- Registro de usuarios -->
+        <a class="nav-item" (click)="irACrearUsuario()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <line x1="19" y1="8" x2="19" y2="14"/>
+            <line x1="16" y1="11" x2="22" y2="11"/>
+          </svg>
+          Registro de usuarios
+        </a>
+
+        <!-- Usuarios -->
+        <a class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+          </svg>
+          Usuarios
+        </a>
+
+        <!-- Administración -->
+        <a class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+          </svg>
+          Administración
+        </a>
+
+      </nav>
+      <div class="sidebar-spacer"></div>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL -->
+    <div class="main-area">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <h1 class="page-title">Gestión de incidencias</h1>
+        <div class="topbar-right">
+          <button class="btn-notif" aria-label="Notificaciones">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+          </button>
+          <div class="user-chip">
+            <div class="user-text">
+              <span class="user-name">{{ usuario?.nombre || usuario?.codigo }}</span>
+              <span class="user-code">{{ usuario?.codigo }}</span>
+            </div>
+            <div class="user-avatar">
+              <svg viewBox="0 0 24 24" fill="#9aaac5" width="22" height="22">
+                <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENIDO -->
+      <div class="page-content">
+        <div class="panel">
+
+          <!-- TABS -->
+          <nav class="tabs">
+            <button class="tab-btn" [class.active]="tabActivo === 'pendientes'" (click)="cambiarTab('pendientes')">
+              Incidencias pendientes
+            </button>
+            <button class="tab-btn" [class.active]="tabActivo === 'revision'" (click)="cambiarTab('revision')">
+              En revisión
+            </button>
+            <button class="tab-btn" [class.active]="tabActivo === 'atendidas'" (click)="cambiarTab('atendidas')">
+              Incidencias atendidas
+            </button>
+          </nav>
+
+          <!-- LISTA -->
+          <div class="incidencias-list">
+            <div
+              class="incidencia-card"
+              *ngFor="let item of incidenciasActivas"
+              [class.resaltado]="item.resaltado"
+            >
+              <div class="incidencia-info">
+                <p class="incidencia-tipo">Tipo: {{ item.tipo }}</p>
+                <p class="incidencia-tema">{{ item.tema }}</p>
+              </div>
+              <button class="btn-revisar" [class.naranja]="item.resaltado" (click)="revisar(item)">
+                Revisar
+              </button>
+            </div>
+
+            <div class="empty-state" *ngIf="incidenciasActivas.length === 0">
+              No hay incidencias en esta categoría.
+            </div>
+          </div>
+
+          <!-- FOOTER -->
+          <div class="panel-footer">
+            <button class="btn-nueva" disabled title="Solo los usuarios pueden crear incidencias">
+              Nueva incidencia
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- ══════════ MODAL INCIDENCIA ══════════ -->
+<div class="modal-overlay" *ngIf="incidenciaSeleccionada" (click)="cerrarModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <span class="modal-ticket-id">Ticket ID-#4264</span>
+      <button class="modal-close" (click)="cerrarModal()">&#10005;</button>
+    </div>
+
+    <h2 class="modal-titulo">Incidencia ID-#345356</h2>
+
+    <div class="modal-campos">
+      <div class="modal-campo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#8a9ab8" stroke-width="2" width="16" height="16">
+          <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+          <line x1="7" y1="7" x2="7.01" y2="7"/>
+        </svg>
+        <span class="campo-label">Tipo</span>
+        <span class="campo-valor">Actualización de datos</span>
+      </div>
+      <div class="modal-campo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#8a9ab8" stroke-width="2" width="16" height="16">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span class="campo-label">Estado</span>
+        <span class="badge badge-pendiente">Pendiente</span>
+      </div>
+      <div class="modal-campo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#8a9ab8" stroke-width="2" width="16" height="16">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        <span class="campo-label">Solicitante</span>
+        <span class="campo-valor">
+          <span class="avatar-mini">G</span>
+          Grace Galán
+        </span>
+      </div>
+      <div class="modal-campo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#8a9ab8" stroke-width="2" width="16" height="16">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        <span class="campo-label">Asignada a</span>
+        <span class="campo-valor">Área técnica</span>
+      </div>
+      <div class="modal-campo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#8a9ab8" stroke-width="2" width="16" height="16">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <span class="campo-label">Fecha</span>
+        <span class="campo-valor">Marzo 30, 2026</span>
+      </div>
+    </div>
+
+    <div class="modal-adjuntos-titulo">Archivos adjuntos</div>
+    <div class="modal-adjuntos">
+      <span class="adjunto">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
+        RegistroFechaIngreso.docx
+      </span>
+      <span class="adjunto">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
+        DatosFernandaChávezLópez.docx
+      </span>
+      <span class="adjunto">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
+        CargoGerenciaGeneral.docx
+      </span>
+    </div>
+    <div class="modal-adjuntos-acciones">
+      <button class="btn-anadir-archivo">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="13" height="13"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+        Añadir archivo
+      </button>
+      <button class="btn-eliminar-docs">Eliminar documentos</button>
+    </div>
+
+    <div class="modal-asunto-titulo">Asunto</div>
+    <div class="modal-asunto-meta">Grace Galán comentó el 30 de Marzo de 2026 a las 18:58</div>
+    <div class="modal-asunto-cuerpo">
+      <p>Estimado equipo de TI</p>
+      <p>Por medio del presente, solicito su aprobación del ticket #4264 para realizar la actualización de los datos del
+      usuario Fernanda Chávez López ID#73203436. Los cambios correspondientes serían los siguientes:</p>
+      <ul>
+        <li>Modificar fecha de ingreso de la señora Fernada Chávez.</li>
+        <li>Modificar su registro respectivo en la base de datos de la empresa.</li>
+        <li>Actualizar el sistema para su posterior revisión</li>
+        <li>Actualizar su cargo a Gerenta General.</li>
+      </ul>
+    </div>
+
+    <div class="modal-acciones">
+      <button class="btn-editar">Editar</button>
+      <button class="btn-borrar">Borrar</button>
+    </div>
+
+  </div>
+</div>

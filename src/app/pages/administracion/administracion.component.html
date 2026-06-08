@@ -1,0 +1,332 @@
+<!-- pages/administracion/administracion.component.html -->
+<div class="app-layout">
+
+  <div class="app-body">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="assets/logo-a365.jpg" alt="A365" class="sidebar-logo" loading="lazy" />
+      </div>
+      <nav class="sidebar-nav">
+
+        <!-- Inicio -->
+        <a class="nav-item" (click)="irAInicio()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
+            <path d="M9 21V12h6v9"/>
+          </svg>
+          Inicio
+        </a>
+
+        <!-- Gestión de tickets -->
+        <a class="nav-item" (click)="irAGestionTickets()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <rect x="2" y="5" width="20" height="14" rx="2"/>
+            <path d="M16 5V3M8 5V3M2 9h20"/>
+            <path d="M8 13h4M8 17h8"/>
+          </svg>
+          Gestión de tickets
+        </a>
+
+        <!-- Gestión de incidencias -->
+        <a class="nav-item" (click)="irAGestionIncidencias()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <circle cx="12" cy="16" r="0.5" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+          </svg>
+          Gestión de incidencias
+        </a>
+
+        <!-- Registro de usuarios -->
+        <a class="nav-item" (click)="irACrearUsuario()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <line x1="19" y1="8" x2="19" y2="14"/>
+            <line x1="16" y1="11" x2="22" y2="11"/>
+          </svg>
+          Registro de usuarios
+        </a>
+
+        <!-- Usuarios -->
+        <a class="nav-item" (click)="irAPanelUsuarios()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+          </svg>
+          Usuarios
+        </a>
+
+        <!-- Administración — ACTIVO -->
+        <a class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+          </svg>
+          Administración
+        </a>
+
+      </nav>
+      <div class="sidebar-spacer"></div>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL -->
+    <div class="main-area">
+
+      <header class="topbar">
+        <div class="topbar-right">
+          <div class="user-chip">
+            <div class="user-text">
+              <span class="user-name">{{ usuario?.nombre }}</span>
+              <span class="user-code">{{ usuario?.codigo }}</span>
+            </div>
+            <div class="user-avatar">
+              <svg viewBox="0 0 24 24" fill="#9aaac5" width="26" height="26">
+                <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+              </svg>
+            </div>
+          </div>
+          <button class="btn-logout-top" (click)="onLogout()">Cerrar sesión</button>
+        </div>
+      </header>
+
+      <div class="content">
+
+        <!-- ══════════ VISTA MENÚ ══════════ -->
+        <ng-container *ngIf="vista === 'menu'">
+
+          <div class="page-header">
+            <svg class="page-icon-svg" viewBox="0 0 24 24" fill="none" stroke="#1a2b5e" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33
+                       1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33
+                       l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0
+                       1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65
+                       1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0
+                       0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21
+                       a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            <h2 class="page-title">Administración</h2>
+          </div>
+
+          <div class="panel">
+            <button class="opcion-item" (click)="vista = 'perfil'">
+              <span class="opcion-label">Perfil</span>
+              <svg class="opcion-svg" viewBox="0 0 24 24" fill="none" stroke="#1a2b5e" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+            </button>
+            <button class="opcion-item" (click)="vista = 'contrasena'">
+              <span class="opcion-label">Cambiar contraseña</span>
+              <svg class="opcion-svg" viewBox="0 0 24 24" fill="none" stroke="#1a2b5e" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="logout-area">
+            <button class="btn-cerrar-sesion" (click)="onLogout()">Cerrar sesión</button>
+          </div>
+
+        </ng-container>
+
+        <!-- ══════════ VISTA CAMBIAR CONTRASEÑA ══════════ -->
+        <ng-container *ngIf="vista === 'contrasena'">
+
+          <div class="page-header">
+            <button class="btn-back" (click)="vista = 'menu'; errorMsg = ''; errorConfirmar = false">&#8249;</button>
+            <h2 class="page-title">Cambiar contraseña</h2>
+            <svg class="page-icon-svg" viewBox="0 0 24 24" fill="none" stroke="#1a2b5e" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </div>
+
+          <div class="panel form-panel">
+
+            <!-- Error general -->
+            <div class="error-banner" *ngIf="errorMsg">
+              <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              {{ errorMsg }}
+            </div>
+
+            <!-- Contraseña actual -->
+            <div class="form-group">
+              <label class="form-label">Contraseña actual</label>
+              <div class="input-wrapper">
+                <input class="form-input" [type]="mostrarActual ? 'text' : 'password'"
+                       [(ngModel)]="form.actual" placeholder="••••••••••" />
+                <button class="toggle-eye" type="button" (click)="mostrarActual = !mostrarActual">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#8a9ab8" stroke-width="2" width="18" height="18">
+                    <path *ngIf="!mostrarActual" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle *ngIf="!mostrarActual" cx="12" cy="12" r="3"/>
+                    <path *ngIf="mostrarActual" d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                    <line *ngIf="mostrarActual" x1="1" y1="1" x2="23" y2="23"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Nueva contraseña -->
+            <div class="form-group">
+              <label class="form-label">Nueva contraseña</label>
+              <div class="input-wrapper">
+                <input class="form-input" [type]="mostrarNueva ? 'text' : 'password'"
+                       [(ngModel)]="form.nueva" placeholder="••••••••••"
+                       (ngModelChange)="onNuevaContrasenaChange()" />
+                <button class="toggle-eye" type="button" (click)="mostrarNueva = !mostrarNueva">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#8a9ab8" stroke-width="2" width="18" height="18">
+                    <path *ngIf="!mostrarNueva" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle *ngIf="!mostrarNueva" cx="12" cy="12" r="3"/>
+                    <path *ngIf="mostrarNueva" d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                    <line *ngIf="mostrarNueva" x1="1" y1="1" x2="23" y2="23"/>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Checklist de requisitos (aparece cuando empieza a escribir) -->
+              <div class="requisitos-box" *ngIf="form.nueva.length > 0">
+                <p class="req-titulo">La contraseña debe tener:</p>
+                <div class="req-item" [class.req-ok]="requisitos.longitud" [class.req-fail]="!requisitos.longitud">
+                  <svg viewBox="0 0 20 20" fill="currentColor" width="13" height="13">
+                    <path *ngIf="requisitos.longitud" fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    <path *ngIf="!requisitos.longitud" fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                  </svg>
+                  Mínimo 8 caracteres
+                </div>
+                <div class="req-item" [class.req-ok]="requisitos.mayuscula" [class.req-fail]="!requisitos.mayuscula">
+                  <svg viewBox="0 0 20 20" fill="currentColor" width="13" height="13">
+                    <path *ngIf="requisitos.mayuscula" fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    <path *ngIf="!requisitos.mayuscula" fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                  </svg>
+                  Al menos 1 letra mayúscula
+                </div>
+                <div class="req-item" [class.req-ok]="requisitos.numero" [class.req-fail]="!requisitos.numero">
+                  <svg viewBox="0 0 20 20" fill="currentColor" width="13" height="13">
+                    <path *ngIf="requisitos.numero" fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    <path *ngIf="!requisitos.numero" fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                  </svg>
+                  Al menos 1 número
+                </div>
+              </div>
+            </div>
+
+            <!-- Confirmar contraseña -->
+            <div class="form-group">
+              <label class="form-label">Confirmar contraseña</label>
+              <div class="input-wrapper" [class.input-error]="errorConfirmar">
+                <input class="form-input" [type]="mostrarConfirmar ? 'text' : 'password'"
+                       [(ngModel)]="form.confirmar" placeholder="••••••••••" />
+                <button class="toggle-eye" type="button" (click)="mostrarConfirmar = !mostrarConfirmar">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#8a9ab8" stroke-width="2" width="18" height="18">
+                    <path *ngIf="!mostrarConfirmar" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle *ngIf="!mostrarConfirmar" cx="12" cy="12" r="3"/>
+                    <path *ngIf="mostrarConfirmar" d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                    <line *ngIf="mostrarConfirmar" x1="1" y1="1" x2="23" y2="23"/>
+                  </svg>
+                </button>
+              </div>
+              <span class="error-msg" *ngIf="errorConfirmar">Las contraseñas no coinciden</span>
+            </div>
+
+            <div class="form-footer">
+              <button class="btn-actualizar" (click)="actualizarContrasena()" [disabled]="guardando">
+                {{ guardando ? 'Actualizando...' : 'Actualizar' }}
+              </button>
+            </div>
+
+          </div>
+
+        </ng-container>
+
+        <!-- ══════════ VISTA EDITAR PERFIL ══════════ -->
+        <ng-container *ngIf="vista === 'perfil'">
+
+          <div class="page-header">
+            <button class="btn-back" (click)="vista = 'menu'; errorMsg = ''">&#8249;</button>
+            <h2 class="page-title">Editar información del perfil</h2>
+          </div>
+
+          <div class="panel form-panel">
+            <p class="userid-label">Código : <strong>{{ usuario?.codigo }}</strong></p>
+
+            <div class="form-layout">
+              <div class="foto-col">
+                <div class="foto-wrapper" (click)="fotoInput.click()">
+                  <img *ngIf="fotoPreview" [src]="fotoPreview" alt="Foto" class="foto-img" />
+                  <div *ngIf="!fotoPreview" class="foto-placeholder">
+                    <svg viewBox="0 0 24 24" fill="#9aaac5" width="48" height="48">
+                      <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                    </svg>
+                  </div>
+                  <div class="foto-overlay"><span>Cambiar foto</span></div>
+                </div>
+                <input #fotoInput type="file" accept="image/*" style="display:none"
+                       (change)="onFotoChange($event)" />
+              </div>
+
+              <div class="campos-col">
+                <div class="form-group">
+                  <label class="form-label">Nombre y apellido</label>
+                  <input class="form-input-plain" type="text" [(ngModel)]="perfil.nombreCompleto" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Correo electrónico</label>
+                  <input class="form-input-plain" type="email" [(ngModel)]="perfil.correo" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Dirección</label>
+                  <input class="form-input-plain" type="text" [(ngModel)]="perfil.direccion" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Número de celular</label>
+                  <input class="form-input-plain" type="tel" [(ngModel)]="perfil.telefono" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">DNI</label>
+                  <input class="form-input-plain" type="text" [(ngModel)]="perfil.dni" maxlength="8" />
+                </div>
+                <div class="form-footer">
+                  <button class="btn-actualizar" (click)="guardarPerfil()" [disabled]="guardando">
+                    {{ guardando ? 'Guardando...' : 'Guardar' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </ng-container>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="inner-footer">
+    <span>&#169; 2026 Impulsa A365 Todos los derechos reservados por Group16</span>
+    <div class="footer-icons">
+      <a href="#" class="footer-icon">in</a>
+      <a href="#" class="footer-icon">f</a>
+      <a href="#" class="footer-icon">&#9679;</a>
+    </div>
+  </footer>
+
+</div>
+
+<!-- MODAL ÉXITO -->
+<div class="modal-overlay" *ngIf="mostrarModal">
+  <div class="modal-confirmacion">
+    <button class="modal-close-x" (click)="mostrarModal = false">&#10005;</button>
+    <p class="modal-mensaje">{{ mensajeModal }}</p>
+  </div>
+</div>

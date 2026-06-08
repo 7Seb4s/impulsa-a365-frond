@@ -211,4 +211,24 @@ export class CrearUsuarioComponent {
   onVolver(): void {
     this.router.navigate(['/dashboard/admin']);
   }
+
+  irAInicio(): void {
+    this.router.navigate(['/dashboard/admin']);
+  }
+
+  irAGestionTickets(): void {
+    this.router.navigate(['/dashboard/gestion-tickets']);
+  }
+
+  irAGestionIncidencias(): void {
+    this.router.navigate(['/dashboard/gestion-incidencias']);
+  }
+
+  irAPanelUsuarios(): void {
+    this.router.navigate(['/dashboard/panel-usuarios']);
+  }
+
+  irAAdministracion(): void {
+    this.router.navigate(['/dashboard/administracion']);
+  }
 }

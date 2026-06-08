@@ -4,18 +4,20 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ServicioAutenticacion, DatosUsuario } from '../../../core/services/servicio-autenticacion';
+import { ServicioAdmin, ResumenTicketsMes, ResumenIncidenciasSemana, ResumenTicketsSemana } from '../../../core/services/servicio-admin';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 
 declare const Chart: any;
 
 export interface TicketReporte {
-  numero: string;
-  asunto: string;
+  numero:      string;
+  asunto:      string;
   solicitante: string;
-  prioridad: string;
-  estado: string;
-  fecha: string;
-  tiempo: string;
+  prioridad:   string;
+  estado:      string;
+  fecha:       string;
+  tiempo:      string;
 }
 
 @Component({
@@ -32,29 +34,26 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
   // Guardamos referencias para destruirlos al salir del componente
   private charts: any[] = [];
 
-  ticketStats = { total: 24, atendidos: 14, pendientes: 8, cancelados: 2, promTiempo: '3.2h' };
+  // Stats del backend (se pueblan en ngOnInit)
+  ticketStats = { total: 0, atendidos: 0, pendientes: 0, cancelados: 0, promTiempo: '—' };
 
-  ticketsReporte: TicketReporte[] = [
-    { numero: '001', asunto: 'Actualización de datos de usuario',      solicitante: 'Fernando Ramos', prioridad: 'ALTA',  estado: 'ATENDIDO',    fecha: '02/05/2026', tiempo: '1.5h' },
-    { numero: '002', asunto: 'Error en módulo de reportes',            solicitante: 'Grace Galán',    prioridad: 'ALTA',  estado: 'PENDIENTE',   fecha: '03/05/2026', tiempo: '–'   },
-    { numero: '003', asunto: 'Solicitud de cambio de área',            solicitante: 'Luis Torres',    prioridad: 'MEDIA', estado: 'ATENDIDO',    fecha: '04/05/2026', tiempo: '4.0h' },
-    { numero: '004', asunto: 'Revisión de solicitudes técnicas',       solicitante: 'Ana Flores',     prioridad: 'BAJA',  estado: 'EN REVISIÓN', fecha: '05/05/2026', tiempo: '–'   },
-    { numero: '005', asunto: 'Eliminación de registros duplicados',    solicitante: 'Carlos Paz',     prioridad: 'ALTA',  estado: 'ATENDIDO',    fecha: '06/05/2026', tiempo: '2.5h' },
-    { numero: '006', asunto: 'Acceso denegado al sistema',             solicitante: 'María Quispe',   prioridad: 'ALTA',  estado: 'CANCELADO',   fecha: '07/05/2026', tiempo: '–'   },
-    { numero: '007', asunto: 'Configuración de permisos',              solicitante: 'Pedro Vega',     prioridad: 'MEDIA', estado: 'ATENDIDO',    fecha: '08/05/2026', tiempo: '3.0h' },
-    { numero: '008', asunto: 'Falla en carga de archivos',             solicitante: 'Sandra León',    prioridad: 'MEDIA', estado: 'PENDIENTE',   fecha: '09/05/2026', tiempo: '–'   },
-    { numero: '009', asunto: 'Reporte mensual no generado',            solicitante: 'Jorge Ríos',     prioridad: 'BAJA',  estado: 'ATENDIDO',    fecha: '10/05/2026', tiempo: '5.5h' },
-    { numero: '010', asunto: 'Actualización de contraseña masiva',     solicitante: 'Claudia Mena',   prioridad: 'ALTA',  estado: 'PENDIENTE',   fecha: '11/05/2026', tiempo: '–'   },
-  ];
+  // Datos reales para los gráficos (se pueblan antes de inicializar Chart.js)
+  private datosIncidencias: number[] = [0, 0, 0, 0];
+  private datosTicketsSemana: number[] = [0, 0, 0, 0];
+
+  // Tabla del reporte de tickets (se puebla con los datos del mes)
+  ticketsReporte: TicketReporte[] = [];
 
   constructor(
-    private servicioAuth: ServicioAutenticacion,
-    private ngZone: NgZone,
-    private router: Router
+    private servicioAuth:  ServicioAutenticacion,
+    private servicioAdmin: ServicioAdmin,
+    private ngZone:        NgZone,
+    private router:        Router
   ) {}
 
   ngOnInit(): void {
     this.usuario = this.servicioAuth.obtenerUsuario();
+    this.cargarDatos();
   }
 
   ngAfterViewInit(): void {
@@ -68,6 +67,113 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
     this.charts = [];
   }
 
+  // ── CARGA DE DATOS REALES ────────────────────────────────────
+
+  // Llama en paralelo a los 3 endpoints de gráficos del dashboard
+  private cargarDatos(): void {
+    forkJoin({
+      ticketsMes:          this.servicioAdmin.obtenerResumenTicketsMes(),
+      incidenciasSemana:   this.servicioAdmin.obtenerResumenIncidenciasSemana(),
+      ticketsSemana:       this.servicioAdmin.obtenerResumenTicketsSemana()
+    }).subscribe({
+      next: ({ ticketsMes, incidenciasSemana, ticketsSemana }) => {
+        this.aplicarResumenMes(ticketsMes);
+        this.aplicarIncidencias(incidenciasSemana);
+        this.aplicarTicketsSemana(ticketsSemana);
+        // Reinicia los gráficos con datos reales si ya están montados
+        this.reiniciarGraficos();
+      },
+      error: () => {
+        // Si falla la carga los gráficos quedan con ceros (sin romper la vista)
+        console.warn('[A365] No se pudieron cargar los datos del dashboard');
+      }
+    });
+  }
+
+  // Puebla los stats de la tabla y los widgets superiores
+  private aplicarResumenMes(datos: ResumenTicketsMes): void {
+    this.ticketStats = {
+      total:      datos.total,
+      atendidos:  datos.atendidos,
+      pendientes: datos.pendientes,
+      cancelados: datos.cancelados,
+      promTiempo: '—'    // el backend no calcula esto aún
+    };
+  }
+
+  // Arma los datos del gráfico de torta de incidencias
+  // Orden: [Atendidas/Resueltas, Evaluando/EnRevision, EnProgreso, Pendientes/Reportadas]
+  private aplicarIncidencias(datos: ResumenIncidenciasSemana): void {
+    const total = datos.total || 1;  // evitar división por cero
+    this.datosIncidencias = [
+      Math.round(datos.resueltas  / total * 100),
+      Math.round(datos.enRevision / total * 100),
+      0,   // "En progreso" no existe aún en la BD
+      Math.round(datos.reportadas / total * 100)
+    ];
+  }
+
+  // Arma los datos del gráfico de dona de tickets por estado
+  // Orden: [Pendientes, Evaluando, EnProgreso, Atendidos]
+  private aplicarTicketsSemana(datos: ResumenTicketsSemana): void {
+    const total = datos.total || 1;
+    this.datosTicketsSemana = [
+      Math.round(datos.pendientes / total * 100),
+      Math.round(datos.evaluando  / total * 100),
+      Math.round(datos.enProgreso / total * 100),
+      Math.round(datos.atendidos  / total * 100)
+    ];
+  }
+
+  // Destruye y vuelve a crear los gráficos cuando llegan datos nuevos
+  private reiniciarGraficos(): void {
+    this.charts.forEach(c => c.destroy());
+    this.charts = [];
+    if (typeof (window as any)['Chart'] !== 'undefined') {
+      this.ngZone.runOutsideAngular(() => {
+        this.initGraficoIncidencias();
+        this.initGraficoTickets();
+        this.initGraficoActividad();
+      });
+    }
+  }
+
+  // ── NAVEGACIÓN SIDEBAR ──────────────────────────────────────
+
+  irAGestionTickets(): void {
+    this.router.navigate(['/dashboard/gestion-tickets']);
+  }
+
+  irAIncidencias(): void {
+    this.router.navigate(['/dashboard/incidencias']);
+  }
+
+  irAGestionIncidencias(): void {
+    this.router.navigate(['/dashboard/gestion-incidencias']);
+  }
+
+  irAReportes(): void {
+    this.router.navigate(['/dashboard/reportes']);
+  }
+
+  irACrearUsuario(): void {
+    this.router.navigate(['/dashboard/usuarios/crear']);
+  }
+
+  irAPanelUsuarios(): void {
+    this.router.navigate(['/dashboard/panel-usuarios']);
+  }
+
+  irAAdministracion(): void {
+    this.router.navigate(['/dashboard/administracion']);
+  }
+
+  onLogout(): void {
+    this.servicioAuth.logout();
+  }
+
+  // ── GRÁFICOS ────────────────────────────────────────────────
+
   // Reintenta hasta 20 veces (4 segundos) esperando que Chart.js cargue
   private esperarChartJS(intentos = 0): void {
     if (typeof (window as any)['Chart'] !== 'undefined') {
@@ -80,7 +186,6 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   private initCharts(): void {
-    // Ejecutar fuera de la zona Angular para evitar detección de cambios innecesaria
     this.ngZone.runOutsideAngular(() => {
       this.initGraficoIncidencias();
       this.initGraficoTickets();
@@ -88,7 +193,7 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
     });
   }
 
-  // Gráfico de torta: distribución de incidencias por estado
+  // Gráfico de torta: distribución de incidencias por estado (datos reales)
   private initGraficoIncidencias(): void {
     const canvas = document.getElementById('graficoIncidencias') as HTMLCanvasElement;
     if (!canvas) return;
@@ -99,7 +204,7 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
       data: {
         labels: ['Atendidas', 'Evaluando', 'En progreso', 'Pendientes'],
         datasets: [{
-          data: [32, 25, 25, 18],
+          data: this.datosIncidencias,
           backgroundColor: ['#26a69a', '#5c6bc0', '#29b6f6', '#ef5350'],
           borderWidth: 0,
           hoverOffset: 8
@@ -115,13 +220,15 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
         afterDraw(ch: any) {
           const ctx = ch.ctx;
           ch.getDatasetMeta(0).data.forEach((arc: any, i: number) => {
+            const val = ch.data.datasets[0].data[i];
+            if (val === 0) return;
             const pos = arc.tooltipPosition();
             ctx.save();
             ctx.fillStyle    = '#ffffff';
             ctx.font         = 'bold 12px Segoe UI, sans-serif';
             ctx.textAlign    = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(ch.data.datasets[0].data[i] + '%', pos.x, pos.y);
+            ctx.fillText(val + '%', pos.x, pos.y);
             ctx.restore();
           });
         }
@@ -130,7 +237,7 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
     this.charts.push(chart);
   }
 
-  // Gráfico de dona: tickets por prioridad
+  // Gráfico de dona: tickets por estado en la semana (datos reales)
   private initGraficoTickets(): void {
     const canvas = document.getElementById('graficoTickets') as HTMLCanvasElement;
     if (!canvas) return;
@@ -139,9 +246,9 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
     const chart = new C(canvas, {
       type: 'doughnut',
       data: {
-        labels: ['Muy alta', 'Alto', 'Medio', 'Bajo'],
+        labels: ['Pendientes', 'Evaluando', 'En progreso', 'Atendidos'],
         datasets: [{
-          data: [28, 22, 32, 18],
+          data: this.datosTicketsSemana,
           backgroundColor: ['#ef5350', '#ffa726', '#66bb6a', '#42a5f5'],
           borderWidth: 3,
           borderColor: '#ffffff',
@@ -158,7 +265,7 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
     this.charts.push(chart);
   }
 
-  // Gráfico de líneas: registro de actividad por mes
+  // Gráfico de líneas: registro de actividad por mes (datos estáticos por ahora)
   private initGraficoActividad(): void {
     const canvas = document.getElementById('graficoActividad') as HTMLCanvasElement;
     if (!canvas) return;
@@ -221,13 +328,5 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
       }
     });
     this.charts.push(chart);
-  }
-
-  irACrearUsuario(): void {
-    this.router.navigate(['/dashboard/usuarios/crear']);
-  }
-
-  onLogout(): void {
-    this.servicioAuth.logout();
   }
 }

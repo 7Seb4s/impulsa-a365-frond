@@ -54,6 +54,14 @@ export const routes: Routes = [
             .then(m => m.CrearUsuarioComponent)
       },
 
+      // Panel de usuarios (admin) ← NUEVO
+      {
+        path: 'panel-usuarios',
+        loadComponent: () =>
+          import('./pages/panel-usuarios/panel-usuarios.component')
+            .then(m => m.PanelUsuariosComponent)
+      },
+
       // Vista de tickets
       {
         path: 'tickets',
@@ -92,6 +100,30 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/reportes/reportes.component')
             .then(m => m.ReportesComponent)
+      },
+
+      // Vista de gestión de tickets (admin)
+      {
+        path: 'gestion-tickets',
+        loadComponent: () =>
+          import('./pages/gestion-tickets/gestion-tickets.component')
+            .then(m => m.GestionTicketsComponent)
+      },
+
+      // Vista de gestión de incidencias (admin)
+      {
+        path: 'gestion-incidencias',
+        loadComponent: () =>
+          import('./pages/gestion-incidencia/gestion-incidencia.component')
+            .then(m => m.GestionIncidenciasComponent)
+      },
+
+      // Vista de administración (admin) ← NUEVO
+      {
+        path: 'administracion',
+        loadComponent: () =>
+          import('./pages/administracion/administracion.component')
+            .then(m => m.AdministracionComponent)
       }
     ]
   },
