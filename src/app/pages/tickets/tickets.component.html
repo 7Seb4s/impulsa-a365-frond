@@ -53,8 +53,8 @@
         <!-- Tabs -->
         <div class="tabs-bar">
           <button class="tab-btn" [class.active]="tabActivo === 'pendientes'" (click)="cambiarTab('pendientes')">Pendientes</button>
-          <button class="tab-btn" [class.active]="tabActivo === 'completados'" (click)="cambiarTab('completados')">Pendientes completados</button>
-          <button class="tab-btn" [class.active]="tabActivo === 'cancelados'" (click)="cambiarTab('cancelados')">Pendientes cancelados</button>
+          <button class="tab-btn" [class.active]="tabActivo === 'completados'" (click)="cambiarTab('completados')">Completados</button>
+          <button class="tab-btn" [class.active]="tabActivo === 'cancelados'" (click)="cambiarTab('cancelados')">Cancelados</button>
         </div>
 
         <!-- Lista de tickets -->
@@ -97,7 +97,7 @@
 
         <!-- Botón Nuevo Ticket -->
         <div class="nuevo-ticket-row">
-          <button class="btn-nuevo-ticket" (click)="abrirNuevoTicket()">Nuevo ticket</button>
+          <button class="btn-nuevo-ticket" *ngIf="tabActivo === 'pendientes'" (click)="abrirNuevoTicket()">Nuevo ticket</button>
         </div>
 
       </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
     private servicioAuth: ServicioAutenticacion,
     private router:       Router,
     private ngZone:       NgZone,
+    private cdr:          ChangeDetectorRef,
     private http:         HttpClient
   ) {}
 
@@ -62,6 +63,7 @@ export class LoginComponent implements OnInit {
     }).subscribe({
       next: (res) => {
         this.cargando = false;
+        this.cdr.detectChanges();
         this.redirigirPorRol(res.rol);
       },
       error: (err) => {

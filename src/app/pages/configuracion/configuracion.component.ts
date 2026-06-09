@@ -1,5 +1,5 @@
 // pages/configuracion/configuracion.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -41,7 +41,8 @@ export class ConfiguracionComponent implements OnInit {
 
   constructor(
     private servicioAuth: ServicioAutenticacion,
-    private servicioPerfil: ServicioPerfil
+    private servicioPerfil: ServicioPerfil,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -60,8 +61,9 @@ export class ConfiguracionComponent implements OnInit {
           telefono:       p.telefono ?? '',
           dni:            p.dni ?? ''
         };
+        this.cdr.detectChanges();
       },
-      error: () => { /* silencioso, el usuario lo ve cuando entra a editar */ }
+      error: () => { this.cdr.detectChanges(); }
     });
   }
 
@@ -72,6 +74,18 @@ export class ConfiguracionComponent implements OnInit {
     this.errorMsg = '';
     if (!this.form.actual || !this.form.nueva || !this.form.confirmar) {
       alert('Completa todos los campos.'); return;
+    }
+    if (this.form.nueva.length < 8) {
+      this.errorMsg = 'Mínimo 8 caracteres.'; alert(this.errorMsg); return;
+    }
+    if (!/[A-Z]/.test(this.form.nueva)) {
+      this.errorMsg = 'Debe incluir al menos 1 mayúscula.'; alert(this.errorMsg); return;
+    }
+    if (!/[0-9]/.test(this.form.nueva)) {
+      this.errorMsg = 'Debe incluir al menos 1 número.'; alert(this.errorMsg); return;
+    }
+    if (!/[^a-zA-Z0-9]/.test(this.form.nueva)) {
+      this.errorMsg = 'Debe incluir al menos 1 carácter especial (!@#$...).'; alert(this.errorMsg); return;
     }
     if (this.form.nueva !== this.form.confirmar) {
       this.errorConfirmar = true; return;
@@ -84,6 +98,7 @@ export class ConfiguracionComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.guardando = false;
+        this.cdr.detectChanges();
         this.form = { actual: '', nueva: '', confirmar: '' };
         this.vista = 'menu';
         this.mensajeModal = 'Tu contraseña ha sido actualizada correctamente.';
@@ -91,6 +106,7 @@ export class ConfiguracionComponent implements OnInit {
       },
       error: (err) => {
         this.guardando = false;
+        this.cdr.detectChanges();
         this.errorMsg = err?.error?.message || 'No se pudo actualizar la contraseña.';
         alert(this.errorMsg);
       }
@@ -111,12 +127,14 @@ export class ConfiguracionComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.guardando = false;
+        this.cdr.detectChanges();
         this.vista = 'menu';
         this.mensajeModal = 'Tu perfil ha sido actualizado correctamente.';
         this.mostrarModal = true;
       },
       error: (err) => {
         this.guardando = false;
+        this.cdr.detectChanges();
         alert(err?.error?.message || 'No se pudo actualizar el perfil.');
       }
     });

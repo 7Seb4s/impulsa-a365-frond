@@ -1,5 +1,5 @@
 // Recuperacion de contrasena: envia codigo al correo, verifica y redirige al login
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -26,7 +26,8 @@ export class RecuperarComponent {
 
   constructor(
     private http:   HttpClient,
-    private router: Router
+    private router: Router,
+    private cdr:    ChangeDetectorRef
   ) {}
 
   // Paso 1: envia el correo al backend para que genere un codigo y lo envie por email
@@ -56,6 +57,7 @@ export class RecuperarComponent {
       },
       error: (err) => {
         this.cargando = false;
+        this.cdr.detectChanges();
         if (err.status === 404) {
           this.errorMsg = 'No encontramos una cuenta con ese correo.';
         } else {
@@ -79,6 +81,7 @@ export class RecuperarComponent {
       },
       error: () => {
         this.cargando = false;
+        this.cdr.detectChanges();
         this.errorMsg = 'Error al reenviar el codigo.';
       }
     });
@@ -102,10 +105,12 @@ export class RecuperarComponent {
     }).subscribe({
       next: () => {
         this.cargando = false;
+        this.cdr.detectChanges();
         this.router.navigate(['/auth/login']);
       },
       error: (err) => {
         this.cargando = false;
+        this.cdr.detectChanges();
         if (err.status === 400) {
           this.errorMsg = 'El codigo ingresado es incorrecto o ya expiro.';
         } else {

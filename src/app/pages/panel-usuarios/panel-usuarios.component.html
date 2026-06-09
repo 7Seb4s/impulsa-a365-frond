@@ -205,3 +205,130 @@
 
   </div>
 </div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--  MODAL: REVISIÓN DE USUARIO                        -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
+  <div class="modal-contenido" (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <h2 class="modal-titulo">Revisión de usuario</h2>
+      <button class="modal-cerrar" (click)="cerrarModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="cargandoModal" class="modal-loading">Cargando datos del usuario...</div>
+
+    <!-- Contenido -->
+    <div *ngIf="!cargandoModal && revisionModal" class="modal-body">
+
+      <!-- Datos personales -->
+      <div class="seccion">
+        <h3 class="seccion-titulo">Datos personales</h3>
+        <div class="datos-grid">
+          <div class="dato">
+            <span class="dato-label">Nombre completo</span>
+            <span class="dato-valor">{{ revisionModal.nombreCompleto || '—' }}</span>
+          </div>
+          <div class="dato">
+            <span class="dato-label">DNI</span>
+            <span class="dato-valor">{{ usuarioModal?.dni || '—' }}</span>
+          </div>
+          <div class="dato">
+            <span class="dato-label">Correo</span>
+            <span class="dato-valor">{{ revisionModal.correo || '—' }}</span>
+          </div>
+          <div class="dato">
+            <span class="dato-label">Teléfono</span>
+            <span class="dato-valor">{{ revisionModal.telefono || '—' }}</span>
+          </div>
+          <div class="dato">
+            <span class="dato-label">País</span>
+            <span class="dato-valor">{{ revisionModal.pais || '—' }}</span>
+          </div>
+          <div class="dato">
+            <span class="dato-label">Código</span>
+            <span class="dato-valor dato-codigo">{{ usuarioModal?.codigo || '—' }}</span>
+          </div>
+          <div class="dato">
+            <span class="dato-label">Cargo</span>
+            <span class="dato-valor">{{ usuarioModal?.cargo || '—' }}</span>
+          </div>
+          <div class="dato">
+            <span class="dato-label">Plataforma</span>
+            <span class="dato-valor">{{ revisionModal.plataforma || '—' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estadísticas de tickets -->
+      <div class="seccion">
+        <h3 class="seccion-titulo">Estadísticas de tickets</h3>
+        <div class="stats-grid">
+          <div class="stat-card stat-total">
+            <span class="stat-numero">{{ revisionModal.ticketsTotal }}</span>
+            <span class="stat-label">Total</span>
+          </div>
+          <div class="stat-card stat-pendiente">
+            <span class="stat-numero">{{ revisionModal.ticketsPendientes }}</span>
+            <span class="stat-label">Pendientes</span>
+          </div>
+          <div class="stat-card stat-resuelto">
+            <span class="stat-numero">{{ revisionModal.ticketsTotal - revisionModal.ticketsPendientes }}</span>
+            <span class="stat-label">Resueltos</span>
+          </div>
+        </div>
+        <div class="datos-grid" style="margin-top: 12px;">
+          <div class="dato">
+            <span class="dato-label">Tiempo de respuesta</span>
+            <span class="dato-valor">{{ revisionModal.tiempoRespuesta || '0:00' }}</span>
+          </div>
+          <div class="dato">
+            <span class="dato-label">Tiempo total</span>
+            <span class="dato-valor">{{ revisionModal.tiempoTotal || '0:00' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ticket activo -->
+      <div class="seccion" *ngIf="revisionModal.ticketActivoNumero">
+        <h3 class="seccion-titulo">Ticket activo</h3>
+        <div class="ticket-activo-card">
+          <div class="ticket-activo-header">
+            <span class="ticket-activo-numero">#{{ revisionModal.ticketActivoNumero }}</span>
+            <span class="ticket-activo-badge"
+                  [ngClass]="{
+                    'badge-alta': revisionModal.ticketActivoPrioridad === 'ALTA',
+                    'badge-media': revisionModal.ticketActivoPrioridad === 'MEDIA',
+                    'badge-baja': revisionModal.ticketActivoPrioridad === 'BAJA'
+                  }">
+              {{ revisionModal.ticketActivoPrioridad }}
+            </span>
+          </div>
+          <div class="ticket-activo-detalle">
+            <span>Tipo: {{ revisionModal.ticketActivoTipo }}</span>
+            <span *ngIf="revisionModal.asignadoNombre">Asignado a: {{ revisionModal.asignadoNombre }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="seccion" *ngIf="!revisionModal.ticketActivoNumero">
+        <h3 class="seccion-titulo">Ticket activo</h3>
+        <p class="sin-datos">No tiene tickets activos actualmente.</p>
+      </div>
+
+    </div>
+
+    <!-- Error -->
+    <div *ngIf="!cargandoModal && !revisionModal" class="modal-loading">
+      No se pudieron cargar los datos del usuario.
+    </div>
+
+  </div>
+</div>

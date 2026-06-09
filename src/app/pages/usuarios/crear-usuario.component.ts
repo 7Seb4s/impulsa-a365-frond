@@ -1,7 +1,7 @@
 // pages/usuarios/crear-usuario.component.ts
 // Formulario para crear un nuevo usuario con código autoincremental.
 // Validaciones: nombre/apellido solo letras y espacios, DNI 8 dígitos, teléfono 9 dígitos.
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -74,7 +74,8 @@ export class CrearUsuarioComponent {
 
   constructor(
     private http:   HttpClient,
-    private router: Router
+    private router: Router,
+    private cdr:    ChangeDetectorRef
   ) {}
 
   // Solo permite letras y espacios en campos de texto
@@ -154,8 +155,14 @@ export class CrearUsuarioComponent {
 
     if (!this.form.contrasena.trim()) {
       this.errores.contrasena = 'La contraseña es obligatoria.'; ok = false;
-    } else if (this.form.contrasena.length < 6) {
-      this.errores.contrasena = 'La contraseña debe tener al menos 6 caracteres.'; ok = false;
+    } else if (this.form.contrasena.length < 8) {
+      this.errores.contrasena = 'Mínimo 8 caracteres.'; ok = false;
+    } else if (!/[A-Z]/.test(this.form.contrasena)) {
+      this.errores.contrasena = 'Debe incluir al menos 1 letra mayúscula.'; ok = false;
+    } else if (!/[0-9]/.test(this.form.contrasena)) {
+      this.errores.contrasena = 'Debe incluir al menos 1 número.'; ok = false;
+    } else if (!/[^a-zA-Z0-9]/.test(this.form.contrasena)) {
+      this.errores.contrasena = 'Debe incluir al menos 1 carácter especial (!@#$...).'; ok = false;
     }
 
     if (!this.form.confirmarContrasena.trim()) {
@@ -186,6 +193,7 @@ export class CrearUsuarioComponent {
         this.cargando       = false;
         this.exitoso        = true;
         this.codigoGenerado = res.codigo;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.cargando = false;
@@ -196,6 +204,7 @@ export class CrearUsuarioComponent {
         } else {
           this.errores.general = 'Error al crear el usuario. Intenta de nuevo.';
         }
+        this.cdr.detectChanges();
       }
     });
   }

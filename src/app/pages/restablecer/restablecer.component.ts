@@ -2,7 +2,7 @@
 // Pantalla "Restablece tu contraseña" — Paso 3 del flujo de recuperación.
 // Recibe correo + codigo desde el estado de navegación (Router state),
 // pide la nueva contraseña al usuario y llama a POST /api/auth/recuperar/cambiar.
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -36,7 +36,8 @@ export class RestablecerComponent implements OnInit {
 
   constructor(
     private http:   HttpClient,
-    private router: Router
+    private router: Router,
+    private cdr:    ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -71,8 +72,20 @@ export class RestablecerComponent implements OnInit {
       this.errorMsg = 'Por favor ingresa tu nueva contraseña.';
       return;
     }
-    if (this.nuevaPassword.length < 6) {
-      this.errorMsg = 'La contraseña debe tener al menos 6 caracteres.';
+    if (this.nuevaPassword.length < 8) {
+      this.errorMsg = 'Mínimo 8 caracteres.';
+      return;
+    }
+    if (!/[A-Z]/.test(this.nuevaPassword)) {
+      this.errorMsg = 'Debe incluir al menos 1 letra mayúscula.';
+      return;
+    }
+    if (!/[0-9]/.test(this.nuevaPassword)) {
+      this.errorMsg = 'Debe incluir al menos 1 número.';
+      return;
+    }
+    if (!/[^a-zA-Z0-9]/.test(this.nuevaPassword)) {
+      this.errorMsg = 'Debe incluir al menos 1 carácter especial (!@#$...).';
       return;
     }
     if (this.nuevaPassword !== this.confirmarPassword) {
@@ -95,6 +108,7 @@ export class RestablecerComponent implements OnInit {
       },
       error: (err) => {
         this.cargando = false;
+        this.cdr.detectChanges();
         if (err.status === 400) {
           this.errorMsg = 'El código ha expirado. Por favor inicia el proceso nuevamente.';
         } else {

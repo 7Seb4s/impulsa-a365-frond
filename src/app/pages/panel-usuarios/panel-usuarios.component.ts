@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ServicioAutenticacion, DatosUsuario } from '../../core/services/servicio-autenticacion';
-import { ServicioAdmin, UsuarioPanelItem } from '../../core/services/servicio-admin';
+import { ServicioAdmin, UsuarioPanelItem, RevisionUsuario } from '../../core/services/servicio-admin';
 
 @Component({
   selector: 'app-panel-usuarios',
@@ -91,8 +91,35 @@ export class PanelUsuariosComponent implements OnInit {
 
   irAPagina(p: number): void { if (p >= 1 && p <= this.totalPaginas) this.paginaActual = p; }
 
+  // ── Modal de revisión de usuario ──
+  mostrarModal     = false;
+  cargandoModal    = false;
+  usuarioModal:    UsuarioPanelItem | null = null;
+  revisionModal:   RevisionUsuario | null = null;
+
   revisarUsuario(u: UsuarioPanelItem): void {
-    this.router.navigate(['/dashboard/usuarios/crear'], { queryParams: { id: u.id, modo: 'revisar' } });
+    this.usuarioModal  = u;
+    this.revisionModal = null;
+    this.mostrarModal  = true;
+    this.cargandoModal = true;
+
+    this.servicioAdmin.revisarUsuario(u.id).subscribe({
+      next: (datos) => {
+        this.revisionModal = datos;
+        this.cargandoModal = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.cargandoModal = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  cerrarModal(): void {
+    this.mostrarModal  = false;
+    this.usuarioModal  = null;
+    this.revisionModal = null;
   }
 
   // ── Exportar a Excel ──

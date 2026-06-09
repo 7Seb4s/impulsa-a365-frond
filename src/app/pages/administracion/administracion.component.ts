@@ -1,5 +1,5 @@
 // pages/administracion/administracion.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -37,6 +37,7 @@ export class AdministracionComponent implements OnInit {
     longitud:   false,   // mínimo 8 caracteres
     mayuscula:  false,   // al menos 1 letra mayúscula
     numero:     false,   // al menos 1 dígito
+    especial:   false,   // al menos 1 carácter especial
   };
 
   // Formulario contraseña
@@ -51,7 +52,8 @@ export class AdministracionComponent implements OnInit {
   constructor(
     private servicioAuth: ServicioAutenticacion,
     private servicioPerfil: ServicioPerfil,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -76,8 +78,9 @@ export class AdministracionComponent implements OnInit {
           telefono:       p.telefono        ?? '',
           dni:            p.dni             ?? ''
         };
+        this.cdr.detectChanges();
       },
-      error: () => {}
+      error: () => { this.cdr.detectChanges(); }
     });
   }
 
@@ -87,12 +90,13 @@ export class AdministracionComponent implements OnInit {
     this.requisitos.longitud  = v.length >= 8;
     this.requisitos.mayuscula = /[A-Z]/.test(v);
     this.requisitos.numero    = /[0-9]/.test(v);
+    this.requisitos.especial  = /[^a-zA-Z0-9]/.test(v);
     // Resetea el error de confirmación cuando cambia la nueva contraseña
     this.errorConfirmar = false;
   }
 
   get requisitosOk(): boolean {
-    return this.requisitos.longitud && this.requisitos.mayuscula && this.requisitos.numero;
+    return this.requisitos.longitud && this.requisitos.mayuscula && this.requisitos.numero && this.requisitos.especial;
   }
 
   // ── Cambiar contraseña ──
@@ -118,14 +122,16 @@ export class AdministracionComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.guardando = false;
+        this.cdr.detectChanges();
         this.form = { actual: '', nueva: '', confirmar: '' };
-        this.requisitos = { longitud: false, mayuscula: false, numero: false };
+        this.requisitos = { longitud: false, mayuscula: false, numero: false, especial: false };
         this.vista = 'menu';
         this.mensajeModal = 'Tu contraseña ha sido actualizada correctamente.';
         this.mostrarModal = true;
       },
       error: (err) => {
         this.guardando = false;
+        this.cdr.detectChanges();
         this.errorMsg = err?.error?.message || 'No se pudo actualizar la contraseña.';
       }
     });
@@ -144,12 +150,14 @@ export class AdministracionComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.guardando = false;
+        this.cdr.detectChanges();
         this.vista = 'menu';
         this.mensajeModal = 'Tu perfil ha sido actualizado correctamente.';
         this.mostrarModal = true;
       },
       error: (err) => {
         this.guardando = false;
+        this.cdr.detectChanges();
         this.errorMsg = err?.error?.message || 'No se pudo actualizar el perfil.';
       }
     });
