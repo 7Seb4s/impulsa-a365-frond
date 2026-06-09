@@ -4,7 +4,7 @@ import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ServicioAutenticacion, DatosUsuario } from '../../core/services/servicio-autenticacion';
-import { ServicioPerfil, PerfilResponse } from '../../core/services/servicio-perfil';
+import { ServicioPerfil, PerfilResponse, resolverUrlFoto } from '../../core/services/servicio-perfil';
 
 interface FormularioPerfil {
   nombreCompleto: string;
@@ -25,12 +25,17 @@ export class PerfilComponent implements OnInit {
 
   usuario: DatosUsuario | null = null;
   perfilBD: PerfilResponse | null = null;
-  fotoPreview: string | null = null;
+  fotoPreview: string | null = null;   // preview local (base64) o URL del servidor
   guardando = false;
+  subiendoFoto = false;                // spinner mientras sube la foto
+  errorFoto = '';                      // mensaje de error al subir foto
   modoEdicion = false;
   mostrarModal = false;
   cargando = false;
   errorMsg = '';
+
+  // Archivo seleccionado pendiente de subir
+  private archivoFotoPendiente: File | null = null;
 
   formulario: FormularioPerfil = {
     nombreCompleto: '',
@@ -51,6 +56,13 @@ export class PerfilComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuario = this.servicioAuth.obtenerUsuario();
+    // Mostrar foto guardada inmediatamente mientras carga del backend
+    this.servicioAuth.fotoUrl$.subscribe(url => {
+      if (!this.archivoFotoPendiente) {
+        this.fotoPreview = url ? `${url}?t=${Date.now()}` : null;
+        this.cdr.detectChanges();
+      }
+    });
     this.cargarPerfil();
   }
 
@@ -60,9 +72,7 @@ export class PerfilComponent implements OnInit {
     this.errorMsg = '';
     this.servicioPerfil.obtener().subscribe({
       next: (perfil) => {
-        console.log('[Perfil] Respuesta del backend:', perfil);
         this.perfilBD = perfil;
-        // Asignamos un objeto nuevo para forzar el change detection de Angular
         this.formulario = {
           nombreCompleto: perfil.nombreCompleto ?? '',
           correo:         perfil.correo ?? '',
@@ -71,6 +81,12 @@ export class PerfilComponent implements OnInit {
           dni:            perfil.dni ?? ''
         };
         this.formularioRespaldo = { ...this.formulario };
+        // La foto ya fue actualizada globalmente por servicioPerfil.obtener() via tap()
+        // Solo actualizamos el preview local si no hay archivo pendiente
+        if (!this.archivoFotoPendiente) {
+          const url = resolverUrlFoto(perfil.fotoUrl);
+          this.fotoPreview = url ? `${url}?t=${Date.now()}` : null;
+        }
         this.cargando = false;
         this.cdr.detectChanges();
       },
@@ -84,29 +100,88 @@ export class PerfilComponent implements OnInit {
 
   activarEdicion(): void {
     this.formularioRespaldo = { ...this.formulario };
+    this.archivoFotoPendiente = null;
+    this.errorFoto = '';
     this.modoEdicion = true;
   }
 
   cancelarEdicion(): void {
     this.formulario = { ...this.formularioRespaldo };
+    this.archivoFotoPendiente = null;
+    this.errorFoto = '';
+    // Restaurar foto del servidor al cancelar
+    const url = resolverUrlFoto(this.perfilBD?.fotoUrl);
+    this.fotoPreview = url ? `${url}?t=${Date.now()}` : null;
     this.modoEdicion = false;
   }
 
+  // El usuario elige una imagen: hacemos preview local y guardamos el File
   onFotoChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     if (!file) return;
+
+    // Validar tipo antes de mostrar preview
+    const tiposPermitidos = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (!tiposPermitidos.includes(file.type)) {
+      this.errorFoto = 'Solo se permiten imágenes JPEG, PNG, WEBP o GIF.';
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      this.errorFoto = 'La imagen no puede superar 5 MB.';
+      return;
+    }
+
+    this.errorFoto = '';
+    this.archivoFotoPendiente = file;
+
+    // Preview inmediato sin esperar al servidor
     const reader = new FileReader();
-    reader.onload = () => { this.fotoPreview = reader.result as string; };
+    reader.onload = () => {
+      this.fotoPreview = reader.result as string;
+      this.cdr.detectChanges();
+    };
     reader.readAsDataURL(file);
   }
 
-  // Envia los cambios al backend (PUT /api/perfil)
+  // Guarda los datos del perfil. Si hay foto pendiente, la sube primero.
   guardar(): void {
     if (!this.formulario.nombreCompleto.trim()) {
       alert('El nombre es obligatorio.');
       return;
     }
+
+    if (this.archivoFotoPendiente) {
+      this.subirFotoYLuegoGuardar();
+    } else {
+      this.guardarDatos();
+    }
+  }
+
+  // Sube la foto al backend y luego guarda los datos del formulario
+  private subirFotoYLuegoGuardar(): void {
+    this.subiendoFoto = true;
+    this.errorFoto = '';
+    // subirFoto ya llama actualizarFoto() internamente via tap()
+    this.servicioPerfil.subirFoto(this.archivoFotoPendiente!).subscribe({
+      next: (res) => {
+        this.subiendoFoto = false;
+        this.archivoFotoPendiente = null;
+        const url = resolverUrlFoto(res.fotoUrl);
+        this.fotoPreview = url ? `${url}?t=${Date.now()}` : null;
+        this.cdr.detectChanges();
+        this.guardarDatos();
+      },
+      error: (err) => {
+        this.subiendoFoto = false;
+        this.errorFoto = err?.error?.message || 'No se pudo subir la foto. Intenta de nuevo.';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  // Envía los datos de texto al backend (PUT /api/perfil)
+  private guardarDatos(): void {
     this.guardando = true;
     this.servicioPerfil.actualizar({
       nombreCompleto: this.formulario.nombreCompleto.trim(),
@@ -120,8 +195,6 @@ export class PerfilComponent implements OnInit {
         this.modoEdicion = false;
         this.mostrarModal = true;
         this.cdr.detectChanges();
-        // El formulario ya tiene los datos que acabamos de enviar, asi que la vista lectura
-        // los muestra inmediatamente. Recargamos del backend en segundo plano para sincronizar.
         this.cargarPerfil();
       },
       error: (err) => {

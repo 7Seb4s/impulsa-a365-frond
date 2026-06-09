@@ -4,7 +4,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/configuracion-entorno';
 
 export interface PeticionLogin {
@@ -31,9 +31,19 @@ export interface DatosUsuario {
 @Injectable({ providedIn: 'root' })
 export class ServicioAutenticacion {
 
-  private readonly URL_API    = environment.apiUrl;
+  private readonly URL_API       = environment.apiUrl;
   private readonly CLAVE_TOKEN   = 'a365_token';
   private readonly CLAVE_USUARIO = 'a365_usuario';
+  private readonly CLAVE_FOTO    = 'a365_foto';
+
+  // BehaviorSubject: emite la URL de la foto cada vez que cambia.
+  // Se inicializa con el valor guardado en localStorage (persiste entre navegaciones).
+  private _fotoUrl$ = new BehaviorSubject<string | null>(
+    localStorage.getItem(this.CLAVE_FOTO)
+  );
+
+  /** Observable de la foto del usuario — suscríbete en cualquier componente */
+  readonly fotoUrl$ = this._fotoUrl$.asObservable();
 
   constructor(
     private http:   HttpClient,
@@ -62,6 +72,8 @@ export class ServicioAutenticacion {
   logout(): void {
     localStorage.removeItem(this.CLAVE_TOKEN);
     localStorage.removeItem(this.CLAVE_USUARIO);
+    localStorage.removeItem(this.CLAVE_FOTO);
+    this._fotoUrl$.next(null);
     this.router.navigate(['/auth/login']);
   }
 
@@ -91,5 +103,16 @@ export class ServicioAutenticacion {
   // Devuelve el rol del usuario ('EMPLEADO', 'ADMINISTRADOR', 'GERENTE')
   obtenerRol(): string | null {
     return this.obtenerUsuario()?.rol ?? null;
+  }
+
+  /** Actualiza la foto en localStorage y notifica a todos los suscriptores.
+   *  Llamar desde ServicioPerfil después de subir/cargar la foto. */
+  actualizarFoto(url: string | null): void {
+    if (url) {
+      localStorage.setItem(this.CLAVE_FOTO, url);
+    } else {
+      localStorage.removeItem(this.CLAVE_FOTO);
+    }
+    this._fotoUrl$.next(url);
   }
 }

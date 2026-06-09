@@ -114,17 +114,28 @@
 
               <!-- Foto editable -->
               <div class="foto-col">
-                <div class="foto-wrapper" (click)="fotoInput.click()">
-                  <img *ngIf="fotoPreview" [src]="fotoPreview" alt="Foto de perfil" class="foto-img" />
-                  <div *ngIf="!fotoPreview" class="foto-placeholder">
+                <div class="foto-wrapper" (click)="!subiendoFoto && fotoInput.click()">
+
+                  <!-- Spinner mientras sube -->
+                  <div *ngIf="subiendoFoto" class="foto-uploading">
+                    <span class="spinner"></span>
+                  </div>
+
+                  <img *ngIf="fotoPreview && !subiendoFoto" [src]="fotoPreview" alt="Foto de perfil" class="foto-img" />
+                  <div *ngIf="!fotoPreview && !subiendoFoto" class="foto-placeholder">
                     <svg viewBox="0 0 24 24" fill="#9aaac5" width="48" height="48">
                       <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
                     </svg>
                   </div>
-                  <div class="foto-overlay"><span>Cambiar foto</span></div>
+                  <div class="foto-overlay" *ngIf="!subiendoFoto"><span>Cambiar foto</span></div>
                 </div>
-                <input #fotoInput type="file" accept="image/*" style="display:none"
-                       (change)="onFotoChange($event)" />
+
+                <!-- Error de foto -->
+                <p *ngIf="errorFoto" class="error-foto">{{ errorFoto }}</p>
+                <p *ngIf="!errorFoto" class="foto-hint">JPEG, PNG, WEBP o GIF · Máx. 5 MB</p>
+
+                <input #fotoInput type="file" accept="image/jpeg,image/png,image/webp,image/gif"
+                       style="display:none" (change)="onFotoChange($event)" />
               </div>
 
               <!-- Campos editables -->
@@ -161,8 +172,8 @@
                 </div>
 
                 <div class="form-footer">
-                  <button class="btn-guardar" (click)="guardar()" [disabled]="guardando">
-                    {{ guardando ? 'Guardando...' : 'Guardar' }}
+                  <button class="btn-guardar" (click)="guardar()" [disabled]="guardando || subiendoFoto">
+                    {{ subiendoFoto ? 'Subiendo foto...' : guardando ? 'Guardando...' : 'Guardar' }}
                   </button>
                 </div>
 

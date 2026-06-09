@@ -1,5 +1,5 @@
 // pages/reportes/reportes.component.ts
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ServicioAutenticacion, DatosUsuario } from '../../core/services/servicio-autenticacion';
@@ -24,6 +24,7 @@ interface HistorialTicket {
 export class ReportesComponent implements OnInit {
 
   usuario: DatosUsuario | null = null;
+  fotoUrl: string | null = null;
 
   totalResueltos = 24;
   totalPendientes = 3;
@@ -41,10 +42,17 @@ export class ReportesComponent implements OnInit {
     { numero: '#123449', usuario: 'Patricia Vega', tipo: 'Error',         estado: 'Pendiente', estadoClase: 'badge-naranja', fecha: '19/05/2026', tiempo: '—' },
   ];
 
-  constructor(private servicioAuth: ServicioAutenticacion) {}
+  constructor(
+    private servicioAuth: ServicioAutenticacion,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.usuario = this.servicioAuth.obtenerUsuario();
+    this.servicioAuth.fotoUrl$.subscribe(url => {
+      this.fotoUrl = url;
+      this.cdr.detectChanges();
+    });
   }
 
   onLogout(): void {

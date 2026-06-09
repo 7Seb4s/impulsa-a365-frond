@@ -23,6 +23,7 @@ interface FormularioIncidencia {
 export class IncidenciasComponent implements OnInit {
 
   usuario: DatosUsuario | null = null;
+  fotoUrl: string | null = null;
   mostrarFormulario = false;
   cargando = false;
   enviando = false;
@@ -45,6 +46,10 @@ export class IncidenciasComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuario = this.servicioAuth.obtenerUsuario();
+    this.servicioAuth.fotoUrl$.subscribe(url => {
+      this.fotoUrl = url;
+      this.cdr.detectChanges();
+    });
     this.cargarIncidencias();
   }
 

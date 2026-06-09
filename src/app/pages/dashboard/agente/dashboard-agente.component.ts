@@ -23,6 +23,7 @@ interface DiaCalendario {
 export class DashboardAgenteComponent implements OnInit {
 
   usuario: DatosUsuario | null = null;
+  fotoUrl: string | null = null;
 
   // Contadores de tickets (vienen del backend)
   totalPendientes = 0;
@@ -52,6 +53,10 @@ export class DashboardAgenteComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuario = this.servicioAuth.obtenerUsuario();
+    this.servicioAuth.fotoUrl$.subscribe(url => {
+      this.fotoUrl = url;
+      this.cdr.detectChanges();
+    });
     this.construirCalendario();
     this.cargarStats();
   }
