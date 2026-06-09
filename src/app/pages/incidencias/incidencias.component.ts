@@ -75,7 +75,6 @@ export class IncidenciasComponent implements OnInit {
 
   revisar(item: IncidenciaItem): void {
     // Por ahora solo log; cuando se haga la vista de detalle se navega
-    console.log('Revisar incidencia:', item.id);
   }
 
   // Envia al backend el formulario "Nueva incidencia"
