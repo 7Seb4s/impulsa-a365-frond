@@ -267,4 +267,22 @@ export class ServicioAdmin {
   cambiarRol(id: number, rol: string): Observable<OperacionResponse> {
     return this.http.put<OperacionResponse>(`${this.URL}/usuarios/${id}/rol`, { rol });
   }
+
+  // ── Exportación a Excel (Apache POI en el backend) ─────────
+
+  // GET /api/exportar/usuarios-activos
+  // Descarga el Excel de usuarios activos como Blob
+  exportarUsuariosActivos(): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/exportar/usuarios-activos`, {
+      responseType: 'blob'
+    });
+  }
+
+  // GET /api/exportar/usuarios-eliminados
+  // Descarga el Excel de usuarios eliminados como Blob
+  exportarUsuariosEliminados(): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/exportar/usuarios-eliminados`, {
+      responseType: 'blob'
+    });
+  }
 }

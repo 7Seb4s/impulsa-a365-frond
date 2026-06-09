@@ -95,6 +95,39 @@ export class PanelUsuariosComponent implements OnInit {
     this.router.navigate(['/dashboard/usuarios/crear'], { queryParams: { id: u.id, modo: 'revisar' } });
   }
 
+  // ── Exportar a Excel ──
+  exportando = false;
+
+  exportarExcel(): void {
+    this.exportando = true;
+    const obs$ = this.tabActiva === 'activos'
+      ? this.servicioAdmin.exportarUsuariosActivos()
+      : this.servicioAdmin.exportarUsuariosEliminados();
+
+    obs$.subscribe({
+      next: (blob) => {
+        const nombre = this.tabActiva === 'activos'
+          ? 'usuarios_activos.xlsx'
+          : 'usuarios_eliminados.xlsx';
+
+        // Crear link temporal para descargar el archivo
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = nombre;
+        a.click();
+        window.URL.revokeObjectURL(url);
+
+        this.exportando = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.exportando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
   irAInicio(): void             { this.router.navigate(['/dashboard/admin']);               }
   irAGestionTickets(): void     { this.router.navigate(['/dashboard/gestion-tickets']);     }
   irAGestionIncidencias(): void { this.router.navigate(['/dashboard/gestion-incidencias']); }

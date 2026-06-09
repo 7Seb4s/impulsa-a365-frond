@@ -192,6 +192,27 @@
 
 .search-field input::placeholder { color: #aab4cc; }
 
+/* ── BOTÓN EXPORTAR ── */
+.btn-exportar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #217346;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.btn-exportar:hover { background: #1a5c38; }
+.btn-exportar:disabled { opacity: 0.5; cursor: not-allowed; }
+
 /* ── ESTADO ── */
 .estado-mensaje {
   display: flex;
