@@ -1,5 +1,5 @@
 // pages/dashboard/agente/dashboard-agente.component.ts
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ServicioAutenticacion, DatosUsuario } from '../../../core/services/servicio-autenticacion';
@@ -46,7 +46,8 @@ export class DashboardAgenteComponent implements OnInit {
 
   constructor(
     private servicioAuth: ServicioAutenticacion,
-    private servicioTickets: ServicioTickets
+    private servicioTickets: ServicioTickets,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -70,9 +71,11 @@ export class DashboardAgenteComponent implements OnInit {
         // Timeline: primeros 4 pendientes
         this.ticketsTimeline = res.pendientes.slice(0, 4);
         this.ticketActivo    = res.pendientes[0] ?? null;
+        this.cdr.detectChanges();
       },
       error: () => {
         // si falla simplemente quedan en 0
+        this.cdr.detectChanges();
       }
     });
   }

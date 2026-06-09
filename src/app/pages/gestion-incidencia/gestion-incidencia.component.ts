@@ -1,7 +1,7 @@
 // pages/gestion-incidencias/gestion-incidencias.component.ts
 // Lista de incidencias para el administrador con tabs y modal de detalle.
 // Usa GET /api/admin/incidencias y GET /api/admin/incidencias/{id} del backend.
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -37,7 +37,8 @@ export class GestionIncidenciasComponent implements OnInit {
   constructor(
     private servicioAuth:  ServicioAutenticacion,
     private servicioAdmin: ServicioAdmin,
-    private router:        Router
+    private router:        Router,
+    private cdr:           ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -59,10 +60,12 @@ export class GestionIncidenciasComponent implements OnInit {
         if (tab === 'revision')   this.revision   = datos;
         if (tab === 'atendidas')  this.atendidas  = datos;
         this.cargando = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.errorMsg = 'No se pudo cargar las incidencias.';
         this.cargando = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -96,9 +99,11 @@ export class GestionIncidenciasComponent implements OnInit {
       next: (detalle) => {
         this.detalleModal  = detalle;
         this.cargandoModal = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.cargandoModal = false;
+        this.cdr.detectChanges();
       }
     });
   }

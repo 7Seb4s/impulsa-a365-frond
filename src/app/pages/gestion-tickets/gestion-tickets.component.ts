@@ -1,7 +1,7 @@
 // pages/gestion-tickets/gestion-tickets.component.ts
 // Tablero kanban de tickets para el administrador.
 // Usa GET /api/admin/tablero y GET /api/admin/tickets/{numero}/modal del backend.
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -55,7 +55,8 @@ export class GestionTicketsComponent implements OnInit {
   constructor(
     private servicioAuth:  ServicioAutenticacion,
     private servicioAdmin: ServicioAdmin,
-    private router:        Router
+    private router:        Router,
+    private cdr:           ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -81,10 +82,12 @@ export class GestionTicketsComponent implements OnInit {
         this.ticketsRevision   = revision.map(t   => this.mapear(t, 'revision'));
         this.ticketsAprobados  = aprobados.map(t  => this.mapear(t, 'aprobados'));
         this.cargando          = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.errorMsg = 'No se pudo cargar el tablero. Verifica la conexión con el backend.';
         this.cargando = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -137,9 +140,11 @@ export class GestionTicketsComponent implements OnInit {
       next: (detalle) => {
         this.detalleModal  = detalle;
         this.cargandoModal = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.cargandoModal = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -158,6 +163,7 @@ export class GestionTicketsComponent implements OnInit {
       },
       error: () => {
         this.errorMsg = 'No se pudo mover el ticket.';
+        this.cdr.detectChanges();
       }
     });
   }

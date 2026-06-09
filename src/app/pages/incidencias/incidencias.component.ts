@@ -1,5 +1,5 @@
 // pages/incidencias/incidencias.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -39,7 +39,8 @@ export class IncidenciasComponent implements OnInit {
 
   constructor(
     private servicioAuth: ServicioAutenticacion,
-    private servicioIncidencias: ServicioIncidencias
+    private servicioIncidencias: ServicioIncidencias,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -52,8 +53,8 @@ export class IncidenciasComponent implements OnInit {
     this.cargando = true;
     this.errorMsg = '';
     this.servicioIncidencias.listar().subscribe({
-      next: (items) => { this.incidencias = items; this.cargando = false; },
-      error: () => { this.errorMsg = 'No se pudieron cargar las incidencias.'; this.cargando = false; }
+      next: (items) => { this.incidencias = items; this.cargando = false; this.cdr.detectChanges(); },
+      error: () => { this.errorMsg = 'No se pudieron cargar las incidencias.'; this.cargando = false; this.cdr.detectChanges(); }
     });
   }
 
@@ -90,11 +91,13 @@ export class IncidenciasComponent implements OnInit {
         this.mostrarFormulario = false;
         this.resetFormulario();
         this.cargarIncidencias();
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.enviando = false;
         this.errorMsg = err?.error?.message || 'No se pudo crear la incidencia.';
         alert(this.errorMsg);
+        this.cdr.detectChanges();
       }
     });
   }

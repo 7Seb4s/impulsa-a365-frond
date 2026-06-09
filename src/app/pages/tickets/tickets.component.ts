@@ -1,5 +1,5 @@
 // pages/tickets/tickets.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -40,7 +40,8 @@ export class TicketsComponent implements OnInit {
 
   constructor(
     private servicioAuth: ServicioAutenticacion,
-    private servicioTickets: ServicioTickets
+    private servicioTickets: ServicioTickets,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -63,10 +64,12 @@ export class TicketsComponent implements OnInit {
         else if (tab === 'completados') this.ticketsCompletados = items;
         else                            this.ticketsCancelados  = items;
         this.cargandoLista = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.errorMsg = 'No se pudieron cargar los tickets.';
         this.cargandoLista = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -79,10 +82,12 @@ export class TicketsComponent implements OnInit {
       next: (detalle) => {
         this.ticketSeleccionado = detalle;
         this.cargandoDetalle = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.errorMsg = 'No se pudo cargar el detalle del ticket.';
         this.cargandoDetalle = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -113,6 +118,7 @@ export class TicketsComponent implements OnInit {
       next: () => {
         this.guardandoTicket = false;
         this.exitoNuevoTicket = true;
+        this.cdr.detectChanges();
         setTimeout(() => {
           this.cerrarNuevoTicket();
           this.cargarTab(this.tabActivo);
@@ -121,6 +127,7 @@ export class TicketsComponent implements OnInit {
       error: () => {
         this.guardandoTicket = false;
         this.errorNuevoTicket = 'No se pudo crear el ticket. Intente nuevamente.';
+        this.cdr.detectChanges();
       }
     });
   }

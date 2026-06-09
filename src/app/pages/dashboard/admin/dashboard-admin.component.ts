@@ -1,7 +1,7 @@
 // pages/dashboard/admin/dashboard-admin.component.ts
 // Vista del administrador/gerente: panel con 4 widgets y gráficos Chart.js.
 // Chart.js se carga desde CDN en index.html — NO instalar con npm.
-import { Component, OnInit, AfterViewInit, OnDestroy, NgZone } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, NgZone, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ServicioAutenticacion, DatosUsuario } from '../../../core/services/servicio-autenticacion';
 import { ServicioAdmin, ResumenTicketsMes, ResumenIncidenciasSemana, ResumenTicketsSemana } from '../../../core/services/servicio-admin';
@@ -48,7 +48,8 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
     private servicioAuth:  ServicioAutenticacion,
     private servicioAdmin: ServicioAdmin,
     private ngZone:        NgZone,
-    private router:        Router
+    private router:        Router,
+    private cdr:           ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -82,10 +83,12 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
         this.aplicarTicketsSemana(ticketsSemana);
         // Reinicia los gráficos con datos reales si ya están montados
         this.reiniciarGraficos();
+        this.cdr.detectChanges();
       },
       error: () => {
         // Si falla la carga los gráficos quedan con ceros (sin romper la vista)
         console.warn('[A365] No se pudieron cargar los datos del dashboard');
+        this.cdr.detectChanges();
       }
     });
   }
