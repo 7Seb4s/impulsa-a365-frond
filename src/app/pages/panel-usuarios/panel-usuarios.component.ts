@@ -18,6 +18,7 @@ import { ServicioAdmin, UsuarioPanelItem, RevisionUsuario } from '../../core/ser
 export class PanelUsuariosComponent implements OnInit {
 
   usuario: DatosUsuario | null = null;
+  fotoUrl: string | null = null;
 
   tabActiva: 'activos' | 'eliminados' = 'activos';
 
@@ -42,6 +43,7 @@ export class PanelUsuariosComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuario = this.servicioAuth.obtenerUsuario();
+    this.servicioAuth.fotoUrl$.subscribe(url => { this.fotoUrl = url; this.cdr.detectChanges(); });
     this.cargarActivos();
   }
 
@@ -136,15 +138,7 @@ export class PanelUsuariosComponent implements OnInit {
         const nombre = this.tabActiva === 'activos'
           ? 'usuarios_activos.xlsx'
           : 'usuarios_eliminados.xlsx';
-
-        // Crear link temporal para descargar el archivo
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = nombre;
-        a.click();
-        window.URL.revokeObjectURL(url);
-
+        this.descargarArchivo(blob, nombre);
         this.exportando = false;
         this.cdr.detectChanges();
       },
@@ -153,6 +147,46 @@ export class PanelUsuariosComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  // ── Exportar a PDF ──
+  exportandoPdf = false;
+
+  exportarPdf(): void {
+    this.exportandoPdf = true;
+    const obs$ = this.tabActiva === 'activos'
+      ? this.servicioAdmin.exportarUsuariosActivosPdf()
+      : this.servicioAdmin.exportarUsuariosEliminadosPdf();
+
+    obs$.subscribe({
+      next: (blob) => {
+        const nombre = this.tabActiva === 'activos'
+          ? 'usuarios_activos.pdf'
+          : 'usuarios_eliminados.pdf';
+        this.descargarArchivo(blob, nombre);
+        this.exportandoPdf = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.exportandoPdf = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  // ── Imprimir ──
+  imprimir(): void {
+    window.print();
+  }
+
+  // Helper: descarga un Blob como archivo
+  private descargarArchivo(blob: Blob, nombre: string): void {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = nombre;
+    a.click();
+    window.URL.revokeObjectURL(url);
   }
 
   irAInicio(): void             { this.router.navigate(['/dashboard/admin']);               }

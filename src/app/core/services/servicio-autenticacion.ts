@@ -19,6 +19,7 @@ export interface RespuestaLogin {
   codigo: string;
   nombre: string;
   rol: string;    // 'EMPLEADO' | 'ADMINISTRADOR' | 'GERENTE'
+  fotoUrl: string | null;  // URL de la foto de perfil
 }
 
 export interface DatosUsuario {
@@ -64,6 +65,14 @@ export class ServicioAutenticacion {
             rol:    res.rol
           };
           localStorage.setItem(this.CLAVE_USUARIO, JSON.stringify(usuario));
+
+          // Guardar foto de perfil con URL completa del backend
+          if (res.fotoUrl) {
+            const baseUrl = this.URL_API.replace('/api', '');
+            const fotoCompleta = baseUrl + res.fotoUrl;
+            localStorage.setItem(this.CLAVE_FOTO, fotoCompleta);
+            this._fotoUrl$.next(fotoCompleta);
+          }
         })
       );
   }

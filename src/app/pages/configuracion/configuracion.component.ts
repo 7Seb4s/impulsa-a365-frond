@@ -18,6 +18,7 @@ type Vista = 'menu' | 'contrasena' | 'perfil';
 export class ConfiguracionComponent implements OnInit {
 
   usuario: DatosUsuario | null = null;
+  fotoUrl: string | null = null;
   vista: Vista = 'menu';
   guardando = false;
   mostrarModal = false;
@@ -33,6 +34,28 @@ export class ConfiguracionComponent implements OnInit {
   // Formulario contrasena
   form = { actual: '', nueva: '', confirmar: '' };
 
+  // Requisitos de contraseña (igual que admin)
+  requisitos = {
+    longitud:   false,
+    mayuscula:  false,
+    numero:     false,
+    especial:   false,
+  };
+
+  // Valida requisitos en tiempo real
+  onNuevaContrasenaChange(): void {
+    const v = this.form.nueva;
+    this.requisitos.longitud  = v.length >= 8;
+    this.requisitos.mayuscula = /[A-Z]/.test(v);
+    this.requisitos.numero    = /[0-9]/.test(v);
+    this.requisitos.especial  = /[^a-zA-Z0-9]/.test(v);
+    this.errorConfirmar = false;
+  }
+
+  get requisitosOk(): boolean {
+    return this.requisitos.longitud && this.requisitos.mayuscula && this.requisitos.numero && this.requisitos.especial;
+  }
+
   // Foto perfil
   fotoPreview: string | null = null;
 
@@ -47,6 +70,7 @@ export class ConfiguracionComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuario = this.servicioAuth.obtenerUsuario();
+    this.servicioAuth.fotoUrl$.subscribe(url => { this.fotoUrl = url; this.cdr.detectChanges(); });
     this.cargarPerfil();
   }
 
@@ -73,19 +97,10 @@ export class ConfiguracionComponent implements OnInit {
     this.errorConfirmar = false;
     this.errorMsg = '';
     if (!this.form.actual || !this.form.nueva || !this.form.confirmar) {
-      alert('Completa todos los campos.'); return;
+      this.errorMsg = 'Completa todos los campos.'; return;
     }
-    if (this.form.nueva.length < 8) {
-      this.errorMsg = 'Mínimo 8 caracteres.'; alert(this.errorMsg); return;
-    }
-    if (!/[A-Z]/.test(this.form.nueva)) {
-      this.errorMsg = 'Debe incluir al menos 1 mayúscula.'; alert(this.errorMsg); return;
-    }
-    if (!/[0-9]/.test(this.form.nueva)) {
-      this.errorMsg = 'Debe incluir al menos 1 número.'; alert(this.errorMsg); return;
-    }
-    if (!/[^a-zA-Z0-9]/.test(this.form.nueva)) {
-      this.errorMsg = 'Debe incluir al menos 1 carácter especial (!@#$...).'; alert(this.errorMsg); return;
+    if (!this.requisitosOk) {
+      this.errorMsg = 'La contraseña no cumple con los requisitos.'; return;
     }
     if (this.form.nueva !== this.form.confirmar) {
       this.errorConfirmar = true; return;
@@ -100,6 +115,7 @@ export class ConfiguracionComponent implements OnInit {
         this.guardando = false;
         this.cdr.detectChanges();
         this.form = { actual: '', nueva: '', confirmar: '' };
+        this.requisitos = { longitud: false, mayuscula: false, numero: false, especial: false };
         this.vista = 'menu';
         this.mensajeModal = 'Tu contraseña ha sido actualizada correctamente.';
         this.mostrarModal = true;

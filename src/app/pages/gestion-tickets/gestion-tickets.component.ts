@@ -37,6 +37,7 @@ type Columna = 'EN_REVISION' | 'EN_PROCESO_ATENCION' | 'COMPLETADO';
 export class GestionTicketsComponent implements OnInit {
 
   usuario:      DatosUsuario | null = null;
+  fotoUrl: string | null = null;
   busqueda      = '';
   filtroActivo  = 'Revisa la lista';   // requerido por el HTML
   cargando      = false;
@@ -61,6 +62,7 @@ export class GestionTicketsComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuario = this.servicioAuth.obtenerUsuario();
+    this.servicioAuth.fotoUrl$.subscribe(url => { this.fotoUrl = url; this.cdr.detectChanges(); });
     this.cargarTablero();
   }
 

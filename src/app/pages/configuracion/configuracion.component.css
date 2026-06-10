@@ -188,3 +188,23 @@
   font-size: 11px; font-weight: 700; text-decoration: none; transition: background 0.15s;
 }
 .footer-icon:hover { background: #3a52a0; }
+/* ── REQUISITOS DE CONTRASEÑA ── */
+.requisitos-box {
+  background: #f7f8fc; border: 1px solid #e0e4ef;
+  border-radius: 6px; padding: 12px 14px; margin-top: 6px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.req-item {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 500; color: #8a9ab8; transition: color 0.2s;
+}
+.req-ok   { color: #1d9e75; }
+.req-fail { color: #c0392b; }
+
+/* ── ERROR BANNER ── */
+.error-banner {
+  display: flex; align-items: center; gap: 8px;
+  background: #fdf0f0; border: 1px solid #f5c6c6;
+  border-radius: 6px; padding: 10px 14px; margin-bottom: 16px;
+  color: #c0392b; font-size: 13px; font-weight: 500;
+}

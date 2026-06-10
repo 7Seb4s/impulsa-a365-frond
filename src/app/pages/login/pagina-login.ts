@@ -141,6 +141,12 @@ export class LoginComponent implements OnInit {
           rol:    respuesta.rol
         }));
 
+        // Guardar foto de perfil con URL completa del backend
+        if (respuesta.fotoUrl) {
+          const baseUrl = this.URL_API.replace('/api', '');
+          localStorage.setItem('a365_foto', baseUrl + respuesta.fotoUrl);
+        }
+
         this.cargandoGoogle = false;
         this.redirigirPorRol(respuesta.rol);
       },

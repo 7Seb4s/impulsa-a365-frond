@@ -30,6 +30,7 @@ export interface TicketReporte {
 export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy {
 
   usuario: DatosUsuario | null = null;
+  fotoUrl: string | null = null;
 
   // Guardamos referencias para destruirlos al salir del componente
   private charts: any[] = [];
@@ -54,6 +55,7 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
 
   ngOnInit(): void {
     this.usuario = this.servicioAuth.obtenerUsuario();
+    this.servicioAuth.fotoUrl$.subscribe(url => { this.fotoUrl = url; this.cdr.detectChanges(); });
     this.cargarDatos();
   }
 

@@ -285,4 +285,18 @@ export class ServicioAdmin {
       responseType: 'blob'
     });
   }
+
+  // GET /api/exportar/usuarios-activos-pdf
+  exportarUsuariosActivosPdf(): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/exportar/usuarios-activos-pdf`, {
+      responseType: 'blob'
+    });
+  }
+
+  // GET /api/exportar/usuarios-eliminados-pdf
+  exportarUsuariosEliminadosPdf(): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/exportar/usuarios-eliminados-pdf`, {
+      responseType: 'blob'
+    });
+  }
 }

@@ -122,6 +122,10 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('a365_usuario', JSON.stringify({
             id: res.id, codigo: res.codigo, nombre: res.nombre, rol: res.rol
           }));
+          if (res.fotoUrl) {
+            const baseUrl = this.URL_API.replace('/api', '');
+            localStorage.setItem('a365_foto', baseUrl + res.fotoUrl);
+          }
           this.cargandoGoogle = false;
           this.redirigirPorRol(res.rol);
         },

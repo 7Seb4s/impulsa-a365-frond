@@ -213,6 +213,19 @@
 .btn-exportar:hover { background: #1a5c38; }
 .btn-exportar:disabled { opacity: 0.5; cursor: not-allowed; }
 
+.btn-pdf { background: #c0392b; }
+.btn-pdf:hover { background: #962d22; }
+
+.btn-imprimir { background: #1b2559; }
+.btn-imprimir:hover { background: #131b40; }
+
+/* Ocultar todo excepto el contenido al imprimir */
+@media print {
+  .sidebar, .search-row, .paginacion-row, .tabs-row,
+  .btn-exportar, .btn-pdf, .btn-imprimir, .modal-overlay { display: none !important; }
+  .contenido-principal { margin: 0 !important; padding: 0 !important; }
+}
+
 /* ── ESTADO ── */
 .estado-mensaje {
   display: flex;
