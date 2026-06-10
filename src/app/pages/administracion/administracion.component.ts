@@ -90,7 +90,7 @@ export class AdministracionComponent implements OnInit {
   onNuevaContrasenaChange(): void {
     const v = this.form.nueva;
     this.requisitos.longitud  = v.length >= 8;
-    this.requisitos.mayuscula = /[A-Z]/.test(v);
+    this.requisitos.mayuscula = /[\p{Lu}]/u.test(v);
     this.requisitos.numero    = /[0-9]/.test(v);
     this.requisitos.especial  = /[^a-zA-Z0-9]/.test(v);
     // Resetea el error de confirmación cuando cambia la nueva contraseña

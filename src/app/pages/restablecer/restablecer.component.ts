@@ -76,7 +76,7 @@ export class RestablecerComponent implements OnInit {
       this.errorMsg = 'Mínimo 8 caracteres.';
       return;
     }
-    if (!/[A-Z]/.test(this.nuevaPassword)) {
+    if (!/[\p{Lu}]/u.test(this.nuevaPassword)) {
       this.errorMsg = 'Debe incluir al menos 1 letra mayúscula.';
       return;
     }

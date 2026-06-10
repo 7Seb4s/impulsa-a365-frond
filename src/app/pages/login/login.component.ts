@@ -124,7 +124,9 @@ export class LoginComponent implements OnInit {
           }));
           if (res.fotoUrl) {
             const baseUrl = this.URL_API.replace('/api', '');
-            localStorage.setItem('a365_foto', baseUrl + res.fotoUrl);
+            const fotoCompleta = baseUrl + res.fotoUrl;
+            localStorage.setItem('a365_foto', fotoCompleta);
+            this.servicioAuth.actualizarFoto(fotoCompleta);
           }
           this.cargandoGoogle = false;
           this.redirigirPorRol(res.rol);

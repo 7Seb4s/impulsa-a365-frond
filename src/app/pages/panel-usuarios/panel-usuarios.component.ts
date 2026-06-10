@@ -174,9 +174,25 @@ export class PanelUsuariosComponent implements OnInit {
     });
   }
 
-  // ── Imprimir ──
+  // ── Imprimir: genera el PDF y abre el diálogo de impresión ──
   imprimir(): void {
-    window.print();
+    const obs$ = this.tabActiva === 'activos'
+      ? this.servicioAdmin.exportarUsuariosActivosPdf()
+      : this.servicioAdmin.exportarUsuariosEliminadosPdf();
+
+    obs$.subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const ventana = window.open(url);
+        if (ventana) {
+          ventana.onload = () => {
+            ventana.print();
+          };
+        }
+        this.cdr.detectChanges();
+      },
+      error: () => { this.cdr.detectChanges(); }
+    });
   }
 
   // Helper: descarga un Blob como archivo

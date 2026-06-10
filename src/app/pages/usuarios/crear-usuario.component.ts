@@ -81,7 +81,10 @@ export class CrearUsuarioComponent {
   // Solo permite letras y espacios en campos de texto
   soloLetras(event: KeyboardEvent): void {
     const char = event.key;
-    if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]$/.test(char) && char !== 'Backspace' && char !== 'Delete' && char !== 'Tab' && char !== 'ArrowLeft' && char !== 'ArrowRight') {
+    // Permite letras Unicode (incluye ñ, á, ü, etc.), espacios y teclas de control
+    const teclasControl = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'Home', 'End'];
+    if (teclasControl.includes(char)) return;
+    if (!/^[\p{L} ]$/u.test(char)) {
       event.preventDefault();
     }
   }
@@ -99,7 +102,7 @@ export class CrearUsuarioComponent {
     event.preventDefault();
     const texto = event.clipboardData?.getData('text') ?? '';
     const filtrado = tipo === 'letras'
-      ? texto.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]/g, '').slice(0, maxLen)
+      ? texto.replace(/[^\p{L} ]/gu, '').slice(0, maxLen)
       : texto.replace(/\D/g, '').slice(0, maxLen);
 
     const input = event.target as HTMLInputElement;
@@ -116,7 +119,7 @@ export class CrearUsuarioComponent {
     let ok = true;
     this.errores = { nombreCompleto: '', apellidoCompleto: '', dni: '', telefono: '', correo: '', rol: '', contrasena: '', confirmarContrasena: '', general: '' };
 
-    const soloLetrasRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]+$/;
+    const soloLetrasRegex = /^[\p{L} ]+$/u;
     const emailRegex      = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!this.form.nombreCompleto.trim()) {
@@ -157,7 +160,7 @@ export class CrearUsuarioComponent {
       this.errores.contrasena = 'La contraseña es obligatoria.'; ok = false;
     } else if (this.form.contrasena.length < 8) {
       this.errores.contrasena = 'Mínimo 8 caracteres.'; ok = false;
-    } else if (!/[A-Z]/.test(this.form.contrasena)) {
+    } else if (!/[\p{Lu}]/u.test(this.form.contrasena)) {
       this.errores.contrasena = 'Debe incluir al menos 1 letra mayúscula.'; ok = false;
     } else if (!/[0-9]/.test(this.form.contrasena)) {
       this.errores.contrasena = 'Debe incluir al menos 1 número.'; ok = false;

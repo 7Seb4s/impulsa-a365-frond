@@ -144,7 +144,9 @@ export class LoginComponent implements OnInit {
         // Guardar foto de perfil con URL completa del backend
         if (respuesta.fotoUrl) {
           const baseUrl = this.URL_API.replace('/api', '');
-          localStorage.setItem('a365_foto', baseUrl + respuesta.fotoUrl);
+          const fotoCompleta = baseUrl + respuesta.fotoUrl;
+          localStorage.setItem('a365_foto', fotoCompleta);
+          this.servicioAuth.actualizarFoto(fotoCompleta);
         }
 
         this.cargandoGoogle = false;
