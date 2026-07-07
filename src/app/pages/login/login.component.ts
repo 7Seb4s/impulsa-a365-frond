@@ -145,8 +145,11 @@ export class LoginComponent implements OnInit {
   }
 
   private redirigirPorRol(rol: string): void {
-    if (rol === 'ADMINISTRADOR' || rol === 'GERENTE') {
+    if (rol === 'ADMINISTRADOR') {
       this.router.navigate(['/dashboard/admin']);
+    } else if (rol === 'GERENTE') {
+      // GERENTE se usa como el rol del técnico
+      this.router.navigate(['/dashboard/tecnico/tickets']);
     } else {
       this.router.navigate(['/dashboard/agente']);
     }

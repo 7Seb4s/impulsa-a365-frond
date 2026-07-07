@@ -156,11 +156,11 @@
   <div class="modal-box" (click)="$event.stopPropagation()">
 
     <div class="modal-header">
-      <span class="modal-ticket-id">Ticket ID-#4264</span>
+      <span class="modal-ticket-id">Ticket ID-#{{ detalleModal?.numeroTicket }}</span>
       <button class="modal-close" (click)="cerrarModal()">&#10005;</button>
     </div>
 
-    <h2 class="modal-titulo">Incidencia ID-#345356</h2>
+    <h2 class="modal-titulo">Incidencia ID-#{{ detalleModal?.id }}</h2>
 
     <div class="modal-campos">
       <div class="modal-campo">
@@ -169,7 +169,7 @@
           <line x1="7" y1="7" x2="7.01" y2="7"/>
         </svg>
         <span class="campo-label">Tipo</span>
-        <span class="campo-valor">Actualización de datos</span>
+        <span class="campo-valor">{{ detalleModal?.tipo || '—' }}</span>
       </div>
       <div class="modal-campo">
         <svg viewBox="0 0 24 24" fill="none" stroke="#8a9ab8" stroke-width="2" width="16" height="16">
@@ -177,7 +177,7 @@
           <polyline points="12 6 12 12 16 14"/>
         </svg>
         <span class="campo-label">Estado</span>
-        <span class="badge badge-pendiente">Pendiente</span>
+        <span class="badge {{ estadoClase(detalleModal?.estado) }}">{{ estadoTexto(detalleModal?.estado) }}</span>
       </div>
       <div class="modal-campo">
         <svg viewBox="0 0 24 24" fill="none" stroke="#8a9ab8" stroke-width="2" width="16" height="16">
@@ -186,8 +186,8 @@
         </svg>
         <span class="campo-label">Solicitante</span>
         <span class="campo-valor">
-          <span class="avatar-mini">G</span>
-          Grace Galán
+          <span class="avatar-mini">{{ inicial(detalleModal?.solicitante) }}</span>
+          {{ detalleModal?.solicitante || '—' }}
         </span>
       </div>
       <div class="modal-campo">
@@ -196,7 +196,7 @@
           <circle cx="12" cy="7" r="4"/>
         </svg>
         <span class="campo-label">Asignada a</span>
-        <span class="campo-valor">Área técnica</span>
+        <span class="campo-valor">{{ detalleModal?.asignadaA || 'Sin asignar' }}</span>
       </div>
       <div class="modal-campo">
         <svg viewBox="0 0 24 24" fill="none" stroke="#8a9ab8" stroke-width="2" width="16" height="16">
@@ -206,24 +206,13 @@
           <line x1="3" y1="10" x2="21" y2="10"/>
         </svg>
         <span class="campo-label">Fecha</span>
-        <span class="campo-valor">Marzo 30, 2026</span>
+        <span class="campo-valor">{{ fechaLarga(detalleModal?.fecha) }}</span>
       </div>
     </div>
 
     <div class="modal-adjuntos-titulo">Archivos adjuntos</div>
     <div class="modal-adjuntos">
-      <span class="adjunto">
-        <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
-        RegistroFechaIngreso.docx
-      </span>
-      <span class="adjunto">
-        <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
-        DatosFernandaChávezLópez.docx
-      </span>
-      <span class="adjunto">
-        <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
-        CargoGerenciaGeneral.docx
-      </span>
+      <span class="adjunto-vacio">Las incidencias no manejan archivos adjuntos.</span>
     </div>
     <div class="modal-adjuntos-acciones">
       <button class="btn-anadir-archivo">
@@ -233,18 +222,10 @@
       <button class="btn-eliminar-docs">Eliminar documentos</button>
     </div>
 
-    <div class="modal-asunto-titulo">Asunto</div>
-    <div class="modal-asunto-meta">Grace Galán comentó el 30 de Marzo de 2026 a las 18:58</div>
+    <div class="modal-asunto-titulo">Contenido</div>
+    <div class="modal-asunto-meta">{{ detalleModal?.solicitante }} reportó el {{ fechaHoraMeta(detalleModal?.fecha) }}</div>
     <div class="modal-asunto-cuerpo">
-      <p>Estimado equipo de TI</p>
-      <p>Por medio del presente, solicito su aprobación del ticket #4264 para realizar la actualización de los datos del
-      usuario Fernanda Chávez López ID#73203436. Los cambios correspondientes serían los siguientes:</p>
-      <ul>
-        <li>Modificar fecha de ingreso de la señora Fernada Chávez.</li>
-        <li>Modificar su registro respectivo en la base de datos de la empresa.</li>
-        <li>Actualizar el sistema para su posterior revisión</li>
-        <li>Actualizar su cargo a Gerenta General.</li>
-      </ul>
+      <p style="white-space:pre-line">{{ detalleModal?.contenido || 'Sin contenido.' }}</p>
     </div>
 
     <div class="modal-acciones">

@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ServicioAutenticacion, DatosUsuario } from '../../core/services/servicio-autenticacion';
-import { ServicioAdmin, TableroTicketItem, TicketDetalleAdmin } from '../../core/services/servicio-admin';
+import { ServicioAdmin, TableroTicketItem, TicketDetalleAdmin, TicketAdjunto } from '../../core/services/servicio-admin';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -51,6 +51,7 @@ export class GestionTicketsComponent implements OnInit {
   // Modal: ticket seleccionado y su detalle completo
   ticketSeleccionado: TicketAdmin         | null = null;
   detalleModal:       TicketDetalleAdmin  | null = null;
+  adjuntosModal:      TicketAdjunto[]     = [];
   cargandoModal       = false;
 
   constructor(
@@ -136,11 +137,17 @@ export class GestionTicketsComponent implements OnInit {
   abrirModal(ticket: TicketAdmin): void {
     this.ticketSeleccionado = ticket;
     this.detalleModal       = null;
+    this.adjuntosModal      = [];
     this.cargandoModal      = true;
 
-    this.servicioAdmin.obtenerModalTicket(ticket.numeroTicket).subscribe({
-      next: (detalle) => {
+    // Detalle + adjuntos reales en paralelo
+    forkJoin({
+      detalle:  this.servicioAdmin.obtenerModalTicket(ticket.numeroTicket),
+      adjuntos: this.servicioAdmin.obtenerAdjuntos(ticket.numeroTicket)
+    }).subscribe({
+      next: ({ detalle, adjuntos }) => {
         this.detalleModal  = detalle;
+        this.adjuntosModal = adjuntos ?? [];
         this.cargandoModal = false;
         this.cdr.detectChanges();
       },
@@ -154,6 +161,71 @@ export class GestionTicketsComponent implements OnInit {
   cerrarModal(): void {
     this.ticketSeleccionado = null;
     this.detalleModal       = null;
+    this.adjuntosModal      = [];
+  }
+
+  // ── HELPERS DE FORMATO PARA EL MODAL ────────────────────────
+
+  // Iniciales para el avatar (ej. "Grace Galán" → "G")
+  inicial(txt: string | null | undefined): string {
+    return (txt?.trim()?.charAt(0) || '?').toUpperCase();
+  }
+
+  // Prioridad ALTA/MEDIA/BAJA → texto legible
+  prioridadTexto(p: string | null | undefined): string {
+    switch ((p || '').toUpperCase()) {
+      case 'ALTA': return 'Alta';
+      case 'BAJA': return 'Baja';
+      case 'MEDIA': return 'Media';
+      default: return p || '—';
+    }
+  }
+  prioridadClase(p: string | null | undefined): string {
+    switch ((p || '').toUpperCase()) {
+      case 'ALTA': return 'badge-alta';
+      case 'BAJA': return 'badge-baja';
+      default: return 'badge-media';
+    }
+  }
+
+  // Estado del ticket para el modal (usa estado + subestado)
+  estadoTexto(): string {
+    const e = (this.detalleModal?.estado || '').toUpperCase();
+    if (e === 'CANCELADO') return 'Rechazado';
+    if (e === 'ATENDIDO')  return 'Atendido';
+    const sub = (this.detalleModal?.subestado || '').toUpperCase();
+    return sub === 'EN_REVISION' ? 'Pendiente' : 'En proceso';
+  }
+  estadoClase(): string {
+    const e = (this.detalleModal?.estado || '').toUpperCase();
+    if (e === 'CANCELADO') return 'badge-rechazado';
+    if (e === 'ATENDIDO')  return 'badge-aprobado';
+    return 'badge-pendiente';
+  }
+
+  // "2026-03-30T18:58:00" → "Marzo 30, 2026"
+  fechaLarga(iso: string | null | undefined): string {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return '—';
+    const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    return `${meses[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+  }
+
+  // "2026-03-30T18:58:00" → "30 de Marzo de 2026 a las 18:58"
+  fechaHoraMeta(iso: string | null | undefined): string {
+    if (!iso) return '';
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    const hh = d.getHours().toString().padStart(2, '0');
+    const mm = d.getMinutes().toString().padStart(2, '0');
+    return `${d.getDate()} de ${meses[d.getMonth()]} de ${d.getFullYear()} a las ${hh}:${mm}`;
+  }
+
+  // Formatea el peso del adjunto: 246 → "246 kb"
+  pesoAdjunto(kb: number | null): string {
+    return (kb != null ? kb : 0) + ' kb';
   }
 
   // Mueve el ticket a otra columna y recarga el tablero

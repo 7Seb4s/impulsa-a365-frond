@@ -124,6 +124,33 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/administracion/administracion.component')
             .then(m => m.AdministracionComponent)
+      },
+
+      // ── VISTA DEL TÉCNICO ──────────────────────────────────
+      { path: 'tecnico', redirectTo: 'tecnico/tickets', pathMatch: 'full' },
+
+      // Panel de tickets del técnico (aprobar)
+      {
+        path: 'tecnico/tickets',
+        loadComponent: () =>
+          import('./pages/tecnico/tecnico-tickets.component')
+            .then(m => m.TecnicoTicketsComponent)
+      },
+
+      // Panel de incidencias del técnico (asignar / derivar)
+      {
+        path: 'tecnico/incidencias',
+        loadComponent: () =>
+          import('./pages/tecnico/tecnico-incidencias.component')
+            .then(m => m.TecnicoIncidenciasComponent)
+      },
+
+      // Perfil del técnico (con la barra lateral del técnico)
+      {
+        path: 'tecnico/perfil',
+        loadComponent: () =>
+          import('./pages/tecnico/tecnico-perfil.component')
+            .then(m => m.TecnicoPerfilComponent)
       }
     ]
   },

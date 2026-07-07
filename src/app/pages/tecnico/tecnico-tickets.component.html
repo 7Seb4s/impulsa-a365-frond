@@ -1,0 +1,226 @@
+<div class="tec-layout">
+  <div class="tec-body">
+
+    <!-- SIDEBAR -->
+    <aside class="tec-sidebar">
+      <div class="tec-sidebar-header">
+        <img src="assets/logo-a365.jpg" alt="A365" class="tec-sidebar-logo" loading="lazy" />
+      </div>
+
+      <nav class="tec-nav">
+        <a class="tec-nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg>
+          <span>Tickets</span>
+        </a>
+        <a class="tec-nav-item" routerLink="/dashboard/tecnico/incidencias">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          <span>Incidencias</span>
+        </a>
+      </nav>
+
+      <div class="tec-sidebar-spacer"></div>
+
+      <div class="tec-sidebar-foot">
+        <button class="tec-admin-link" routerLink="/dashboard/tecnico/perfil">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          <span>Administracion</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="tec-main">
+
+      <!-- Topbar: bienvenida + usuario -->
+      <header class="tec-topbar">
+        <h1 class="tec-welcome">Bienvenido, {{ nombre }}.</h1>
+        <div class="tec-user-chip">
+          <div class="tec-user-avatar">
+            <img *ngIf="fotoUrl" [src]="fotoUrl" alt="avatar" />
+            <svg *ngIf="!fotoUrl" viewBox="0 0 24 24" fill="#9aaac5" width="24" height="24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+          </div>
+          <span class="tec-user-name">{{ nombre }}</span>
+          <button class="tec-logout" (click)="onLogout()">Cerrar sesion</button>
+        </div>
+      </header>
+
+      <!-- Titulo del panel -->
+      <div class="tec-panel-title-bar">
+        <h2 class="tec-panel-title">Panel de tickets</h2>
+      </div>
+
+      <!-- Split: lista + detalle -->
+      <div class="tec-split">
+
+        <!-- Columna lista -->
+        <div class="tec-list-col" [class.con-detalle]="seleccionado">
+
+          <div class="tec-toolbar">
+            <div class="tec-search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <input type="text" [(ngModel)]="busqueda" placeholder="Buscar Ticket ID, Nombre o por Fecha" />
+            </div>
+            <button class="tec-filtro">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+              Filtrar por fecha
+            </button>
+          </div>
+
+          <div class="tec-list">
+            <div class="tec-card" *ngFor="let t of ticketsFiltrados"
+                 [class.activa]="seleccionado?.id === t.id"
+                 (click)="seleccionar(t)">
+              <div class="tec-card-avatar">{{ inicial(t.titulo) }}</div>
+              <div class="tec-card-body">
+                <div class="tec-card-title-row">
+                  <p class="tec-card-title">{{ t.titulo }}</p>
+                  <span class="tec-pri"
+                        [class.alto]="t.prioridad==='Alto'"
+                        [class.medio]="t.prioridad==='Medio'"
+                        [class.bajo]="t.prioridad==='Bajo'">{{ t.prioridad }}</span>
+                </div>
+                <p class="tec-card-sub">{{ t.resumen }}</p>
+              </div>
+              <div class="tec-card-meta">
+                <span class="tec-card-id">Ticket ID: {{ t.ticketId }}</span>
+                <span *ngIf="t.estado==='pendiente'" class="tec-estado-txt">Aprobacion pendiente</span>
+                <span *ngIf="t.estado==='aprobado'" class="tec-estado-badge">Aprobado</span>
+                <span *ngIf="t.estado==='rechazado'" class="tec-estado-badge rojo">Rechazado</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna detalle -->
+        <div class="tec-detalle" *ngIf="seleccionado">
+          <div class="tec-detalle-top">
+            <div class="tec-detalle-remitente">
+              <div class="tec-mini-avatar">{{ inicial(seleccionado.remitente) }}</div>
+              <b>{{ seleccionado.remitente }}</b>
+            </div>
+            <div class="tec-detalle-right">
+              <span class="tec-card-id">Ticket ID: {{ seleccionado.ticketId.replace('#','') }}</span>
+              <span class="tec-pri"
+                    [class.alto]="seleccionado.prioridad==='Alto'"
+                    [class.medio]="seleccionado.prioridad==='Medio'"
+                    [class.bajo]="seleccionado.prioridad==='Bajo'">{{ seleccionado.prioridad }}</span>
+              <button class="tec-icon-btn" (click)="cerrarDetalle()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="tec-detalle-cuerpo">
+            <div class="tec-asunto-row">
+              <p class="tec-asunto">Asunto: {{ seleccionado.asunto }}</p>
+              <div class="tec-asunto-tools">
+                <span class="tec-hora">{{ seleccionado.hora }}</span>
+                <button class="tec-icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>
+                <button class="tec-icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg></button>
+              </div>
+            </div>
+
+            <p class="tec-texto">{{ seleccionado.cuerpo }}</p>
+
+            <div class="tec-adjuntos">
+              <div class="tec-adjunto" *ngFor="let a of seleccionado.adjuntos">
+                <div class="tec-adjunto-ico">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg>
+                </div>
+                <div>
+                  <div class="tec-adjunto-nombre">{{ a.nombre }}</div>
+                  <div class="tec-adjunto-peso">{{ a.peso }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tec-detalle-acciones">
+            <span *ngIf="seleccionado.estado==='pendiente'" class="tec-estado-pill pendiente">Aprobacion pendiente</span>
+            <span *ngIf="seleccionado.estado==='aprobado'" class="tec-estado-pill aprobado">Aprobado</span>
+            <span *ngIf="seleccionado.estado==='rechazado'" class="tec-estado-pill rechazado">Rechazado</span>
+            <div class="tec-btn-row">
+              <button class="tec-btn tec-btn-outline" (click)="abrirModal()">Detalles del ticket</button>
+              <button *ngIf="seleccionado.estado==='pendiente'" class="tec-btn tec-btn-danger" (click)="rechazar()">Rechazar</button>
+              <button *ngIf="seleccionado.estado==='pendiente'" class="tec-btn tec-btn-primary" (click)="aprobar()">Aprobar</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="tec-footer">
+    <span>&#169; 2026 Impulsa A365 Todos los derechos reservados por Group16</span>
+    <div class="tec-footer-icons">
+      <a href="#" class="tec-footer-icon">in</a>
+      <a href="#" class="tec-footer-icon">f</a>
+      <a href="#" class="tec-footer-icon">&#9679;</a>
+    </div>
+  </footer>
+</div>
+
+<!-- MODAL: Detalle del ticket -->
+<div class="tec-modal-overlay" *ngIf="mostrarModal && seleccionado" (click)="cerrarModal()">
+  <div class="tec-modal" (click)="$event.stopPropagation()">
+    <div class="tec-modal-head">
+      <span class="tec-modal-title">Detalle del ticket</span>
+      <div class="tec-modal-head-right">
+        <span *ngIf="seleccionado.estado==='aprobado'" class="tec-estado-pill aprobado" style="padding:5px 16px;font-size:11.5px">Aprobado</span>
+        <span *ngIf="seleccionado.estado==='rechazado'" class="tec-estado-pill rechazado" style="padding:5px 16px;font-size:11.5px">Rechazado</span>
+        <button class="tec-modal-close" (click)="cerrarModal()">&#10005;</button>
+      </div>
+    </div>
+
+    <div class="tec-field">
+      <label>ID</label>
+      <input class="tec-input" type="text" [(ngModel)]="seleccionado.codigoInterno" />
+    </div>
+
+    <div class="tec-field">
+      <label>Prioridad <span class="req">*</span></label>
+      <div class="tec-pri-choices">
+        <button class="tec-pri-choice alto"  [class.sel]="seleccionado.prioridad==='Alto'"  (click)="cambiarPrioridadModal('Alto')">Alto</button>
+        <button class="tec-pri-choice medio" [class.sel]="seleccionado.prioridad==='Medio'" (click)="cambiarPrioridadModal('Medio')">Media</button>
+        <button class="tec-pri-choice bajo"  [class.sel]="seleccionado.prioridad==='Bajo'"  (click)="cambiarPrioridadModal('Bajo')">Baja</button>
+      </div>
+    </div>
+
+    <div class="tec-field">
+      <label>Tipo de ticket</label>
+      <input class="tec-input" type="text" [(ngModel)]="seleccionado.tipo" placeholder="Actualizacion de datos" />
+    </div>
+
+    <div class="tec-field-row">
+      <div class="tec-field">
+        <label>Solicitado por</label>
+        <div class="tec-chip-person">
+          <div class="tec-chip-avatar">{{ inicial(seleccionado.solicitadoPor) }}</div>
+          <span>{{ seleccionado.solicitadoPor }}</span>
+        </div>
+      </div>
+      <div class="tec-field">
+        <label>Asignado a</label>
+        <select class="tec-select" [(ngModel)]="seleccionado.asignadoA">
+          <option [value]="seleccionado.asignadoA">{{ seleccionado.asignadoA }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="tec-field">
+      <label>Contenido</label>
+      <div class="tec-contenido-box">
+        <div class="tec-contenido-de">
+          De <div class="tec-chip-avatar">{{ inicial(seleccionado.solicitadoPor) }}</div> <b>{{ seleccionado.solicitadoPor }}</b>
+        </div>
+        <p class="tec-contenido-texto">Estimado Equipo de TI:
+Por medio del presente correo, solicito la aprobacion del ticket para proceder con la actualizacion de los datos personales del empleado Juan Perez Lopez dentro del sistema de gestion de la empresa.
+
+Atentamente,
+Area de Trabajadores
+Empresa IMPULSA A365</p>
+      </div>
+    </div>
+  </div>
+</div>

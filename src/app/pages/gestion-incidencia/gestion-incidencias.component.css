@@ -220,6 +220,10 @@
 
 .badge { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 12px; }
 .badge-pendiente { background: #fef3e2; color: #b7720a; }
+.badge-revision  { background: #e8f4fd; color: #1a6fa8; }
+.badge-aprobado  { background: #e7f7ef; color: #1e9e6e; }
+.badge-rechazado { background: #fde8e8; color: #c0392b; }
+.adjunto-vacio   { font-size: 12px; color: #9aa3b7; font-style: italic; }
 
 .avatar-mini {
   width: 22px; height: 22px; border-radius: 50%; background: #dde3f0;

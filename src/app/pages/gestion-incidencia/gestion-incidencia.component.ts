@@ -115,6 +115,52 @@ export class GestionIncidenciasComponent implements OnInit {
     this.detalleModal           = null;
   }
 
+  // ── HELPERS DE FORMATO PARA EL MODAL ────────────────────────
+
+  // Inicial para el avatar (ej. "Grace Galán" → "G")
+  inicial(txt: string | null | undefined): string {
+    return (txt?.trim()?.charAt(0) || '?').toUpperCase();
+  }
+
+  // Estado de la incidencia → texto + clase de badge
+  estadoTexto(e: string | null | undefined): string {
+    switch ((e || '').toUpperCase()) {
+      case 'REPORTADA':   return 'Pendiente';
+      case 'EN_REVISION': return 'Asignada';
+      case 'RESUELTA':    return 'Resuelta';
+      case 'RECHAZADA':   return 'Rechazada';
+      default:            return e || '—';
+    }
+  }
+  estadoClase(e: string | null | undefined): string {
+    switch ((e || '').toUpperCase()) {
+      case 'EN_REVISION': return 'badge-revision';
+      case 'RESUELTA':    return 'badge-aprobado';
+      case 'RECHAZADA':   return 'badge-rechazado';
+      default:            return 'badge-pendiente';
+    }
+  }
+
+  // "2026-03-30T18:58:00" → "Marzo 30, 2026"
+  fechaLarga(iso: string | null | undefined): string {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return '—';
+    const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    return `${meses[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+  }
+
+  // "2026-03-30T18:58:00" → "30 de Marzo de 2026 a las 18:58"
+  fechaHoraMeta(iso: string | null | undefined): string {
+    if (!iso) return '';
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    const hh = d.getHours().toString().padStart(2, '0');
+    const mm = d.getMinutes().toString().padStart(2, '0');
+    return `${d.getDate()} de ${meses[d.getMonth()]} de ${d.getFullYear()} a las ${hh}:${mm}`;
+  }
+
   // ── NAVEGACIÓN SIDEBAR ──────────────────────────────────────
 
   irAInicio(): void         { this.router.navigate(['/dashboard/admin']);               }

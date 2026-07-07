@@ -69,6 +69,15 @@ export interface TicketDetalleAdmin {
   asignadoA:         string | null;
 }
 
+// ── Adjunto de un ticket ──
+// Coincide con AdminDTO.TicketAdjunto del backend
+export interface TicketAdjunto {
+  nombreArchivo: string;
+  tamanoKb:      number | null;
+  ruta:          string | null;
+  creadoEn:      string;
+}
+
 // ── Mensaje de un ticket ──
 // Coincide con AdminDTO.TicketMensaje del backend
 export interface TicketMensaje {
@@ -187,6 +196,12 @@ export class ServicioAdmin {
   // Vista rápida del ticket para el modal del tablero
   obtenerModalTicket(numero: number): Observable<TicketDetalleAdmin> {
     return this.http.get<TicketDetalleAdmin>(`${this.URL}/tickets/${numero}/modal`);
+  }
+
+  // GET /api/admin/tickets/{numero}/adjuntos
+  // Lista los archivos adjuntos reales de un ticket
+  obtenerAdjuntos(numero: number): Observable<TicketAdjunto[]> {
+    return this.http.get<TicketAdjunto[]>(`${this.URL}/tickets/${numero}/adjuntos`);
   }
 
   // PUT /api/admin/tickets/{numero}/mover

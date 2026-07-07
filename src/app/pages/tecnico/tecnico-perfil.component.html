@@ -1,0 +1,157 @@
+<div class="tec-layout">
+  <div class="tec-body">
+
+    <!-- SIDEBAR (mismo del tecnico) -->
+    <aside class="tec-sidebar">
+      <div class="tec-sidebar-header">
+        <img src="assets/logo-a365.jpg" alt="A365" class="tec-sidebar-logo" loading="lazy" />
+      </div>
+
+      <nav class="tec-nav">
+        <a class="tec-nav-item" routerLink="/dashboard/tecnico/tickets">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg>
+          <span>Tickets</span>
+        </a>
+        <a class="tec-nav-item" routerLink="/dashboard/tecnico/incidencias">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          <span>Incidencias</span>
+        </a>
+      </nav>
+
+      <div class="tec-sidebar-spacer"></div>
+
+      <div class="tec-sidebar-foot">
+        <button class="tec-admin-link active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          <span>Administracion</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="tec-main">
+
+      <header class="tec-topbar">
+        <h1 class="tec-welcome">Bienvenido, {{ nombre }}.</h1>
+        <div class="tec-user-chip">
+          <div class="tec-user-avatar">
+            <img *ngIf="fotoPreview" [src]="fotoPreview" alt="avatar" />
+            <svg *ngIf="!fotoPreview" viewBox="0 0 24 24" fill="#9aaac5" width="24" height="24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+          </div>
+          <span class="tec-user-name">{{ nombre }}</span>
+          <button class="tec-logout" (click)="onLogout()">Cerrar sesion</button>
+        </div>
+      </header>
+
+      <div class="tec-panel-title-bar" style="display:flex;align-items:center;gap:10px;background:#ffffff">
+        <button class="tec-icon-btn" (click)="goBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <h2 class="tec-panel-title">Perfil</h2>
+      </div>
+
+      <div style="padding:24px 30px">
+        <div class="tec-perfil-card">
+
+          <!-- Columna avatar -->
+          <div class="tec-perfil-avatar-col">
+            <div class="tec-perfil-avatar">
+              <img *ngIf="fotoPreview" [src]="fotoPreview" alt="foto" />
+              <svg *ngIf="!fotoPreview" viewBox="0 0 24 24" fill="#b7c0d3" width="64" height="64"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+            </div>
+            <b class="tec-perfil-nombre">{{ perfilBD?.nombreCompleto || nombre }}</b>
+            <label *ngIf="modoEdicion" class="tec-perfil-cambiar-foto">
+              {{ subiendoFoto ? 'Subiendo...' : 'Cambiar foto' }}
+              <input type="file" accept="image/*" (change)="onFotoChange($event)" hidden />
+            </label>
+            <span *ngIf="errorFoto" class="tec-perfil-error">{{ errorFoto }}</span>
+          </div>
+
+          <!-- Columna datos -->
+          <div class="tec-perfil-datos">
+            <div class="tec-field">
+              <label>Correo electronico</label>
+              <input class="tec-input" type="email" [(ngModel)]="formulario.correo" [readonly]="!modoEdicion" [class.readonly]="!modoEdicion" />
+            </div>
+
+            <div class="tec-field" *ngIf="modoEdicion">
+              <label>Nombre completo</label>
+              <input class="tec-input" type="text" [(ngModel)]="formulario.nombreCompleto" />
+            </div>
+
+            <div class="tec-field">
+              <label>Direccion</label>
+              <input class="tec-input" type="text" [(ngModel)]="formulario.direccion" [readonly]="!modoEdicion" [class.readonly]="!modoEdicion" placeholder="—" />
+            </div>
+
+            <div class="tec-field">
+              <label>Numero de celular</label>
+              <input class="tec-input" type="text" [(ngModel)]="formulario.telefono" [readonly]="!modoEdicion" [class.readonly]="!modoEdicion" placeholder="—" />
+            </div>
+
+            <div class="tec-field">
+              <label>Numero de DNI</label>
+              <input class="tec-input" type="text" [(ngModel)]="formulario.dni" [readonly]="!modoEdicion" [class.readonly]="!modoEdicion" placeholder="—" />
+            </div>
+
+            <div class="tec-perfil-acciones">
+              <span *ngIf="guardado" class="tec-estado-pill asignado" style="padding:7px 16px;font-size:12px">Guardado</span>
+              <ng-container *ngIf="!modoEdicion">
+                <button class="tec-btn tec-btn-outline" style="border-radius:8px" (click)="abrirModalPass()">Cambiar contraseña</button>
+                <button class="tec-btn tec-btn-primary" style="border-radius:8px" (click)="activarEdicion()">Editar perfil</button>
+              </ng-container>
+              <ng-container *ngIf="modoEdicion">
+                <button class="tec-btn tec-btn-outline" style="border-radius:8px" (click)="cancelar()">Cancelar</button>
+                <button class="tec-btn tec-btn-primary" style="border-radius:8px" (click)="guardar()" [disabled]="guardando">
+                  {{ guardando ? 'Guardando...' : 'Guardar cambios' }}
+                </button>
+              </ng-container>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="tec-footer">
+    <span>&#169; 2026 Impulsa A365 Todos los derechos reservados por Group16</span>
+    <div class="tec-footer-icons">
+      <a href="#" class="tec-footer-icon">in</a>
+      <a href="#" class="tec-footer-icon">f</a>
+      <a href="#" class="tec-footer-icon">&#9679;</a>
+    </div>
+  </footer>
+</div>
+
+<!-- MODAL: Cambiar contraseña -->
+<div class="tec-modal-overlay" *ngIf="mostrarModalPass" (click)="cerrarModalPass()">
+  <div class="tec-modal" (click)="$event.stopPropagation()" style="width:380px">
+    <div class="tec-modal-head">
+      <span class="tec-modal-title">Cambiar contraseña</span>
+      <button class="tec-modal-close" (click)="cerrarModalPass()">&#10005;</button>
+    </div>
+
+    <div class="tec-field">
+      <label>Contraseña actual <span class="req">*</span></label>
+      <input class="tec-input" type="password" [(ngModel)]="passForm.actual" placeholder="Tu contraseña actual" />
+    </div>
+    <div class="tec-field">
+      <label>Nueva contraseña <span class="req">*</span></label>
+      <input class="tec-input" type="password" [(ngModel)]="passForm.nueva" placeholder="Mínimo 4 caracteres" />
+    </div>
+    <div class="tec-field">
+      <label>Confirmar nueva contraseña <span class="req">*</span></label>
+      <input class="tec-input" type="password" [(ngModel)]="passForm.confirmar" placeholder="Repite la nueva contraseña" />
+    </div>
+
+    <p *ngIf="passError" class="tec-perfil-error" style="text-align:left;margin:4px 0 0">{{ passError }}</p>
+    <p *ngIf="passOk" style="color:#2f9e6c;font-size:12px;margin:4px 0 0">Contraseña actualizada correctamente.</p>
+
+    <div class="tec-perfil-acciones" style="margin-top:18px">
+      <button class="tec-btn tec-btn-outline" style="border-radius:8px" (click)="cerrarModalPass()">Cancelar</button>
+      <button class="tec-btn tec-btn-primary" style="border-radius:8px" (click)="cambiarContrasena()" [disabled]="passGuardando">
+        {{ passGuardando ? 'Guardando...' : 'Cambiar contraseña' }}
+      </button>
+    </div>
+  </div>
+</div>
