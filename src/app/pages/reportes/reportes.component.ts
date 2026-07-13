@@ -21,7 +21,7 @@ export class ReportesComponent implements OnInit {
   totalResueltos = 0;
   totalPendientes = 0;
   totalIncidencias = 0;
-  tiempoPromedio = 'â€”';
+  tiempoPromedio = '—';
   historial: ReporteHistorialItem[] = [];
   cargando = true;
 

@@ -1,15 +1,15 @@
 ﻿// configuracion-rutas.ts
-// Define todas las rutas de la aplicaciÃ³n Angular.
-// Las rutas privadas estÃ¡n protegidas por guardia-autenticacion.
+// Define todas las rutas de la aplicación Angular.
+// Las rutas privadas están protegidas por guardia-autenticacion.
 import { Routes } from '@angular/router';
 import { guardiaAutenticacion } from './core/guards/guardia-autenticacion';
 
 export const routes: Routes = [
 
-  // Ruta raÃ­z â†’ redirige al login
+  // Ruta raíz → redirige al login
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
 
-  // â”€â”€ RUTAS PÃšBLICAS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── RUTAS PÚBLICAS ─────────────────────────────────────────
   {
     path: 'auth/login',
     loadComponent: () =>
@@ -23,7 +23,7 @@ export const routes: Routes = [
         .then(m => m.RecuperarComponent)
   },
 
-  // â”€â”€ RUTAS PRIVADAS (requieren token JWT vÃ¡lido) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── RUTAS PRIVADAS (requieren token JWT válido) ─────────────
   {
     path: 'dashboard',
     canActivate: [guardiaAutenticacion],
@@ -38,7 +38,7 @@ export const routes: Routes = [
             .then(m => m.DashboardAgenteComponent)
       },
 
-      // Vista del administrador/gerente (con grÃ¡ficos)
+      // Vista del administrador/gerente (con gráficos)
       {
         path: 'admin',
         loadComponent: () =>
@@ -54,7 +54,7 @@ export const routes: Routes = [
             .then(m => m.CrearUsuarioComponent)
       },
 
-      // Panel de usuarios (admin) â† NUEVO
+      // Panel de usuarios (admin) ← NUEVO
       {
         path: 'panel-usuarios',
         loadComponent: () =>
@@ -86,7 +86,7 @@ export const routes: Routes = [
             .then(m => m.PerfilComponent)
       },
 
-      // Vista de configuraciÃ³n
+      // Vista de configuración
       {
         path: 'configuracion',
         loadComponent: () =>
@@ -102,7 +102,7 @@ export const routes: Routes = [
             .then(m => m.ReportesComponent)
       },
 
-      // Vista de gestiÃ³n de tickets (admin)
+      // Vista de gestión de tickets (admin)
       {
         path: 'gestion-tickets',
         loadComponent: () =>
@@ -110,7 +110,7 @@ export const routes: Routes = [
             .then(m => m.GestionTicketsComponent)
       },
 
-      // Vista de gestiÃ³n de incidencias (admin)
+      // Vista de gestión de incidencias (admin)
       {
         path: 'gestion-incidencias',
         loadComponent: () =>
@@ -118,7 +118,7 @@ export const routes: Routes = [
             .then(m => m.GestionIncidenciasComponent)
       },
 
-      // Vista de administraciÃ³n (admin) â† NUEVO
+      // Vista de administración (admin) ← NUEVO
       {
         path: 'administracion',
         loadComponent: () =>
@@ -126,10 +126,10 @@ export const routes: Routes = [
             .then(m => m.AdministracionComponent)
       },
 
-      // â”€â”€ VISTA DEL TÃ‰CNICO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // ── VISTA DEL TÉCNICO ──────────────────────────────────
       { path: 'tecnico', redirectTo: 'tecnico/tickets', pathMatch: 'full' },
 
-      // Panel de tickets del tÃ©cnico (aprobar)
+      // Panel de tickets del técnico (aprobar)
       {
         path: 'tecnico/tickets',
         loadComponent: () =>
@@ -137,7 +137,7 @@ export const routes: Routes = [
             .then(m => m.TecnicoTicketsComponent)
       },
 
-      // Panel de incidencias del tÃ©cnico (asignar / derivar)
+      // Panel de incidencias del técnico (asignar / derivar)
       {
         path: 'tecnico/incidencias',
         loadComponent: () =>
@@ -145,7 +145,7 @@ export const routes: Routes = [
             .then(m => m.TecnicoIncidenciasComponent)
       },
 
-      // Perfil del tÃ©cnico (con la barra lateral del tÃ©cnico)
+      // Perfil del técnico (con la barra lateral del técnico)
       {
         path: 'tecnico/perfil',
         loadComponent: () =>
@@ -155,7 +155,7 @@ export const routes: Routes = [
     ]
   },
 
-  // Pantalla para ingresar la nueva contraseÃ±a (paso 3 recuperaciÃ³n)
+  // Pantalla para ingresar la nueva contraseña (paso 3 recuperación)
   {
     path: 'restablecer',
     loadComponent: () =>
@@ -163,6 +163,6 @@ export const routes: Routes = [
         .then(m => m.RestablecerComponent)
   },
 
-  // Cualquier ruta desconocida â†’ login
+  // Cualquier ruta desconocida → login
   { path: '**', redirectTo: 'auth/login' }
 ];

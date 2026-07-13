@@ -48,7 +48,7 @@ export class GestionIncidenciasComponent implements OnInit {
     this.cargarTab('pendientes');
   }
 
-  // â”€â”€ CARGA DE DATOS REALES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── CARGA DE DATOS REALES ────────────────────────────────────
 
   // Carga las incidencias del tab activo desde el backend
   cargarTab(tab: TabIncidencia): void {
@@ -73,7 +73,7 @@ export class GestionIncidenciasComponent implements OnInit {
   }
 
   cambiarTab(tab: TabIncidencia): void {
-    // Solo recarga si el tab no tiene datos aÃºn
+    // Solo recarga si el tab no tiene datos aún
     const yaHayDatos =
       (tab === 'pendientes' && this.pendientes.length > 0) ||
       (tab === 'revision'   && this.revision.length   > 0) ||
@@ -89,7 +89,7 @@ export class GestionIncidenciasComponent implements OnInit {
     return this.atendidas;
   }
 
-  // â”€â”€ MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── MODAL ────────────────────────────────────────────────────
 
   // Abre el modal y carga el detalle completo desde el backend
   revisar(item: IncidenciaAdminItem): void {
@@ -116,7 +116,7 @@ export class GestionIncidenciasComponent implements OnInit {
     this.modoEdicion            = false;
   }
 
-  // â”€â”€ EDITAR / ELIMINAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── EDITAR / ELIMINAR ───────────────────────────────────────
   modoEdicion = false;
   guardando   = false;
   editForm = { asunto: '', tipo: '', contenido: '' };
@@ -153,7 +153,7 @@ export class GestionIncidenciasComponent implements OnInit {
 
   borrarIncidencia(): void {
     if (!this.detalleModal) return;
-    if (!confirm('Â¿Seguro que deseas eliminar esta incidencia? Esta acciÃ³n no se puede deshacer.')) return;
+    if (!confirm('¿Seguro que deseas eliminar esta incidencia? Esta acción no se puede deshacer.')) return;
     const id = this.detalleModal.id;
     this.servicioAdmin.eliminarIncidencia(id).subscribe({
       next: () => { this.cerrarModal(); this.recargarLista(); },
@@ -165,21 +165,21 @@ export class GestionIncidenciasComponent implements OnInit {
     this.cargarTab(this.tabActivo);
   }
 
-  // â”€â”€ HELPERS DE FORMATO PARA EL MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── HELPERS DE FORMATO PARA EL MODAL ────────────────────────
 
-  // Inicial para el avatar (ej. "Grace GalÃ¡n" â†’ "G")
+  // Inicial para el avatar (ej. "Grace Galán" → "G")
   inicial(txt: string | null | undefined): string {
     return (txt?.trim()?.charAt(0) || '?').toUpperCase();
   }
 
-  // Estado de la incidencia â†’ texto + clase de badge
+  // Estado de la incidencia → texto + clase de badge
   estadoTexto(e: string | null | undefined): string {
     switch ((e || '').toUpperCase()) {
       case 'REPORTADA':   return 'Pendiente';
       case 'EN_REVISION': return 'Asignada';
       case 'RESUELTA':    return 'Resuelta';
       case 'RECHAZADA':   return 'Rechazada';
-      default:            return e || 'â€”';
+      default:            return e || '—';
     }
   }
   estadoClase(e: string | null | undefined): string {
@@ -191,16 +191,16 @@ export class GestionIncidenciasComponent implements OnInit {
     }
   }
 
-  // "2026-03-30T18:58:00" â†’ "Marzo 30, 2026"
+  // "2026-03-30T18:58:00" → "Marzo 30, 2026"
   fechaLarga(iso: string | null | undefined): string {
-    if (!iso) return 'â€”';
+    if (!iso) return '—';
     const d = new Date(iso);
-    if (isNaN(d.getTime())) return 'â€”';
+    if (isNaN(d.getTime())) return '—';
     const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
     return `${meses[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
   }
 
-  // "2026-03-30T18:58:00" â†’ "30 de Marzo de 2026 a las 18:58"
+  // "2026-03-30T18:58:00" → "30 de Marzo de 2026 a las 18:58"
   fechaHoraMeta(iso: string | null | undefined): string {
     if (!iso) return '';
     const d = new Date(iso);
@@ -211,7 +211,7 @@ export class GestionIncidenciasComponent implements OnInit {
     return `${d.getDate()} de ${meses[d.getMonth()]} de ${d.getFullYear()} a las ${hh}:${mm}`;
   }
 
-  // â”€â”€ NAVEGACIÃ“N SIDEBAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── NAVEGACIÓN SIDEBAR ──────────────────────────────────────
 
   irAInicio(): void         { this.router.navigate(['/dashboard/admin']);               }
   irAGestionTickets(): void  { this.router.navigate(['/dashboard/gestion-tickets']);    }

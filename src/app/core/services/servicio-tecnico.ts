@@ -68,7 +68,7 @@ export class ServicioTecnico {
 
   constructor(private http: HttpClient) {}
 
-  // â”€â”€ TICKETS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── TICKETS ─────────────────────────────────────────────────
 
   // GET /api/tecnico/tickets
   listarTickets(): Observable<TecnicoTicket[]> {
@@ -85,7 +85,7 @@ export class ServicioTecnico {
     return this.http.put<OperacionResponse>(`${this.URL}/tickets/${id}/rechazar`, {});
   }
 
-  // â”€â”€ INCIDENCIAS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── INCIDENCIAS ─────────────────────────────────────────────
 
   // GET /api/tecnico/incidencias
   listarIncidencias(): Observable<TecnicoIncidencia[]> {

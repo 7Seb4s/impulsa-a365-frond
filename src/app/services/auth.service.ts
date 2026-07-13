@@ -8,7 +8,7 @@ export interface Usuario {
   rol: string;
 }
 
-// â”€â”€ Usuarios de prueba (reemplazar cuando haya backend) â”€â”€â”€â”€â”€â”€
+// ── Usuarios de prueba (reemplazar cuando haya backend) ──────
 const USUARIOS_PRUEBA: (Usuario & { password: string })[] = [
   { id: 1, codigo: 'admin',      password: '1234', nombre: 'Administrador', rol: 'ADMIN'      },
   { id: 2, codigo: 'supervisor', password: '1234', nombre: 'Supervisor',    rol: 'SUPERVISOR' },
@@ -22,7 +22,7 @@ export class AuthService {
 
   constructor(private router: Router) {}
 
-  // â”€â”€ LOGIN (simulado) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── LOGIN (simulado) ─────────────────────────────────────────
   login(codigo: string, password: string): boolean {
     const usuario = USUARIOS_PRUEBA.find(
       u => u.codigo === codigo && u.password === password
@@ -35,13 +35,13 @@ export class AuthService {
     return false;
   }
 
-  // â”€â”€ LOGOUT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── LOGOUT ───────────────────────────────────────────────────
   logout(): void {
     localStorage.removeItem(this.USUARIO_KEY);
     this.router.navigate(['/login']);
   }
 
-  // â”€â”€ HELPERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── HELPERS ──────────────────────────────────────────────────
   isLoggedIn(): boolean {
     return !!localStorage.getItem(this.USUARIO_KEY);
   }

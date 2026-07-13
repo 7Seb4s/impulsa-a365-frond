@@ -124,7 +124,7 @@ export class PerfilComponent implements OnInit {
     // Validar tipo antes de mostrar preview
     const tiposPermitidos = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
     if (!tiposPermitidos.includes(file.type)) {
-      this.errorFoto = 'Solo se permiten imÃ¡genes JPEG, PNG, WEBP o GIF.';
+      this.errorFoto = 'Solo se permiten imágenes JPEG, PNG, WEBP o GIF.';
       return;
     }
     if (file.size > 5 * 1024 * 1024) {
@@ -180,7 +180,7 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-  // EnvÃ­a los datos de texto al backend (PUT /api/perfil)
+  // Envía los datos de texto al backend (PUT /api/perfil)
   private guardarDatos(): void {
     this.guardando = true;
     this.servicioPerfil.actualizar({

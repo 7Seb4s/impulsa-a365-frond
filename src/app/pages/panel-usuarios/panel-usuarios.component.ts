@@ -1,5 +1,5 @@
 ﻿// pages/panel-usuarios/panel-usuarios.component.ts
-// Panel de administraciÃ³n de usuarios: lista activos + historial de eliminados.
+// Panel de administración de usuarios: lista activos + historial de eliminados.
 // Usa GET /api/usuarios y GET /api/usuarios/eliminados del backend.
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -93,7 +93,7 @@ export class PanelUsuariosComponent implements OnInit {
 
   irAPagina(p: number): void { if (p >= 1 && p <= this.totalPaginas) this.paginaActual = p; }
 
-  // â”€â”€ Modal de revisiÃ³n de usuario â”€â”€
+  // ── Modal de revisión de usuario ──
   mostrarModal     = false;
   cargandoModal    = false;
   usuarioModal:    UsuarioPanelItem | null = null;
@@ -124,7 +124,7 @@ export class PanelUsuariosComponent implements OnInit {
     this.revisionModal = null;
   }
 
-  // â”€â”€ Exportar a Excel â”€â”€
+  // ── Exportar a Excel ──
   exportando = false;
 
   exportarExcel(): void {
@@ -149,7 +149,7 @@ export class PanelUsuariosComponent implements OnInit {
     });
   }
 
-  // â”€â”€ Exportar a PDF â”€â”€
+  // ── Exportar a PDF ──
   exportandoPdf = false;
 
   exportarPdf(): void {
@@ -174,7 +174,7 @@ export class PanelUsuariosComponent implements OnInit {
     });
   }
 
-  // â”€â”€ Imprimir: genera el PDF y abre el diÃ¡logo de impresiÃ³n â”€â”€
+  // ── Imprimir: genera el PDF y abre el diálogo de impresión ──
   imprimir(): void {
     const obs$ = this.tabActiva === 'activos'
       ? this.servicioAdmin.exportarUsuariosActivosPdf()

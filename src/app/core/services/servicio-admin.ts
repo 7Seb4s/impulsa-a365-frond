@@ -1,13 +1,13 @@
 ﻿// core/services/servicio-admin.ts
-// Servicio HTTP para el panel de administraciÃ³n.
+// Servicio HTTP para el panel de administración.
 // Habla con los endpoints /api/admin/* del backend Spring Boot.
-// El interceptor JWT inyecta el token automÃ¡ticamente en cada peticiÃ³n.
+// El interceptor JWT inyecta el token automáticamente en cada petición.
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
-// â”€â”€ Resumen mensual de tickets (dashboard principal) â”€â”€
+// ── Resumen mensual de tickets (dashboard principal) ──
 // Coincide con AdminDTO.ResumenTicketsMes del backend
 export interface ResumenTicketsMes {
   pendientes:    number;
@@ -19,7 +19,7 @@ export interface ResumenTicketsMes {
   pctAtendidos:  number;
 }
 
-// â”€â”€ Resumen semanal de incidencias (grÃ¡fico de torta) â”€â”€
+// ── Resumen semanal de incidencias (gráfico de torta) ──
 // Coincide con AdminDTO.ResumenIncidenciasSemana del backend
 export interface ResumenIncidenciasSemana {
   reportadas:  number;
@@ -28,7 +28,7 @@ export interface ResumenIncidenciasSemana {
   total:       number;
 }
 
-// â”€â”€ Resumen semanal de tickets (grÃ¡fico de dona) â”€â”€
+// ── Resumen semanal de tickets (gráfico de dona) ──
 // Coincide con AdminDTO.ResumenTicketsSemana del backend
 export interface ResumenTicketsSemana {
   pendientes:  number;
@@ -38,7 +38,7 @@ export interface ResumenTicketsSemana {
   total:       number;
 }
 
-// â”€â”€ Ãtem del tablero kanban de tickets (admin) â”€â”€
+// ── Ítem del tablero kanban de tickets (admin) ──
 // Coincide con AdminDTO.TableroTicketItem del backend
 export interface TableroTicketItem {
   numeroTicket:         number;
@@ -50,7 +50,7 @@ export interface TableroTicketItem {
   totalAdjuntos:        number | null;
 }
 
-// â”€â”€ Detalle de un ticket para el modal (admin) â”€â”€
+// ── Detalle de un ticket para el modal (admin) ──
 // Coincide con AdminDTO.TicketDetalle del backend
 export interface TicketDetalleAdmin {
   idTicket:          number | null;
@@ -70,7 +70,7 @@ export interface TicketDetalleAdmin {
   asignadoA:         string | null;
 }
 
-// â”€â”€ Adjunto de un ticket â”€â”€
+// ── Adjunto de un ticket ──
 // Coincide con AdminDTO.TicketAdjunto del backend
 export interface TicketAdjunto {
   idAdjunto:     number | null;
@@ -80,7 +80,7 @@ export interface TicketAdjunto {
   creadoEn:      string;
 }
 
-// â”€â”€ Bodies de ediciÃ³n â”€â”€
+// ── Bodies de edición ──
 export interface EditarTicketBody {
   asunto:      string;
   tipo:        string;
@@ -93,7 +93,7 @@ export interface EditarIncidenciaBody {
   contenido: string;
 }
 
-// â”€â”€ Reportes: KPIs + historial â”€â”€
+// ── Reportes: KPIs + historial ──
 // Coincide con ReportesDTO del backend
 export interface ReporteKpis {
   totalResueltos:   number;
@@ -115,7 +115,7 @@ export interface ReporteResponse {
   historial: ReporteHistorialItem[];
 }
 
-// â”€â”€ Mensaje de un ticket â”€â”€
+// ── Mensaje de un ticket ──
 // Coincide con AdminDTO.TicketMensaje del backend
 export interface TicketMensaje {
   idMensaje:       number;
@@ -125,7 +125,7 @@ export interface TicketMensaje {
   remitenteNombre: string;
 }
 
-// â”€â”€ Ãtem de la lista de incidencias (admin) â”€â”€
+// ── Ítem de la lista de incidencias (admin) ──
 // Coincide con AdminDTO.IncidenciaAdminItem del backend
 export interface IncidenciaAdminItem {
   id:          number;
@@ -137,7 +137,7 @@ export interface IncidenciaAdminItem {
   fecha:       string;
 }
 
-// â”€â”€ Detalle de una incidencia para el modal (admin) â”€â”€
+// ── Detalle de una incidencia para el modal (admin) ──
 // Coincide con AdminDTO.IncidenciaAdminDetalle del backend
 export interface IncidenciaAdminDetalle {
   id:           number;
@@ -150,7 +150,7 @@ export interface IncidenciaAdminDetalle {
   numeroTicket: number;
 }
 
-// â”€â”€ Perfil completo de un usuario para la vista Revisar â”€â”€
+// ── Perfil completo de un usuario para la vista Revisar ──
 // Coincide con AdminDTO.RevisionUsuario del backend
 export interface RevisionUsuario {
   nombreCompleto:        string;
@@ -170,7 +170,7 @@ export interface RevisionUsuario {
   asignadoNombre:        string | null;
 }
 
-// â”€â”€ Ãtem del panel de usuarios â”€â”€
+// ── Ítem del panel de usuarios ──
 // Coincide con UsuarioDTO.PanelItem del backend
 export interface UsuarioPanelItem {
   id:     number;
@@ -182,7 +182,7 @@ export interface UsuarioPanelItem {
   rol:    string;
 }
 
-// â”€â”€ Respuesta genÃ©rica de operaciones admin â”€â”€
+// ── Respuesta genérica de operaciones admin ──
 export interface OperacionResponse {
   mensaje: string;
 }
@@ -194,7 +194,7 @@ export class ServicioAdmin {
 
   constructor(private http: HttpClient) {}
 
-  // â”€â”€ GrÃ¡ficos del dashboard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Gráficos del dashboard ──────────────────────────────────
 
   // GET /api/admin/dashboard/tickets-mes?anio=&mes=
   // Devuelve el resumen mensual para el reporte de tickets del dashboard
@@ -206,18 +206,18 @@ export class ServicioAdmin {
   }
 
   // GET /api/admin/dashboard/incidencias-semana
-  // Devuelve el resumen semanal para el grÃ¡fico de torta de incidencias
+  // Devuelve el resumen semanal para el gráfico de torta de incidencias
   obtenerResumenIncidenciasSemana(): Observable<ResumenIncidenciasSemana> {
     return this.http.get<ResumenIncidenciasSemana>(`${this.URL}/dashboard/incidencias-semana`);
   }
 
   // GET /api/admin/dashboard/tickets-semana
-  // Devuelve el resumen semanal para el grÃ¡fico de dona de tickets
+  // Devuelve el resumen semanal para el gráfico de dona de tickets
   obtenerResumenTicketsSemana(): Observable<ResumenTicketsSemana> {
     return this.http.get<ResumenTicketsSemana>(`${this.URL}/dashboard/tickets-semana`);
   }
 
-  // â”€â”€ Tablero kanban de tickets â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Tablero kanban de tickets ───────────────────────────────
 
   // GET /api/admin/tablero?columna=EN_REVISION&texto=
   // Devuelve los tickets de una columna con filtro de texto opcional
@@ -230,7 +230,7 @@ export class ServicioAdmin {
   }
 
   // GET /api/admin/tickets/{numero}/modal
-  // Vista rÃ¡pida del ticket para el modal del tablero
+  // Vista rápida del ticket para el modal del tablero
   obtenerModalTicket(numero: number): Observable<TicketDetalleAdmin> {
     return this.http.get<TicketDetalleAdmin>(`${this.URL}/tickets/${numero}/modal`);
   }
@@ -247,7 +247,7 @@ export class ServicioAdmin {
     return this.http.get<TicketAdjunto[]>(`${this.URL}/tickets/${numero}/adjuntos`);
   }
 
-  // â”€â”€ ACCIONES: editar / eliminar / adjuntos â”€â”€
+  // ── ACCIONES: editar / eliminar / adjuntos ──
 
   editarTicket(numero: number, body: EditarTicketBody): Observable<{ mensaje: string }> {
     return this.http.put<{ mensaje: string }>(`${this.URL}/tickets/${numero}`, body);
@@ -295,7 +295,7 @@ export class ServicioAdmin {
   }
 
   // POST /api/admin/tickets/{numero}/mensajes
-  // EnvÃ­a un mensaje en el hilo de un ticket
+  // Envía un mensaje en el hilo de un ticket
   enviarMensaje(numero: number, contenido: string): Observable<OperacionResponse> {
     return this.http.post<OperacionResponse>(
       `${this.URL}/tickets/${numero}/mensajes`,
@@ -303,7 +303,7 @@ export class ServicioAdmin {
     );
   }
 
-  // â”€â”€ GestiÃ³n de incidencias â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Gestión de incidencias ──────────────────────────────────
 
   // GET /api/admin/incidencias?tab=pendientes|revision|atendidas
   // Lista incidencias filtradas por tab
@@ -320,7 +320,7 @@ export class ServicioAdmin {
     return this.http.get<IncidenciaAdminDetalle>(`${this.URL}/incidencias/${id}`);
   }
 
-  // â”€â”€ GestiÃ³n de usuarios â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Gestión de usuarios ─────────────────────────────────────
 
   // GET /api/usuarios
   // Lista todos los usuarios activos
@@ -358,7 +358,7 @@ export class ServicioAdmin {
     return this.http.put<OperacionResponse>(`${this.URL}/usuarios/${id}/rol`, { rol });
   }
 
-  // â”€â”€ ExportaciÃ³n a Excel (Apache POI en el backend) â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Exportación a Excel (Apache POI en el backend) ─────────
 
   // GET /api/exportar/usuarios-activos
   // Descarga el Excel de usuarios activos como Blob

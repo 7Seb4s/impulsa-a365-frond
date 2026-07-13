@@ -47,11 +47,11 @@ export class LoginComponent implements OnInit {
     this.limpiarErrores();
 
     if (!this.codigo.trim()) {
-      this.errorCodigo = 'Por favor ingresa tu cÃ³digo.';
+      this.errorCodigo = 'Por favor ingresa tu código.';
       return;
     }
     if (!this.contrasena.trim()) {
-      this.errorContrasena = 'Por favor ingresa tu contraseÃ±a.';
+      this.errorContrasena = 'Por favor ingresa tu contraseña.';
       return;
     }
 
@@ -71,11 +71,11 @@ export class LoginComponent implements OnInit {
         this.contrasena = '';
 
         if (err.status === 401 || err.status === 403 || err.status === 404) {
-          this.errorGeneral = 'CÃ³digo o contraseÃ±a incorrectos.';
+          this.errorGeneral = 'Código o contraseña incorrectos.';
         } else if (err.status === 0 || err.status >= 500) {
-          this.errorGeneral = 'No se puede conectar con el servidor. Intenta mÃ¡s tarde.';
+          this.errorGeneral = 'No se puede conectar con el servidor. Intenta más tarde.';
         } else {
-          this.errorGeneral = 'OcurriÃ³ un error inesperado. Intenta de nuevo.';
+          this.errorGeneral = 'Ocurrió un error inesperado. Intenta de nuevo.';
         }
 
         setTimeout(() => {
@@ -85,7 +85,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  // Inicializa el botÃ³n de Google en el div#google-login-btn
+  // Inicializa el botón de Google en el div#google-login-btn
   private inicializarGoogle(): void {
     const intervalo = setInterval(() => {
       if (typeof google !== 'undefined' && google.accounts) {
@@ -134,11 +134,11 @@ export class LoginComponent implements OnInit {
         error: (err) => {
           this.cargandoGoogle = false;
           if (err.status === 404) {
-            this.errorGeneral = 'Tu correo de Google no estÃ¡ registrado en el sistema.';
+            this.errorGeneral = 'Tu correo de Google no está registrado en el sistema.';
           } else if (err.status === 403) {
-            this.errorGeneral = 'Tu cuenta estÃ¡ desactivada. Contacta al administrador.';
+            this.errorGeneral = 'Tu cuenta está desactivada. Contacta al administrador.';
           } else {
-            this.errorGeneral = 'Error al iniciar sesiÃ³n con Google. Intenta de nuevo.';
+            this.errorGeneral = 'Error al iniciar sesión con Google. Intenta de nuevo.';
           }
         }
       });
@@ -148,7 +148,7 @@ export class LoginComponent implements OnInit {
     if (rol === 'ADMINISTRADOR') {
       this.router.navigate(['/dashboard/admin']);
     } else if (rol === 'GERENTE') {
-      // GERENTE se usa como el rol del tÃ©cnico
+      // GERENTE se usa como el rol del técnico
       this.router.navigate(['/dashboard/tecnico/tickets']);
     } else {
       this.router.navigate(['/dashboard/agente']);

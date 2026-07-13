@@ -1,15 +1,15 @@
 ﻿// configuracion-rutas.ts
-// Define todas las rutas de la aplicaciÃ³n Angular.
-// Las rutas privadas estÃ¡n protegidas por guardia-autenticacion.
+// Define todas las rutas de la aplicación Angular.
+// Las rutas privadas están protegidas por guardia-autenticacion.
 import { Routes } from '@angular/router';
 import { guardiaAutenticacion } from './core/guards/guardia-autenticacion';
 
 export const routes: Routes = [
 
-  // Ruta raÃ­z â†’ redirige al login
+  // Ruta raíz → redirige al login
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
 
-  // â”€â”€ RUTAS PÃšBLICAS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── RUTAS PÚBLICAS ─────────────────────────────────────────
   {
     path: 'auth/login',
     loadComponent: () =>
@@ -22,7 +22,7 @@ export const routes: Routes = [
       import('./pages/recuperar/recuperar.component')
         .then(m => m.RecuperarComponent)
   },
-  // Paso 3 del flujo de recuperaciÃ³n: ingresa la nueva contraseÃ±a
+  // Paso 3 del flujo de recuperación: ingresa la nueva contraseña
   {
     path: 'auth/restablecer',
     loadComponent: () =>
@@ -30,7 +30,7 @@ export const routes: Routes = [
         .then(m => m.RestablecerComponent)
   },
 
-  // â”€â”€ RUTAS PRIVADAS (requieren token JWT vÃ¡lido) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── RUTAS PRIVADAS (requieren token JWT válido) ─────────────
   {
     path: 'dashboard',
     canActivate: [guardiaAutenticacion],
@@ -45,7 +45,7 @@ export const routes: Routes = [
             .then(m => m.DashboardAgenteComponent)
       },
 
-      // Vista del administrador/gerente (con grÃ¡ficos)
+      // Vista del administrador/gerente (con gráficos)
       {
         path: 'admin',
         loadComponent: () =>
@@ -63,6 +63,6 @@ export const routes: Routes = [
     ]
   },
 
-  // Cualquier ruta desconocida â†’ login
+  // Cualquier ruta desconocida → login
   { path: '**', redirectTo: 'auth/login' }
 ];

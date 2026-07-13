@@ -1,7 +1,7 @@
 ﻿// pages/restablecer/restablecer.component.ts
-// Pantalla "Restablece tu contraseÃ±a" â€” Paso 3 del flujo de recuperaciÃ³n.
-// Recibe correo + codigo desde el estado de navegaciÃ³n (Router state),
-// pide la nueva contraseÃ±a al usuario y llama a POST /api/auth/recuperar/cambiar.
+// Pantalla "Restablece tu contraseña" — Paso 3 del flujo de recuperación.
+// Recibe correo + codigo desde el estado de navegación (Router state),
+// pide la nueva contraseña al usuario y llama a POST /api/auth/recuperar/cambiar.
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -52,44 +52,44 @@ export class RestablecerComponent implements OnInit {
     }
   }
 
-  // Alterna visibilidad del campo nueva contraseÃ±a
+  // Alterna visibilidad del campo nueva contraseña
   toggleNueva(): void {
     this.mostrarNueva = !this.mostrarNueva;
   }
 
-  // Alterna visibilidad del campo confirmar contraseÃ±a
+  // Alterna visibilidad del campo confirmar contraseña
   toggleConfirmar(): void {
     this.mostrarConfirmar = !this.mostrarConfirmar;
   }
 
   // Llama a POST /api/auth/recuperar/cambiar con correo + codigo + nuevaPassword.
-  // El backend verifica el cÃ³digo una vez mÃ¡s, encripta con BCrypt y actualiza en BD.
+  // El backend verifica el código una vez más, encripta con BCrypt y actualiza en BD.
   restablecer(): void {
     this.errorMsg   = '';
     this.successMsg = '';
 
     if (!this.nuevaPassword.trim()) {
-      this.errorMsg = 'Por favor ingresa tu nueva contraseÃ±a.';
+      this.errorMsg = 'Por favor ingresa tu nueva contraseña.';
       return;
     }
     if (this.nuevaPassword.length < 8) {
-      this.errorMsg = 'MÃ­nimo 8 caracteres.';
+      this.errorMsg = 'Mínimo 8 caracteres.';
       return;
     }
     if (!/[\p{Lu}]/u.test(this.nuevaPassword)) {
-      this.errorMsg = 'Debe incluir al menos 1 letra mayÃºscula.';
+      this.errorMsg = 'Debe incluir al menos 1 letra mayúscula.';
       return;
     }
     if (!/[0-9]/.test(this.nuevaPassword)) {
-      this.errorMsg = 'Debe incluir al menos 1 nÃºmero.';
+      this.errorMsg = 'Debe incluir al menos 1 número.';
       return;
     }
     if (!/[^a-zA-Z0-9]/.test(this.nuevaPassword)) {
-      this.errorMsg = 'Debe incluir al menos 1 carÃ¡cter especial (!@#$...).';
+      this.errorMsg = 'Debe incluir al menos 1 carácter especial (!@#$...).';
       return;
     }
     if (this.nuevaPassword !== this.confirmarPassword) {
-      this.errorMsg = 'Las contraseÃ±as no coinciden.';
+      this.errorMsg = 'Las contraseñas no coinciden.';
       return;
     }
 
@@ -102,17 +102,17 @@ export class RestablecerComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.cargando   = false;
-        this.successMsg = 'Â¡ContraseÃ±a actualizada! Redirigiendo al inicio de sesiÃ³n...';
-        // Redirige al login despuÃ©s de 2 segundos
+        this.successMsg = '¡Contraseña actualizada! Redirigiendo al inicio de sesión...';
+        // Redirige al login después de 2 segundos
         setTimeout(() => this.router.navigate(['/auth/login']), 2000);
       },
       error: (err) => {
         this.cargando = false;
         this.cdr.detectChanges();
         if (err.status === 400) {
-          this.errorMsg = 'El cÃ³digo ha expirado. Por favor inicia el proceso nuevamente.';
+          this.errorMsg = 'El código ha expirado. Por favor inicia el proceso nuevamente.';
         } else {
-          this.errorMsg = 'Error al restablecer la contraseÃ±a. Intenta de nuevo.';
+          this.errorMsg = 'Error al restablecer la contraseña. Intenta de nuevo.';
         }
       }
     });

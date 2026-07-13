@@ -1,5 +1,5 @@
 ﻿// app.config.ts
-// ConfiguraciÃ³n principal de la aplicaciÃ³n Angular.
+// Configuración principal de la aplicación Angular.
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';

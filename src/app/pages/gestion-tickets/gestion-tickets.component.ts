@@ -14,8 +14,8 @@ import { map } from 'rxjs/operators';
 // Mapea los campos del backend a los nombres que espera la plantilla
 export interface TicketAdmin {
   id:            number;
-  titulo:        string;   // â† asunto del backend
-  descripcion:   string;   // â† previewUltimoMensaje del backend
+  titulo:        string;   // ← asunto del backend
+  descripcion:   string;   // ← previewUltimoMensaje del backend
   diasRestantes: number;   // calculado desde actualizadoEn
   adjuntos:      number;   // 0 hasta que el backend lo exponga
   numero:        string;   // "#XXXX" formateado desde numeroTicket
@@ -67,7 +67,7 @@ export class GestionTicketsComponent implements OnInit {
     this.cargarTablero();
   }
 
-  // â”€â”€ CARGA DE DATOS REALES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── CARGA DE DATOS REALES ────────────────────────────────────
 
   // Carga las 3 columnas del kanban en paralelo desde el backend
   // y mapea cada item al modelo local que usa el HTML
@@ -88,7 +88,7 @@ export class GestionTicketsComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: () => {
-        this.errorMsg = 'No se pudo cargar el tablero. Verifica la conexiÃ³n con el backend.';
+        this.errorMsg = 'No se pudo cargar el tablero. Verifica la conexión con el backend.';
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -100,7 +100,7 @@ export class GestionTicketsComponent implements OnInit {
     return {
       id:            item.numeroTicket,
       titulo:        item.asunto,
-      descripcion:   item.previewUltimoMensaje || 'Sin mensajes aÃºn.',
+      descripcion:   item.previewUltimoMensaje || 'Sin mensajes aún.',
       diasRestantes: this.calcularDias(item.actualizadoEn),
       adjuntos:      item.totalAdjuntos ?? 0,   // conteo real de adjuntos del backend
       numero:        `#${item.numeroTicket}`,
@@ -109,14 +109,14 @@ export class GestionTicketsComponent implements OnInit {
     };
   }
 
-  // Calcula cuÃ¡ntos dÃ­as han pasado desde la Ãºltima actualizaciÃ³n
+  // Calcula cuántos días han pasado desde la última actualización
   private calcularDias(fechaStr: string): number {
     if (!fechaStr) return 0;
     const diff = Date.now() - new Date(fechaStr).getTime();
     return Math.max(0, Math.floor(diff / 86400000));
   }
 
-  // â”€â”€ FILTROS LOCALES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── FILTROS LOCALES ──────────────────────────────────────────
 
   get pendientesFiltrados():  TicketAdmin[] { return this.filtrar(this.ticketsPendientes); }
   get revisionFiltrados():    TicketAdmin[] { return this.filtrar(this.ticketsRevision);   }
@@ -131,7 +131,7 @@ export class GestionTicketsComponent implements OnInit {
     );
   }
 
-  // â”€â”€ MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── MODAL ────────────────────────────────────────────────────
 
   // Abre el modal y carga el detalle completo del ticket desde el backend
   abrirModal(ticket: TicketAdmin): void {
@@ -165,7 +165,7 @@ export class GestionTicketsComponent implements OnInit {
     this.modoEdicion        = false;
   }
 
-  // â”€â”€ EDITAR / ELIMINAR / ADJUNTOS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── EDITAR / ELIMINAR / ADJUNTOS ────────────────────────────
 
   modoEdicion = false;
   guardando   = false;
@@ -205,7 +205,7 @@ export class GestionTicketsComponent implements OnInit {
 
   borrarTicket(): void {
     if (!this.ticketSeleccionado) return;
-    if (!confirm('Â¿Seguro que deseas eliminar este ticket? Esta acciÃ³n no se puede deshacer.')) return;
+    if (!confirm('¿Seguro que deseas eliminar este ticket? Esta acción no se puede deshacer.')) return;
     const numero = this.ticketSeleccionado.numeroTicket;
     this.servicioAdmin.eliminarTicket(numero).subscribe({
       next: () => { this.cerrarModal(); this.cargarTablero(); },
@@ -236,7 +236,7 @@ export class GestionTicketsComponent implements OnInit {
 
   borrarTodosAdjuntos(): void {
     if (!this.ticketSeleccionado || this.adjuntosModal.length === 0) return;
-    if (!confirm('Â¿Eliminar todos los documentos de este ticket?')) return;
+    if (!confirm('¿Eliminar todos los documentos de este ticket?')) return;
     const numero = this.ticketSeleccionado.numeroTicket;
     this.servicioAdmin.eliminarTodosAdjuntos(numero).subscribe({
       next: () => this.recargarAdjuntos(numero),
@@ -250,20 +250,20 @@ export class GestionTicketsComponent implements OnInit {
     });
   }
 
-  // â”€â”€ HELPERS DE FORMATO PARA EL MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── HELPERS DE FORMATO PARA EL MODAL ────────────────────────
 
-  // Iniciales para el avatar (ej. "Grace GalÃ¡n" â†’ "G")
+  // Iniciales para el avatar (ej. "Grace Galán" → "G")
   inicial(txt: string | null | undefined): string {
     return (txt?.trim()?.charAt(0) || '?').toUpperCase();
   }
 
-  // Prioridad ALTA/MEDIA/BAJA â†’ texto legible
+  // Prioridad ALTA/MEDIA/BAJA → texto legible
   prioridadTexto(p: string | null | undefined): string {
     switch ((p || '').toUpperCase()) {
       case 'ALTA': return 'Alta';
       case 'BAJA': return 'Baja';
       case 'MEDIA': return 'Media';
-      default: return p || 'â€”';
+      default: return p || '—';
     }
   }
   prioridadClase(p: string | null | undefined): string {
@@ -289,16 +289,16 @@ export class GestionTicketsComponent implements OnInit {
     return 'badge-pendiente';
   }
 
-  // "2026-03-30T18:58:00" â†’ "Marzo 30, 2026"
+  // "2026-03-30T18:58:00" → "Marzo 30, 2026"
   fechaLarga(iso: string | null | undefined): string {
-    if (!iso) return 'â€”';
+    if (!iso) return '—';
     const d = new Date(iso);
-    if (isNaN(d.getTime())) return 'â€”';
+    if (isNaN(d.getTime())) return '—';
     const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
     return `${meses[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
   }
 
-  // "2026-03-30T18:58:00" â†’ "30 de Marzo de 2026 a las 18:58"
+  // "2026-03-30T18:58:00" → "30 de Marzo de 2026 a las 18:58"
   fechaHoraMeta(iso: string | null | undefined): string {
     if (!iso) return '';
     const d = new Date(iso);
@@ -309,7 +309,7 @@ export class GestionTicketsComponent implements OnInit {
     return `${d.getDate()} de ${meses[d.getMonth()]} de ${d.getFullYear()} a las ${hh}:${mm}`;
   }
 
-  // Formatea el peso del adjunto: 246 â†’ "246 kb"
+  // Formatea el peso del adjunto: 246 → "246 kb"
   pesoAdjunto(kb: number | null): string {
     return (kb != null ? kb : 0) + ' kb';
   }
@@ -328,7 +328,7 @@ export class GestionTicketsComponent implements OnInit {
     });
   }
 
-  // â”€â”€ NAVEGACIÃ“N SIDEBAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── NAVEGACIÓN SIDEBAR ──────────────────────────────────────
 
   irAInicio(): void             { this.router.navigate(['/dashboard/admin']);               }
   irAGestionIncidencias(): void { this.router.navigate(['/dashboard/gestion-incidencias']); }

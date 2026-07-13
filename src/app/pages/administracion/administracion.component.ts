@@ -29,19 +29,19 @@ export class AdministracionComponent implements OnInit {
   mostrarNueva     = false;
   mostrarConfirmar = false;
 
-  // Errores contraseÃ±a
+  // Errores contraseña
   errorConfirmar = false;
   errorMsg       = '';
 
-  // Validaciones en tiempo real de la nueva contraseÃ±a
+  // Validaciones en tiempo real de la nueva contraseña
   requisitos = {
-    longitud:   false,   // mÃ­nimo 8 caracteres
-    mayuscula:  false,   // al menos 1 letra mayÃºscula
-    numero:     false,   // al menos 1 dÃ­gito
-    especial:   false,   // al menos 1 carÃ¡cter especial
+    longitud:   false,   // mínimo 8 caracteres
+    mayuscula:  false,   // al menos 1 letra mayúscula
+    numero:     false,   // al menos 1 dígito
+    especial:   false,   // al menos 1 carácter especial
   };
 
-  // Formulario contraseÃ±a
+  // Formulario contraseña
   form = { actual: '', nueva: '', confirmar: '' };
 
   // Foto perfil
@@ -63,7 +63,7 @@ export class AdministracionComponent implements OnInit {
     this.cargarPerfil();
   }
 
-  // â”€â”€ NAVEGACIÃ“N SIDEBAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── NAVEGACIÓN SIDEBAR ──────────────────────────────────────
   irAInicio(): void            { this.router.navigate(['/dashboard/admin']); }
   irAGestionTickets(): void    { this.router.navigate(['/dashboard/gestion-tickets']); }
   irAGestionIncidencias(): void { this.router.navigate(['/dashboard/gestion-incidencias']); }
@@ -93,7 +93,7 @@ export class AdministracionComponent implements OnInit {
     this.requisitos.mayuscula = /[\p{Lu}]/u.test(v);
     this.requisitos.numero    = /[0-9]/.test(v);
     this.requisitos.especial  = /[^a-zA-Z0-9]/.test(v);
-    // Resetea el error de confirmaciÃ³n cuando cambia la nueva contraseÃ±a
+    // Resetea el error de confirmación cuando cambia la nueva contraseña
     this.errorConfirmar = false;
   }
 
@@ -101,7 +101,7 @@ export class AdministracionComponent implements OnInit {
     return this.requisitos.longitud && this.requisitos.mayuscula && this.requisitos.numero && this.requisitos.especial;
   }
 
-  // â”€â”€ Cambiar contraseÃ±a â”€â”€
+  // ── Cambiar contraseña ──
   actualizarContrasena(): void {
     this.errorConfirmar = false;
     this.errorMsg = '';
@@ -110,7 +110,7 @@ export class AdministracionComponent implements OnInit {
       this.errorMsg = 'Completa todos los campos.'; return;
     }
     if (!this.requisitosOk) {
-      this.errorMsg = 'La nueva contraseÃ±a no cumple los requisitos.'; return;
+      this.errorMsg = 'La nueva contraseña no cumple los requisitos.'; return;
     }
     if (this.form.nueva !== this.form.confirmar) {
       this.errorConfirmar = true; return;
@@ -128,18 +128,18 @@ export class AdministracionComponent implements OnInit {
         this.form = { actual: '', nueva: '', confirmar: '' };
         this.requisitos = { longitud: false, mayuscula: false, numero: false, especial: false };
         this.vista = 'menu';
-        this.mensajeModal = 'Tu contraseÃ±a ha sido actualizada correctamente.';
+        this.mensajeModal = 'Tu contraseña ha sido actualizada correctamente.';
         this.mostrarModal = true;
       },
       error: (err) => {
         this.guardando = false;
         this.cdr.detectChanges();
-        this.errorMsg = err?.error?.message || 'No se pudo actualizar la contraseÃ±a.';
+        this.errorMsg = err?.error?.message || 'No se pudo actualizar la contraseña.';
       }
     });
   }
 
-  // â”€â”€ Guardar perfil â”€â”€
+  // ── Guardar perfil ──
   guardarPerfil(): void {
     if (!this.perfil.nombreCompleto.trim()) { this.errorMsg = 'El nombre es obligatorio.'; return; }
     this.guardando = true;

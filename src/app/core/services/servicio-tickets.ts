@@ -51,7 +51,7 @@ export class ServicioTickets {
     return this.http.get<TicketDetalle>(`${this.URL}/${numero}`);
   }
 
-  // POST /api/tickets â€” crea un nuevo ticket
+  // POST /api/tickets — crea un nuevo ticket
   crear(datos: { asunto: string; locacion: string; descripcion: string; prioridad: string }): Observable<TicketItem> {
     return this.http.post<TicketItem>(this.URL, datos);
   }

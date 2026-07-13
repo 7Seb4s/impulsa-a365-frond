@@ -1,5 +1,5 @@
 ﻿// app.component.ts
-// Componente raÃ­z: solo renderiza el router-outlet.
+// Componente raíz: solo renderiza el router-outlet.
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 

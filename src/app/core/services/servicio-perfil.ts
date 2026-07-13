@@ -39,7 +39,7 @@ export interface FotoResponse {
   fotoUrl: string;
 }
 
-// URL base del servidor (sin /api), usada para construir URLs de archivos estÃ¡ticos
+// URL base del servidor (sin /api), usada para construir URLs de archivos estáticos
 // Por ejemplo: http://localhost:8081
 const BASE_URL = environment.apiUrl.replace(/\/api$/, '');
 
@@ -61,7 +61,7 @@ export class ServicioPerfil {
     private servicioAuth: ServicioAutenticacion
   ) {}
 
-  // GET /api/perfil â€” tambiÃ©n sincroniza la foto global al cargar
+  // GET /api/perfil — también sincroniza la foto global al cargar
   obtener(): Observable<PerfilResponse> {
     return this.http.get<PerfilResponse>(this.URL).pipe(
       tap(perfil => {
