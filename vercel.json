@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "ng build --configuration production",
+  "buildCommand": "npm run build",
   "outputDirectory": "dist/impulsa-a365/browser",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
