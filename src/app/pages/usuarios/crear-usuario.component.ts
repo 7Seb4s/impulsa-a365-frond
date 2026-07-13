@@ -49,6 +49,10 @@ export class CrearUsuarioComponent {
   mostrarContrasena = false;
   mostrarConfirmar  = false;
 
+  // Autocompletado por DNI (RENIEC)
+  buscandoDni           = false;
+  private dniConsultado = '';
+
   form: FormUsuario = {
     nombreCompleto:     '',
     apellidoCompleto:   '',
@@ -113,6 +117,51 @@ export class CrearUsuarioComponent {
 
     // Actualizar el ngModel manualmente
     input.dispatchEvent(new Event('input'));
+  }
+
+  // Se dispara al escribir el DNI; cuando llega a 8 digitos consulta RENIEC
+  onDniChange(): void {
+    const dni = (this.form.dni || '').trim();
+
+    // Si borran el DNI se limpian los datos autocompletados
+    if (dni.length < 8) {
+      this.dniConsultado = '';
+      return;
+    }
+    if (!/^\d{8}$/.test(dni)) return;
+    if (dni === this.dniConsultado) return; // ya se consulto este DNI
+
+    this.dniConsultado = dni;
+    this.buscarDatosDni(dni);
+  }
+
+  // Llama al backend, que consulta RENIEC y devuelve nombres y apellidos
+  private buscarDatosDni(dni: string): void {
+    this.buscandoDni = true;
+    this.errores.dni = '';
+
+    this.http.get<any>(`${this.URL_API}/usuarios/dni/${dni}`).subscribe({
+      next: (p) => {
+        this.buscandoDni = false;
+        this.form.nombreCompleto   = p.nombres   || '';
+        this.form.apellidoCompleto = p.apellidos || '';
+        this.errores.nombreCompleto   = '';
+        this.errores.apellidoCompleto = '';
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.buscandoDni  = false;
+        this.dniConsultado = ''; // permite reintentar
+        if (err.status === 404) {
+          this.errores.dni = 'No se encontraron datos para ese DNI.';
+        } else if (err.status === 400) {
+          this.errores.dni = 'El DNI debe tener 8 dígitos.';
+        } else {
+          this.errores.dni = 'No se pudo consultar el DNI. Escribe los datos manualmente.';
+        }
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   private validar(): boolean {

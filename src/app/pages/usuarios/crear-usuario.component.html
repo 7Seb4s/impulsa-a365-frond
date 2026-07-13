@@ -162,10 +162,12 @@
                 placeholder=""
                 maxlength="8"
                 (keydown)="soloNumeros($event)"
-                (paste)="limitarPaste($event, 'numeros', 7)"
+                (paste)="limitarPaste($event, 'numeros', 8)"
+                (ngModelChange)="onDniChange()"
               />
               <span class="field-error" *ngIf="errores.dni">{{ errores.dni }}</span>
-              <span class="field-hint">Exactamente 8 dígitos</span>
+              <span class="field-hint" *ngIf="buscandoDni">Consultando RENIEC…</span>
+              <span class="field-hint" *ngIf="!buscandoDni">8 dígitos — autocompleta nombre y apellidos</span>
             </div>
 
             <div class="form-grupo" [class.has-error]="errores.telefono">
