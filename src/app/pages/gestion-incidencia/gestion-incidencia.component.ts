@@ -113,6 +113,56 @@ export class GestionIncidenciasComponent implements OnInit {
   cerrarModal(): void {
     this.incidenciaSeleccionada = null;
     this.detalleModal           = null;
+    this.modoEdicion            = false;
+  }
+
+  // ── EDITAR / ELIMINAR ───────────────────────────────────────
+  modoEdicion = false;
+  guardando   = false;
+  editForm = { asunto: '', tipo: '', contenido: '' };
+
+  activarEdicion(): void {
+    if (!this.detalleModal) return;
+    this.editForm = {
+      asunto:    (this.detalleModal as any).asunto || '',
+      tipo:      this.detalleModal.tipo || '',
+      contenido: this.detalleModal.contenido || ''
+    };
+    this.modoEdicion = true;
+  }
+
+  cancelarEdicion(): void { this.modoEdicion = false; }
+
+  guardarEdicion(): void {
+    if (!this.detalleModal) return;
+    this.guardando = true;
+    const id = this.detalleModal.id;
+    this.servicioAdmin.editarIncidencia(id, this.editForm).subscribe({
+      next: () => {
+        this.guardando   = false;
+        this.modoEdicion = false;
+        this.servicioAdmin.obtenerDetalleIncidencia(id).subscribe(d => {
+          this.detalleModal = d; this.cdr.detectChanges();
+        });
+        this.recargarLista();
+        this.cdr.detectChanges();
+      },
+      error: () => { this.guardando = false; alert('No se pudo guardar la incidencia.'); }
+    });
+  }
+
+  borrarIncidencia(): void {
+    if (!this.detalleModal) return;
+    if (!confirm('¿Seguro que deseas eliminar esta incidencia? Esta acción no se puede deshacer.')) return;
+    const id = this.detalleModal.id;
+    this.servicioAdmin.eliminarIncidencia(id).subscribe({
+      next: () => { this.cerrarModal(); this.recargarLista(); },
+      error: () => alert('No se pudo eliminar la incidencia.')
+    });
+  }
+
+  private recargarLista(): void {
+    this.cargarTab(this.tabActivo);
   }
 
   // ── HELPERS DE FORMATO PARA EL MODAL ────────────────────────

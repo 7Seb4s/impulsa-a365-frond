@@ -326,29 +326,58 @@
     <div class="modal-adjuntos-titulo">Archivos adjuntos</div>
     <div class="modal-adjuntos">
       <span class="adjunto" *ngFor="let a of adjuntosModal">
-        <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
-        {{ a.nombreArchivo }}
+        <a *ngIf="a.ruta" [href]="a.ruta" target="_blank" style="display:inline-flex;align-items:center;gap:6px;color:inherit;text-decoration:none">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
+          {{ a.nombreArchivo }}
+        </a>
+        <button class="adjunto-x" title="Eliminar" (click)="borrarAdjunto(a)">&#10005;</button>
       </span>
       <span class="adjunto-vacio" *ngIf="adjuntosModal.length === 0">Sin archivos adjuntos</span>
     </div>
     <div class="modal-adjuntos-acciones">
-      <button class="btn-anadir-archivo">
+      <label class="btn-anadir-archivo" style="cursor:pointer">
         <svg viewBox="0 0 20 20" fill="currentColor" width="13" height="13"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
         Añadir archivo
-      </button>
-      <button class="btn-eliminar-docs">Eliminar documentos</button>
+        <input type="file" (change)="onAdjuntoChange($event)" hidden />
+      </label>
+      <button class="btn-eliminar-docs" (click)="borrarTodosAdjuntos()" [disabled]="adjuntosModal.length === 0">Eliminar documentos</button>
     </div>
 
-    <div class="modal-asunto-titulo">Asunto: {{ detalleModal?.asunto }}</div>
-    <div class="modal-asunto-meta">{{ detalleModal?.solicitadoPor }} comentó el {{ fechaHoraMeta(detalleModal?.creadoEn) }}</div>
-    <div class="modal-asunto-cuerpo">
-      <p style="white-space:pre-line">{{ detalleModal?.descripcion || 'Sin contenido.' }}</p>
-    </div>
+    <!-- Modo lectura -->
+    <ng-container *ngIf="!modoEdicion">
+      <div class="modal-asunto-titulo">Asunto: {{ detalleModal?.asunto }}</div>
+      <div class="modal-asunto-meta">{{ detalleModal?.solicitadoPor }} comentó el {{ fechaHoraMeta(detalleModal?.creadoEn) }}</div>
+      <div class="modal-asunto-cuerpo">
+        <p style="white-space:pre-line">{{ detalleModal?.descripcion || 'Sin contenido.' }}</p>
+      </div>
+      <div class="modal-acciones">
+        <button class="btn-editar" (click)="activarEdicion()">Editar</button>
+        <button class="btn-borrar" (click)="borrarTicket()">Borrar</button>
+      </div>
+    </ng-container>
 
-    <div class="modal-acciones">
-      <button class="btn-editar">Editar</button>
-      <button class="btn-borrar">Borrar</button>
-    </div>
+    <!-- Modo edición -->
+    <ng-container *ngIf="modoEdicion">
+      <div class="modal-asunto-titulo">Editar ticket</div>
+      <div class="modal-edit">
+        <label>Asunto</label>
+        <input class="edit-input" type="text" [(ngModel)]="editForm.asunto" />
+        <label>Tipo</label>
+        <input class="edit-input" type="text" [(ngModel)]="editForm.tipo" />
+        <label>Prioridad</label>
+        <select class="edit-input" [(ngModel)]="editForm.prioridad">
+          <option value="ALTA">Alta</option>
+          <option value="MEDIA">Media</option>
+          <option value="BAJA">Baja</option>
+        </select>
+        <label>Contenido</label>
+        <textarea class="edit-input" rows="5" [(ngModel)]="editForm.descripcion"></textarea>
+      </div>
+      <div class="modal-acciones">
+        <button class="btn-editar" (click)="guardarEdicion()" [disabled]="guardando">{{ guardando ? 'Guardando...' : 'Guardar' }}</button>
+        <button class="btn-borrar" style="color:#6b7488;border-color:#d5dae6" (click)="cancelarEdicion()">Cancelar</button>
+      </div>
+    </ng-container>
 
   </div>
 </div>

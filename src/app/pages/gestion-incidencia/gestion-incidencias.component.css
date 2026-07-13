@@ -224,6 +224,13 @@
 .badge-aprobado  { background: #e7f7ef; color: #1e9e6e; }
 .badge-rechazado { background: #fde8e8; color: #c0392b; }
 .adjunto-vacio   { font-size: 12px; color: #9aa3b7; font-style: italic; }
+.modal-edit { display: flex; flex-direction: column; gap: 6px; margin: 8px 0 16px; }
+.modal-edit label { font-size: 12px; font-weight: 600; color: #4a5468; margin-top: 6px; }
+.edit-input {
+  width: 100%; border: 1px solid #e0e4ef; border-radius: 8px;
+  padding: 9px 12px; font-size: 13px; color: #26324c; font-family: inherit; outline: none;
+}
+.edit-input:focus { border-color: #b9c9f7; }
 
 .avatar-mini {
   width: 22px; height: 22px; border-radius: 50%; background: #dde3f0;

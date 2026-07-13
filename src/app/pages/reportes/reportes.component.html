@@ -137,6 +137,9 @@
                   <td>{{ item.fecha }}</td>
                   <td>{{ item.tiempo }}</td>
                 </tr>
+                <tr *ngIf="!cargando && historial.length === 0">
+                  <td colspan="6" style="text-align:center;color:#9aa3b7;padding:24px">No hay tickets cerrados todavía.</td>
+                </tr>
               </tbody>
             </table>
           </div>

@@ -47,6 +47,7 @@ export interface TableroTicketItem {
   estado:               string;
   subestado:            string;
   previewUltimoMensaje: string;
+  totalAdjuntos:        number | null;
 }
 
 // ── Detalle de un ticket para el modal (admin) ──
@@ -72,10 +73,46 @@ export interface TicketDetalleAdmin {
 // ── Adjunto de un ticket ──
 // Coincide con AdminDTO.TicketAdjunto del backend
 export interface TicketAdjunto {
+  idAdjunto:     number | null;
   nombreArchivo: string;
   tamanoKb:      number | null;
   ruta:          string | null;
   creadoEn:      string;
+}
+
+// ── Bodies de edición ──
+export interface EditarTicketBody {
+  asunto:      string;
+  tipo:        string;
+  prioridad:   string;   // Alta | Media | Baja
+  descripcion: string;
+}
+export interface EditarIncidenciaBody {
+  asunto:    string;
+  tipo:      string;
+  contenido: string;
+}
+
+// ── Reportes: KPIs + historial ──
+// Coincide con ReportesDTO del backend
+export interface ReporteKpis {
+  totalResueltos:   number;
+  totalPendientes:  number;
+  totalIncidencias: number;
+  tiempoPromedio:   string;
+}
+export interface ReporteHistorialItem {
+  numero:      string;
+  usuario:     string;
+  tipo:        string;
+  estado:      string;
+  estadoClase: string;
+  fecha:       string;
+  tiempo:      string;
+}
+export interface ReporteResponse {
+  kpis:      ReporteKpis;
+  historial: ReporteHistorialItem[];
 }
 
 // ── Mensaje de un ticket ──
@@ -198,10 +235,48 @@ export class ServicioAdmin {
     return this.http.get<TicketDetalleAdmin>(`${this.URL}/tickets/${numero}/modal`);
   }
 
+  // GET /api/admin/reportes
+  // KPIs + historial de tickets cerrados
+  obtenerReportes(): Observable<ReporteResponse> {
+    return this.http.get<ReporteResponse>(`${this.URL}/reportes`);
+  }
+
   // GET /api/admin/tickets/{numero}/adjuntos
   // Lista los archivos adjuntos reales de un ticket
   obtenerAdjuntos(numero: number): Observable<TicketAdjunto[]> {
     return this.http.get<TicketAdjunto[]>(`${this.URL}/tickets/${numero}/adjuntos`);
+  }
+
+  // ── ACCIONES: editar / eliminar / adjuntos ──
+
+  editarTicket(numero: number, body: EditarTicketBody): Observable<{ mensaje: string }> {
+    return this.http.put<{ mensaje: string }>(`${this.URL}/tickets/${numero}`, body);
+  }
+
+  eliminarTicket(numero: number): Observable<{ mensaje: string }> {
+    return this.http.delete<{ mensaje: string }>(`${this.URL}/tickets/${numero}`);
+  }
+
+  subirAdjunto(numero: number, archivo: File): Observable<any> {
+    const fd = new FormData();
+    fd.append('archivo', archivo);
+    return this.http.post<any>(`${this.URL}/tickets/${numero}/adjuntos`, fd);
+  }
+
+  eliminarAdjunto(numero: number, idAdjunto: number): Observable<{ mensaje: string }> {
+    return this.http.delete<{ mensaje: string }>(`${this.URL}/tickets/${numero}/adjuntos/${idAdjunto}`);
+  }
+
+  eliminarTodosAdjuntos(numero: number): Observable<{ mensaje: string }> {
+    return this.http.delete<{ mensaje: string }>(`${this.URL}/tickets/${numero}/adjuntos`);
+  }
+
+  editarIncidencia(id: number, body: EditarIncidenciaBody): Observable<{ mensaje: string }> {
+    return this.http.put<{ mensaje: string }>(`${this.URL}/incidencias/${id}`, body);
+  }
+
+  eliminarIncidencia(id: number): Observable<{ mensaje: string }> {
+    return this.http.delete<{ mensaje: string }>(`${this.URL}/incidencias/${id}`);
   }
 
   // PUT /api/admin/tickets/{numero}/mover

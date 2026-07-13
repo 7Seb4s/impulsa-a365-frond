@@ -214,24 +214,36 @@
     <div class="modal-adjuntos">
       <span class="adjunto-vacio">Las incidencias no manejan archivos adjuntos.</span>
     </div>
-    <div class="modal-adjuntos-acciones">
-      <button class="btn-anadir-archivo">
-        <svg viewBox="0 0 20 20" fill="currentColor" width="13" height="13"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
-        Añadir archivo
-      </button>
-      <button class="btn-eliminar-docs">Eliminar documentos</button>
-    </div>
 
-    <div class="modal-asunto-titulo">Contenido</div>
-    <div class="modal-asunto-meta">{{ detalleModal?.solicitante }} reportó el {{ fechaHoraMeta(detalleModal?.fecha) }}</div>
-    <div class="modal-asunto-cuerpo">
-      <p style="white-space:pre-line">{{ detalleModal?.contenido || 'Sin contenido.' }}</p>
-    </div>
+    <!-- Modo lectura -->
+    <ng-container *ngIf="!modoEdicion">
+      <div class="modal-asunto-titulo">Contenido</div>
+      <div class="modal-asunto-meta">{{ detalleModal?.solicitante }} reportó el {{ fechaHoraMeta(detalleModal?.fecha) }}</div>
+      <div class="modal-asunto-cuerpo">
+        <p style="white-space:pre-line">{{ detalleModal?.contenido || 'Sin contenido.' }}</p>
+      </div>
+      <div class="modal-acciones">
+        <button class="btn-editar" (click)="activarEdicion()">Editar</button>
+        <button class="btn-borrar" (click)="borrarIncidencia()">Borrar</button>
+      </div>
+    </ng-container>
 
-    <div class="modal-acciones">
-      <button class="btn-editar">Editar</button>
-      <button class="btn-borrar">Borrar</button>
-    </div>
+    <!-- Modo edición -->
+    <ng-container *ngIf="modoEdicion">
+      <div class="modal-asunto-titulo">Editar incidencia</div>
+      <div class="modal-edit">
+        <label>Asunto</label>
+        <input class="edit-input" type="text" [(ngModel)]="editForm.asunto" />
+        <label>Tipo</label>
+        <input class="edit-input" type="text" [(ngModel)]="editForm.tipo" />
+        <label>Contenido</label>
+        <textarea class="edit-input" rows="5" [(ngModel)]="editForm.contenido"></textarea>
+      </div>
+      <div class="modal-acciones">
+        <button class="btn-editar" (click)="guardarEdicion()" [disabled]="guardando">{{ guardando ? 'Guardando...' : 'Guardar' }}</button>
+        <button class="btn-borrar" style="color:#6b7488;border-color:#d5dae6" (click)="cancelarEdicion()">Cancelar</button>
+      </div>
+    </ng-container>
 
   </div>
 </div>

@@ -102,7 +102,7 @@ export class GestionTicketsComponent implements OnInit {
       titulo:        item.asunto,
       descripcion:   item.previewUltimoMensaje || 'Sin mensajes aún.',
       diasRestantes: this.calcularDias(item.actualizadoEn),
-      adjuntos:      0,        // se carga al abrir el modal si se necesita
+      adjuntos:      item.totalAdjuntos ?? 0,   // conteo real de adjuntos del backend
       numero:        `#${item.numeroTicket}`,
       estado,
       numeroTicket:  item.numeroTicket
@@ -162,6 +162,92 @@ export class GestionTicketsComponent implements OnInit {
     this.ticketSeleccionado = null;
     this.detalleModal       = null;
     this.adjuntosModal      = [];
+    this.modoEdicion        = false;
+  }
+
+  // ── EDITAR / ELIMINAR / ADJUNTOS ────────────────────────────
+
+  modoEdicion = false;
+  guardando   = false;
+  editForm = { asunto: '', tipo: '', prioridad: 'MEDIA', descripcion: '' };
+
+  activarEdicion(): void {
+    if (!this.detalleModal) return;
+    this.editForm = {
+      asunto:      this.detalleModal.asunto || '',
+      tipo:        this.detalleModal.tipoTicket || '',
+      prioridad:   (this.detalleModal.prioridad || 'MEDIA').toUpperCase(),
+      descripcion: this.detalleModal.descripcion || ''
+    };
+    this.modoEdicion = true;
+  }
+
+  cancelarEdicion(): void { this.modoEdicion = false; }
+
+  guardarEdicion(): void {
+    if (!this.ticketSeleccionado) return;
+    this.guardando = true;
+    const numero = this.ticketSeleccionado.numeroTicket;
+    this.servicioAdmin.editarTicket(numero, this.editForm).subscribe({
+      next: () => {
+        this.guardando   = false;
+        this.modoEdicion = false;
+        // Recargar el detalle y el tablero para reflejar los cambios
+        this.servicioAdmin.obtenerModalTicket(numero).subscribe(d => {
+          this.detalleModal = d; this.cdr.detectChanges();
+        });
+        this.cargarTablero();
+        this.cdr.detectChanges();
+      },
+      error: () => { this.guardando = false; alert('No se pudo guardar el ticket.'); }
+    });
+  }
+
+  borrarTicket(): void {
+    if (!this.ticketSeleccionado) return;
+    if (!confirm('¿Seguro que deseas eliminar este ticket? Esta acción no se puede deshacer.')) return;
+    const numero = this.ticketSeleccionado.numeroTicket;
+    this.servicioAdmin.eliminarTicket(numero).subscribe({
+      next: () => { this.cerrarModal(); this.cargarTablero(); },
+      error: () => alert('No se pudo eliminar el ticket.')
+    });
+  }
+
+  onAdjuntoChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file || !this.ticketSeleccionado) return;
+    const numero = this.ticketSeleccionado.numeroTicket;
+    this.servicioAdmin.subirAdjunto(numero, file).subscribe({
+      next: () => this.recargarAdjuntos(numero),
+      error: (err) => alert(err?.error?.message || 'No se pudo subir el archivo.')
+    });
+    input.value = '';
+  }
+
+  borrarAdjunto(a: TicketAdjunto): void {
+    if (!this.ticketSeleccionado || a.idAdjunto == null) return;
+    const numero = this.ticketSeleccionado.numeroTicket;
+    this.servicioAdmin.eliminarAdjunto(numero, a.idAdjunto).subscribe({
+      next: () => this.recargarAdjuntos(numero),
+      error: () => alert('No se pudo eliminar el archivo.')
+    });
+  }
+
+  borrarTodosAdjuntos(): void {
+    if (!this.ticketSeleccionado || this.adjuntosModal.length === 0) return;
+    if (!confirm('¿Eliminar todos los documentos de este ticket?')) return;
+    const numero = this.ticketSeleccionado.numeroTicket;
+    this.servicioAdmin.eliminarTodosAdjuntos(numero).subscribe({
+      next: () => this.recargarAdjuntos(numero),
+      error: () => alert('No se pudieron eliminar los documentos.')
+    });
+  }
+
+  private recargarAdjuntos(numero: number): void {
+    this.servicioAdmin.obtenerAdjuntos(numero).subscribe(a => {
+      this.adjuntosModal = a ?? []; this.cdr.detectChanges();
+    });
   }
 
   // ── HELPERS DE FORMATO PARA EL MODAL ────────────────────────
