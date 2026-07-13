@@ -1,9 +1,9 @@
-// core/services/servicio-incidencias.ts
+﻿// core/services/servicio-incidencias.ts
 // Servicio HTTP para incidencias del usuario logueado
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/configuracion-entorno';
+import { environment } from '../../../environments/environment';
 
 // Item resumido (GET /api/incidencias)
 export interface IncidenciaItem {

@@ -1,4 +1,4 @@
-// pages/reportes/reportes.component.ts
+﻿// pages/reportes/reportes.component.ts
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -21,7 +21,7 @@ export class ReportesComponent implements OnInit {
   totalResueltos = 0;
   totalPendientes = 0;
   totalIncidencias = 0;
-  tiempoPromedio = '—';
+  tiempoPromedio = 'â€”';
   historial: ReporteHistorialItem[] = [];
   cargando = true;
 

@@ -1,4 +1,4 @@
-// pages/tecnico/tecnico-incidencias.component.ts
+﻿// pages/tecnico/tecnico-incidencias.component.ts
 // Panel de incidencias del TECNICO: lista, detalle lateral, modal y asignacion/derivacion.
 import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';

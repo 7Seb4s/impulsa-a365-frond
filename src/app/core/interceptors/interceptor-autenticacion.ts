@@ -1,10 +1,10 @@
-// core/interceptors/interceptor-autenticacion.ts
-// Agrega el header "Authorization: Bearer <token>" a cada petición HTTP
+﻿// core/interceptors/interceptor-autenticacion.ts
+// Agrega el header "Authorization: Bearer <token>" a cada peticiÃ³n HTTP
 // que vaya dirigida al backend (environment.apiUrl).
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { ServicioAutenticacion } from '../services/servicio-autenticacion';
-import { environment } from '../../../environments/configuracion-entorno';
+import { environment } from '../../../environments/environment';
 
 export const interceptorAutenticacion: HttpInterceptorFn = (peticion, siguiente) => {
   const servicioAuth = inject(ServicioAutenticacion);

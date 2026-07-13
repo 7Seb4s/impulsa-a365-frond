@@ -1,11 +1,11 @@
-// core/services/servicio-autenticacion.ts
-// Servicio central de autenticación.
+﻿// core/services/servicio-autenticacion.ts
+// Servicio central de autenticaciÃ³n.
 // Gestiona login, logout, token JWT y datos del usuario en localStorage.
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { environment } from '../../../environments/configuracion-entorno';
+import { environment } from '../../../environments/environment';
 
 export interface PeticionLogin {
   codigo: string;
@@ -43,7 +43,7 @@ export class ServicioAutenticacion {
     localStorage.getItem(this.CLAVE_FOTO)
   );
 
-  /** Observable de la foto del usuario — suscríbete en cualquier componente */
+  /** Observable de la foto del usuario â€” suscrÃ­bete en cualquier componente */
   readonly fotoUrl$ = this._fotoUrl$.asObservable();
 
   constructor(
@@ -51,7 +51,7 @@ export class ServicioAutenticacion {
     private router: Router
   ) {}
 
-  // Envía credenciales al backend y guarda token + datos en localStorage
+  // EnvÃ­a credenciales al backend y guarda token + datos en localStorage
   login(peticion: PeticionLogin): Observable<RespuestaLogin> {
     return this.http
       .post<RespuestaLogin>(`${this.URL_API}/auth/login`, peticion)
@@ -77,7 +77,7 @@ export class ServicioAutenticacion {
       );
   }
 
-  // Borra sesión y redirige al login
+  // Borra sesiÃ³n y redirige al login
   logout(): void {
     localStorage.removeItem(this.CLAVE_TOKEN);
     localStorage.removeItem(this.CLAVE_USUARIO);
@@ -86,7 +86,7 @@ export class ServicioAutenticacion {
     this.router.navigate(['/auth/login']);
   }
 
-  // Devuelve el token JWT guardado, o null si no hay sesión
+  // Devuelve el token JWT guardado, o null si no hay sesiÃ³n
   obtenerToken(): string | null {
     return localStorage.getItem(this.CLAVE_TOKEN);
   }
@@ -115,7 +115,7 @@ export class ServicioAutenticacion {
   }
 
   /** Actualiza la foto en localStorage y notifica a todos los suscriptores.
-   *  Llamar desde ServicioPerfil después de subir/cargar la foto. */
+   *  Llamar desde ServicioPerfil despuÃ©s de subir/cargar la foto. */
   actualizarFoto(url: string | null): void {
     if (url) {
       localStorage.setItem(this.CLAVE_FOTO, url);

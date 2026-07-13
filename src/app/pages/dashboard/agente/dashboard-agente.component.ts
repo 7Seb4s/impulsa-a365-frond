@@ -1,4 +1,4 @@
-// pages/dashboard/agente/dashboard-agente.component.ts
+﻿// pages/dashboard/agente/dashboard-agente.component.ts
 import { Component, OnInit, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -34,7 +34,7 @@ export class DashboardAgenteComponent implements OnInit {
   ticketsTimeline: TicketItem[] = [];
   ticketActivo: TicketItem | null = null;
 
-  // ── Estado del calendario ──
+  // â”€â”€ Estado del calendario â”€â”€
   fechaActual = new Date();
   mesMostrado = new Date().getMonth();   // 0-11
   anioMostrado = new Date().getFullYear();
@@ -61,7 +61,7 @@ export class DashboardAgenteComponent implements OnInit {
     this.cargarStats();
   }
 
-  // ── Carga contadores y timeline desde el backend ──
+  // â”€â”€ Carga contadores y timeline desde el backend â”€â”€
   private cargarStats(): void {
     forkJoin({
       pendientes:  this.servicioTickets.listar('pendientes'),
@@ -85,7 +85,7 @@ export class DashboardAgenteComponent implements OnInit {
     });
   }
 
-  // ── Construye la matriz del calendario para el mes mostrado ──
+  // â”€â”€ Construye la matriz del calendario para el mes mostrado â”€â”€
   construirCalendario(): void {
     const primerDia = new Date(this.anioMostrado, this.mesMostrado, 1);
     const ultimoDia = new Date(this.anioMostrado, this.mesMostrado + 1, 0);
@@ -160,7 +160,7 @@ export class DashboardAgenteComponent implements OnInit {
     this.construirCalendario();
   }
 
-  // ── Helpers de usuario ──
+  // â”€â”€ Helpers de usuario â”€â”€
 
   // Devuelve "Bienvenido, <Nombre>." sin codigo si esta disponible
   get nombreUsuario(): string {

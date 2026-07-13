@@ -1,4 +1,4 @@
-// pages/tickets/tickets.component.ts
+﻿// pages/tickets/tickets.component.ts
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -114,7 +114,7 @@ export class TicketsComponent implements OnInit {
 
   crearTicket(): void {
     if (!this.nuevoTicket.asunto.trim() || !this.nuevoTicket.locacion.trim()) {
-      this.errorNuevoTicket = 'El asunto y la locación son obligatorios.';
+      this.errorNuevoTicket = 'El asunto y la locaciÃ³n son obligatorios.';
       return;
     }
     this.guardandoTicket = true;

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 export interface Usuario {
@@ -8,7 +8,7 @@ export interface Usuario {
   rol: string;
 }
 
-// ── Usuarios de prueba (reemplazar cuando haya backend) ──────
+// â”€â”€ Usuarios de prueba (reemplazar cuando haya backend) â”€â”€â”€â”€â”€â”€
 const USUARIOS_PRUEBA: (Usuario & { password: string })[] = [
   { id: 1, codigo: 'admin',      password: '1234', nombre: 'Administrador', rol: 'ADMIN'      },
   { id: 2, codigo: 'supervisor', password: '1234', nombre: 'Supervisor',    rol: 'SUPERVISOR' },
@@ -22,7 +22,7 @@ export class AuthService {
 
   constructor(private router: Router) {}
 
-  // ── LOGIN (simulado) ─────────────────────────────────────────
+  // â”€â”€ LOGIN (simulado) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   login(codigo: string, password: string): boolean {
     const usuario = USUARIOS_PRUEBA.find(
       u => u.codigo === codigo && u.password === password
@@ -35,13 +35,13 @@ export class AuthService {
     return false;
   }
 
-  // ── LOGOUT ───────────────────────────────────────────────────
+  // â”€â”€ LOGOUT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   logout(): void {
     localStorage.removeItem(this.USUARIO_KEY);
     this.router.navigate(['/login']);
   }
 
-  // ── HELPERS ──────────────────────────────────────────────────
+  // â”€â”€ HELPERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   isLoggedIn(): boolean {
     return !!localStorage.getItem(this.USUARIO_KEY);
   }

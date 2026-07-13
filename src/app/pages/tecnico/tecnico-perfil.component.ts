@@ -1,4 +1,4 @@
-// pages/tecnico/tecnico-perfil.component.ts
+﻿// pages/tecnico/tecnico-perfil.component.ts
 // Perfil del TECNICO: reusa ServicioPerfil (misma data real) pero dentro
 // del shell del tecnico para que la barra lateral no cambie de estilo.
 import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
@@ -40,7 +40,7 @@ export class TecnicoPerfilComponent implements OnInit {
   formulario: FormularioPerfil = { nombreCompleto: '', correo: '', direccion: '', telefono: '', dni: '' };
   private respaldo: FormularioPerfil = { ...this.formulario };
 
-  // Cambio de contraseña
+  // Cambio de contraseÃ±a
   mostrarModalPass = false;
   passForm = { actual: '', nueva: '', confirmar: '' };
   passError = '';
@@ -166,7 +166,7 @@ export class TecnicoPerfilComponent implements OnInit {
     });
   }
 
-  // ── Cambio de contraseña ──
+  // â”€â”€ Cambio de contraseÃ±a â”€â”€
   abrirModalPass(): void {
     this.passForm = { actual: '', nueva: '', confirmar: '' };
     this.passError = '';
@@ -179,8 +179,8 @@ export class TecnicoPerfilComponent implements OnInit {
   cambiarContrasena(): void {
     const { actual, nueva, confirmar } = this.passForm;
     if (!actual || !nueva || !confirmar) { this.passError = 'Completa todos los campos.'; return; }
-    if (nueva.length < 4) { this.passError = 'La nueva contraseña debe tener al menos 4 caracteres.'; return; }
-    if (nueva !== confirmar) { this.passError = 'Las contraseñas nuevas no coinciden.'; return; }
+    if (nueva.length < 4) { this.passError = 'La nueva contraseÃ±a debe tener al menos 4 caracteres.'; return; }
+    if (nueva !== confirmar) { this.passError = 'Las contraseÃ±as nuevas no coinciden.'; return; }
 
     this.passGuardando = true;
     this.passError = '';
@@ -198,7 +198,7 @@ export class TecnicoPerfilComponent implements OnInit {
       error: (err) => {
         this.passGuardando = false;
         this.passError = err?.error?.message || err?.error?.error
-          || 'No se pudo cambiar la contraseña. Verifica la actual.';
+          || 'No se pudo cambiar la contraseÃ±a. Verifica la actual.';
         this.cdr.detectChanges();
       }
     });

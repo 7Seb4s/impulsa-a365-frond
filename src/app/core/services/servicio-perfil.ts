@@ -1,9 +1,9 @@
-// core/services/servicio-perfil.ts
+﻿// core/services/servicio-perfil.ts
 // Servicio HTTP para ver y editar el perfil del usuario logueado
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { environment } from '../../../environments/configuracion-entorno';
+import { environment } from '../../../environments/environment';
 import { ServicioAutenticacion } from './servicio-autenticacion';
 
 // GET /api/perfil
@@ -39,7 +39,7 @@ export interface FotoResponse {
   fotoUrl: string;
 }
 
-// URL base del servidor (sin /api), usada para construir URLs de archivos estáticos
+// URL base del servidor (sin /api), usada para construir URLs de archivos estÃ¡ticos
 // Por ejemplo: http://localhost:8081
 const BASE_URL = environment.apiUrl.replace(/\/api$/, '');
 
@@ -61,7 +61,7 @@ export class ServicioPerfil {
     private servicioAuth: ServicioAutenticacion
   ) {}
 
-  // GET /api/perfil — también sincroniza la foto global al cargar
+  // GET /api/perfil â€” tambiÃ©n sincroniza la foto global al cargar
   obtener(): Observable<PerfilResponse> {
     return this.http.get<PerfilResponse>(this.URL).pipe(
       tap(perfil => {

@@ -1,6 +1,6 @@
-// pages/dashboard/admin/dashboard-admin.component.ts
-// Vista del administrador/gerente: panel con 4 widgets y gráficos Chart.js.
-// Chart.js se carga desde CDN en index.html — NO instalar con npm.
+﻿// pages/dashboard/admin/dashboard-admin.component.ts
+// Vista del administrador/gerente: panel con 4 widgets y grÃ¡ficos Chart.js.
+// Chart.js se carga desde CDN en index.html â€” NO instalar con npm.
 import { Component, OnInit, AfterViewInit, OnDestroy, NgZone, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ServicioAutenticacion, DatosUsuario } from '../../../core/services/servicio-autenticacion';
@@ -36,9 +36,9 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
   private charts: any[] = [];
 
   // Stats del backend (se pueblan en ngOnInit)
-  ticketStats = { total: 0, atendidos: 0, pendientes: 0, cancelados: 0, promTiempo: '—' };
+  ticketStats = { total: 0, atendidos: 0, pendientes: 0, cancelados: 0, promTiempo: 'â€”' };
 
-  // Datos reales para los gráficos (se pueblan antes de inicializar Chart.js)
+  // Datos reales para los grÃ¡ficos (se pueblan antes de inicializar Chart.js)
   private datosIncidencias: number[] = [0, 0, 0, 0];
   private datosTicketsSemana: number[] = [0, 0, 0, 0];
 
@@ -60,19 +60,19 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngAfterViewInit(): void {
-    // Espera a que Chart.js esté disponible (se carga desde CDN)
+    // Espera a que Chart.js estÃ© disponible (se carga desde CDN)
     this.esperarChartJS();
   }
 
   ngOnDestroy(): void {
-    // Limpia los gráficos para evitar memory leaks
+    // Limpia los grÃ¡ficos para evitar memory leaks
     this.charts.forEach(c => c.destroy());
     this.charts = [];
   }
 
-  // ── CARGA DE DATOS REALES ────────────────────────────────────
+  // â”€â”€ CARGA DE DATOS REALES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-  // Llama en paralelo a los 3 endpoints de gráficos del dashboard
+  // Llama en paralelo a los 3 endpoints de grÃ¡ficos del dashboard
   private cargarDatos(): void {
     forkJoin({
       ticketsMes:          this.servicioAdmin.obtenerResumenTicketsMes(),
@@ -83,12 +83,12 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
         this.aplicarResumenMes(ticketsMes);
         this.aplicarIncidencias(incidenciasSemana);
         this.aplicarTicketsSemana(ticketsSemana);
-        // Reinicia los gráficos con datos reales si ya están montados
+        // Reinicia los grÃ¡ficos con datos reales si ya estÃ¡n montados
         this.reiniciarGraficos();
         this.cdr.detectChanges();
       },
       error: () => {
-        // Si falla la carga los gráficos quedan con ceros (sin romper la vista)
+        // Si falla la carga los grÃ¡ficos quedan con ceros (sin romper la vista)
         console.warn('[A365] No se pudieron cargar los datos del dashboard');
         this.cdr.detectChanges();
       }
@@ -102,23 +102,23 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
       atendidos:  datos.atendidos,
       pendientes: datos.pendientes,
       cancelados: datos.cancelados,
-      promTiempo: '—'    // el backend no calcula esto aún
+      promTiempo: 'â€”'    // el backend no calcula esto aÃºn
     };
   }
 
-  // Arma los datos del gráfico de torta de incidencias
+  // Arma los datos del grÃ¡fico de torta de incidencias
   // Orden: [Atendidas/Resueltas, Evaluando/EnRevision, EnProgreso, Pendientes/Reportadas]
   private aplicarIncidencias(datos: ResumenIncidenciasSemana): void {
-    const total = datos.total || 1;  // evitar división por cero
+    const total = datos.total || 1;  // evitar divisiÃ³n por cero
     this.datosIncidencias = [
       Math.round(datos.resueltas  / total * 100),
       Math.round(datos.enRevision / total * 100),
-      0,   // "En progreso" no existe aún en la BD
+      0,   // "En progreso" no existe aÃºn en la BD
       Math.round(datos.reportadas / total * 100)
     ];
   }
 
-  // Arma los datos del gráfico de dona de tickets por estado
+  // Arma los datos del grÃ¡fico de dona de tickets por estado
   // Orden: [Pendientes, Evaluando, EnProgreso, Atendidos]
   private aplicarTicketsSemana(datos: ResumenTicketsSemana): void {
     const total = datos.total || 1;
@@ -130,7 +130,7 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
     ];
   }
 
-  // Destruye y vuelve a crear los gráficos cuando llegan datos nuevos
+  // Destruye y vuelve a crear los grÃ¡ficos cuando llegan datos nuevos
   private reiniciarGraficos(): void {
     this.charts.forEach(c => c.destroy());
     this.charts = [];
@@ -143,7 +143,7 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
-  // ── NAVEGACIÓN SIDEBAR ──────────────────────────────────────
+  // â”€â”€ NAVEGACIÃ“N SIDEBAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   irAGestionTickets(): void {
     this.router.navigate(['/dashboard/gestion-tickets']);
@@ -177,7 +177,7 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
     this.servicioAuth.logout();
   }
 
-  // ── GRÁFICOS ────────────────────────────────────────────────
+  // â”€â”€ GRÃFICOS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   // Reintenta hasta 20 veces (4 segundos) esperando que Chart.js cargue
   private esperarChartJS(intentos = 0): void {
@@ -186,7 +186,7 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
     } else if (intentos < 20) {
       setTimeout(() => this.esperarChartJS(intentos + 1), 200);
     } else {
-      console.error('[A365] Chart.js no se cargó. Verifica el <script> en index.html.');
+      console.error('[A365] Chart.js no se cargÃ³. Verifica el <script> en index.html.');
     }
   }
 
@@ -198,7 +198,7 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
     });
   }
 
-  // Gráfico de torta: distribución de incidencias por estado (datos reales)
+  // GrÃ¡fico de torta: distribuciÃ³n de incidencias por estado (datos reales)
   private initGraficoIncidencias(): void {
     const canvas = document.getElementById('graficoIncidencias') as HTMLCanvasElement;
     if (!canvas) return;
@@ -242,7 +242,7 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
     this.charts.push(chart);
   }
 
-  // Gráfico de dona: tickets por estado en la semana (datos reales)
+  // GrÃ¡fico de dona: tickets por estado en la semana (datos reales)
   private initGraficoTickets(): void {
     const canvas = document.getElementById('graficoTickets') as HTMLCanvasElement;
     if (!canvas) return;
@@ -270,7 +270,7 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
     this.charts.push(chart);
   }
 
-  // Gráfico de líneas: registro de actividad por mes (datos estáticos por ahora)
+  // GrÃ¡fico de lÃ­neas: registro de actividad por mes (datos estÃ¡ticos por ahora)
   private initGraficoActividad(): void {
     const canvas = document.getElementById('graficoActividad') as HTMLCanvasElement;
     if (!canvas) return;
@@ -293,7 +293,7 @@ export class DashboardAdminComponent implements OnInit, AfterViewInit, OnDestroy
             tension: 0.4
           },
           {
-            label: 'En observación',
+            label: 'En observaciÃ³n',
             data: [7, 6, 8, 5, 7, 5],
             borderColor: '#5c6bc0',
             backgroundColor: 'rgba(92,107,192,0.08)',

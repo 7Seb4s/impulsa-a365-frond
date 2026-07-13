@@ -1,4 +1,4 @@
-// pages/configuracion/configuracion.component.ts
+﻿// pages/configuracion/configuracion.component.ts
 import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -34,7 +34,7 @@ export class ConfiguracionComponent implements OnInit {
   // Formulario contrasena
   form = { actual: '', nueva: '', confirmar: '' };
 
-  // Requisitos de contraseña (igual que admin)
+  // Requisitos de contraseÃ±a (igual que admin)
   requisitos = {
     longitud:   false,
     mayuscula:  false,
@@ -91,7 +91,7 @@ export class ConfiguracionComponent implements OnInit {
     });
   }
 
-  // ── Cambiar contrasena ──
+  // â”€â”€ Cambiar contrasena â”€â”€
   // Envia el formulario al backend (PUT /api/perfil/contrasena)
   actualizarContrasena(): void {
     this.errorConfirmar = false;
@@ -100,7 +100,7 @@ export class ConfiguracionComponent implements OnInit {
       this.errorMsg = 'Completa todos los campos.'; return;
     }
     if (!this.requisitosOk) {
-      this.errorMsg = 'La contraseña no cumple con los requisitos.'; return;
+      this.errorMsg = 'La contraseÃ±a no cumple con los requisitos.'; return;
     }
     if (this.form.nueva !== this.form.confirmar) {
       this.errorConfirmar = true; return;
@@ -117,19 +117,19 @@ export class ConfiguracionComponent implements OnInit {
         this.form = { actual: '', nueva: '', confirmar: '' };
         this.requisitos = { longitud: false, mayuscula: false, numero: false, especial: false };
         this.vista = 'menu';
-        this.mensajeModal = 'Tu contraseña ha sido actualizada correctamente.';
+        this.mensajeModal = 'Tu contraseÃ±a ha sido actualizada correctamente.';
         this.mostrarModal = true;
       },
       error: (err) => {
         this.guardando = false;
         this.cdr.detectChanges();
-        this.errorMsg = err?.error?.message || 'No se pudo actualizar la contraseña.';
+        this.errorMsg = err?.error?.message || 'No se pudo actualizar la contraseÃ±a.';
         alert(this.errorMsg);
       }
     });
   }
 
-  // ── Guardar perfil ──
+  // â”€â”€ Guardar perfil â”€â”€
   // Envia el formulario al backend (PUT /api/perfil)
   guardarPerfil(): void {
     if (!this.perfil.nombreCompleto.trim()) { alert('El nombre es obligatorio.'); return; }

@@ -1,11 +1,11 @@
-// pages/recuperar/recuperar.component.ts
-// Flujo de recuperación de contraseña: solicita código → verifica → navega a /restablecer
+﻿// pages/recuperar/recuperar.component.ts
+// Flujo de recuperaciÃ³n de contraseÃ±a: solicita cÃ³digo â†’ verifica â†’ navega a /restablecer
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/configuracion-entorno';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-recuperar',
@@ -31,16 +31,16 @@ export class RecuperarComponent {
     private cdr:    ChangeDetectorRef
   ) {}
 
-  // Paso 1: solicita el envío del código al correo
+  // Paso 1: solicita el envÃ­o del cÃ³digo al correo
   enviarCodigo(): void {
     this.limpiarMensajes();
 
     if (!this.correo.trim()) {
-      this.errorMsg = 'Por favor ingresa tu correo electrónico.';
+      this.errorMsg = 'Por favor ingresa tu correo electrÃ³nico.';
       return;
     }
     if (!this.correo.includes('@')) {
-      this.errorMsg = 'Ingresa un correo electrónico válido.';
+      this.errorMsg = 'Ingresa un correo electrÃ³nico vÃ¡lido.';
       return;
     }
 
@@ -51,20 +51,20 @@ export class RecuperarComponent {
         next: () => {
           this.cargando      = false;
           this.codigoEnviado = true;
-          this.successMsg    = `Código enviado a ${this.correo}. Revisa tu bandeja de entrada.`;
+          this.successMsg    = `CÃ³digo enviado a ${this.correo}. Revisa tu bandeja de entrada.`;
           this.cdr.detectChanges();
         },
         error: (err) => {
           this.cargando = false;
           this.errorMsg = err.status === 404
             ? 'No encontramos una cuenta con ese correo.'
-            : 'Error al enviar el código. Intenta de nuevo.';
+            : 'Error al enviar el cÃ³digo. Intenta de nuevo.';
           this.cdr.detectChanges();
         }
       });
   }
 
-  // Reenvía el código si el usuario no lo recibió
+  // ReenvÃ­a el cÃ³digo si el usuario no lo recibiÃ³
   reenviarCodigo(): void {
     this.limpiarMensajes();
     this.cargando = true;
@@ -73,23 +73,23 @@ export class RecuperarComponent {
       .subscribe({
         next: () => {
           this.cargando   = false;
-          this.successMsg = 'Nuevo código enviado a tu correo.';
+          this.successMsg = 'Nuevo cÃ³digo enviado a tu correo.';
           this.cdr.detectChanges();
         },
         error: () => {
           this.cargando = false;
-          this.errorMsg = 'Error al reenviar el código.';
+          this.errorMsg = 'Error al reenviar el cÃ³digo.';
           this.cdr.detectChanges();
         }
       });
   }
 
-  // Paso 2: verifica el código y navega a /restablecer pasando correo + codigo
+  // Paso 2: verifica el cÃ³digo y navega a /restablecer pasando correo + codigo
   continuar(): void {
     this.limpiarMensajes();
 
     if (!this.codigoRecibido.trim()) {
-      this.errorMsg = 'Por favor ingresa el código recibido.';
+      this.errorMsg = 'Por favor ingresa el cÃ³digo recibido.';
       return;
     }
 
@@ -112,8 +112,8 @@ export class RecuperarComponent {
       error: (err) => {
         this.cargando = false;
         this.errorMsg = err.status === 400
-          ? 'El código ingresado es incorrecto o ya expiró.'
-          : 'Error al verificar el código. Intenta de nuevo.';
+          ? 'El cÃ³digo ingresado es incorrecto o ya expirÃ³.'
+          : 'Error al verificar el cÃ³digo. Intenta de nuevo.';
         this.cdr.detectChanges();
       }
     });

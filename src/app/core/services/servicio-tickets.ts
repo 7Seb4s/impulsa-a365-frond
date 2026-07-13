@@ -1,10 +1,10 @@
-// core/services/servicio-tickets.ts
+﻿// core/services/servicio-tickets.ts
 // Servicio HTTP para tickets. Habla con el backend Spring Boot.
 // El interceptor JWT inyecta el token automaticamente en cada peticion.
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/configuracion-entorno';
+import { environment } from '../../../environments/environment';
 
 // Item resumido para las cards (lo que devuelve GET /api/tickets)
 export interface TicketItem {
@@ -51,7 +51,7 @@ export class ServicioTickets {
     return this.http.get<TicketDetalle>(`${this.URL}/${numero}`);
   }
 
-  // POST /api/tickets — crea un nuevo ticket
+  // POST /api/tickets â€” crea un nuevo ticket
   crear(datos: { asunto: string; locacion: string; descripcion: string; prioridad: string }): Observable<TicketItem> {
     return this.http.post<TicketItem>(this.URL, datos);
   }

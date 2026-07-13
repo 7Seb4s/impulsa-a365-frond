@@ -1,4 +1,4 @@
-// pages/tecnico/tecnico-tickets.component.ts
+﻿// pages/tecnico/tecnico-tickets.component.ts
 // Panel de tickets del TECNICO: lista, detalle lateral, modal y aprobacion.
 import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';

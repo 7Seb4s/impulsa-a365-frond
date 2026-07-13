@@ -1,4 +1,4 @@
-// core/services/servicio-tecnico.ts
+﻿// core/services/servicio-tecnico.ts
 // Servicio HTTP para la vista del TECNICO.
 // Maneja los paneles de tickets (aprobar) e incidencias (asignar/derivar).
 // El interceptor JWT inyecta el token automaticamente en cada peticion.
@@ -9,7 +9,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/configuracion-entorno';
+import { environment } from '../../../environments/environment';
 
 export type Prioridad = 'Alto' | 'Medio' | 'Bajo';
 export type EstadoTicket = 'pendiente' | 'aprobado' | 'rechazado';
@@ -68,7 +68,7 @@ export class ServicioTecnico {
 
   constructor(private http: HttpClient) {}
 
-  // ── TICKETS ─────────────────────────────────────────────────
+  // â”€â”€ TICKETS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   // GET /api/tecnico/tickets
   listarTickets(): Observable<TecnicoTicket[]> {
@@ -85,7 +85,7 @@ export class ServicioTecnico {
     return this.http.put<OperacionResponse>(`${this.URL}/tickets/${id}/rechazar`, {});
   }
 
-  // ── INCIDENCIAS ─────────────────────────────────────────────
+  // â”€â”€ INCIDENCIAS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   // GET /api/tecnico/incidencias
   listarIncidencias(): Observable<TecnicoIncidencia[]> {

@@ -1,10 +1,10 @@
-// Recuperacion de contrasena: envia codigo al correo, verifica y redirige al login
+﻿// Recuperacion de contrasena: envia codigo al correo, verifica y redirige al login
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/configuracion-entorno';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-recuperar',

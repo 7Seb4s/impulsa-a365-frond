@@ -1,12 +1,12 @@
-// pages/usuarios/crear-usuario.component.ts
-// Formulario para crear un nuevo usuario con código autoincremental.
-// Validaciones: nombre/apellido solo letras y espacios, DNI 8 dígitos, teléfono 9 dígitos.
+﻿// pages/usuarios/crear-usuario.component.ts
+// Formulario para crear un nuevo usuario con cÃ³digo autoincremental.
+// Validaciones: nombre/apellido solo letras y espacios, DNI 8 dÃ­gitos, telÃ©fono 9 dÃ­gitos.
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/configuracion-entorno';
+import { environment } from '../../../environments/environment';
 
 interface FormUsuario {
   nombreCompleto:    string;
@@ -81,7 +81,7 @@ export class CrearUsuarioComponent {
   // Solo permite letras y espacios en campos de texto
   soloLetras(event: KeyboardEvent): void {
     const char = event.key;
-    // Permite letras Unicode (incluye ñ, á, ü, etc.), espacios y teclas de control
+    // Permite letras Unicode (incluye Ã±, Ã¡, Ã¼, etc.), espacios y teclas de control
     const teclasControl = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'Home', 'End'];
     if (teclasControl.includes(char)) return;
     if (!/^[\p{L} ]$/u.test(char)) {
@@ -89,7 +89,7 @@ export class CrearUsuarioComponent {
     }
   }
 
-  // Solo permite dígitos
+  // Solo permite dÃ­gitos
   soloNumeros(event: KeyboardEvent): void {
     const char = event.key;
     if (!/^\d$/.test(char) && char !== 'Backspace' && char !== 'Delete' && char !== 'Tab' && char !== 'ArrowLeft' && char !== 'ArrowRight') {
@@ -137,19 +137,19 @@ export class CrearUsuarioComponent {
     if (!this.form.dni.trim()) {
       this.errores.dni = 'El DNI es obligatorio.'; ok = false;
     } else if (!/^\d{8}$/.test(this.form.dni.trim())) {
-      this.errores.dni = 'El DNI debe tener exactamente 8 dígitos.'; ok = false;
+      this.errores.dni = 'El DNI debe tener exactamente 8 dÃ­gitos.'; ok = false;
     }
 
     if (!this.form.telefono.trim()) {
-      this.errores.telefono = 'El teléfono es obligatorio.'; ok = false;
+      this.errores.telefono = 'El telÃ©fono es obligatorio.'; ok = false;
     } else if (!/^\d{9}$/.test(this.form.telefono.trim())) {
-      this.errores.telefono = 'El teléfono debe tener exactamente 9 dígitos.'; ok = false;
+      this.errores.telefono = 'El telÃ©fono debe tener exactamente 9 dÃ­gitos.'; ok = false;
     }
 
     if (!this.form.correo.trim()) {
       this.errores.correo = 'El correo es obligatorio.'; ok = false;
     } else if (!emailRegex.test(this.form.correo.trim())) {
-      this.errores.correo = 'Ingresa un correo válido.'; ok = false;
+      this.errores.correo = 'Ingresa un correo vÃ¡lido.'; ok = false;
     }
 
     if (!this.form.rol) {
@@ -157,21 +157,21 @@ export class CrearUsuarioComponent {
     }
 
     if (!this.form.contrasena.trim()) {
-      this.errores.contrasena = 'La contraseña es obligatoria.'; ok = false;
+      this.errores.contrasena = 'La contraseÃ±a es obligatoria.'; ok = false;
     } else if (this.form.contrasena.length < 8) {
-      this.errores.contrasena = 'Mínimo 8 caracteres.'; ok = false;
+      this.errores.contrasena = 'MÃ­nimo 8 caracteres.'; ok = false;
     } else if (!/[\p{Lu}]/u.test(this.form.contrasena)) {
-      this.errores.contrasena = 'Debe incluir al menos 1 letra mayúscula.'; ok = false;
+      this.errores.contrasena = 'Debe incluir al menos 1 letra mayÃºscula.'; ok = false;
     } else if (!/[0-9]/.test(this.form.contrasena)) {
-      this.errores.contrasena = 'Debe incluir al menos 1 número.'; ok = false;
+      this.errores.contrasena = 'Debe incluir al menos 1 nÃºmero.'; ok = false;
     } else if (!/[^a-zA-Z0-9]/.test(this.form.contrasena)) {
-      this.errores.contrasena = 'Debe incluir al menos 1 carácter especial (!@#$...).'; ok = false;
+      this.errores.contrasena = 'Debe incluir al menos 1 carÃ¡cter especial (!@#$...).'; ok = false;
     }
 
     if (!this.form.confirmarContrasena.trim()) {
-      this.errores.confirmarContrasena = 'Confirma la contraseña.'; ok = false;
+      this.errores.confirmarContrasena = 'Confirma la contraseÃ±a.'; ok = false;
     } else if (this.form.contrasena !== this.form.confirmarContrasena) {
-      this.errores.confirmarContrasena = 'Las contraseñas no coinciden.'; ok = false;
+      this.errores.confirmarContrasena = 'Las contraseÃ±as no coinciden.'; ok = false;
     }
 
     return ok;
@@ -201,7 +201,7 @@ export class CrearUsuarioComponent {
       error: (err) => {
         this.cargando = false;
         if (err.status === 409) {
-          this.errores.general = err.error?.message ?? 'El correo o DNI ya está registrado.';
+          this.errores.general = err.error?.message ?? 'El correo o DNI ya estÃ¡ registrado.';
         } else if (err.status === 400) {
           this.errores.general = 'Revisa los datos ingresados.';
         } else {

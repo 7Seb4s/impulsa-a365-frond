@@ -1,11 +1,11 @@
-// Login con codigo + contrasena y login con Google Sign-In
+﻿// Login con codigo + contrasena y login con Google Sign-In
 import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ServicioAutenticacion } from '../../core/services/servicio-autenticacion';
-import { environment } from '../../../environments/configuracion-entorno';
+import { environment } from '../../../environments/environment';
 
 declare const google: any;
 
